@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+**/.venv/
+.env
+*.db
+*.sqlite3
+
+# Node
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+
+# IDE
+.vscode/*
+!.vscode/tasks.json

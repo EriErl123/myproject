@@ -1,0 +1,6 @@
+- Project type: Full-stack web app
+- Frontend: React + Vite with dark blue, black, and white theme
+- Backend: FastAPI with JWT and RBAC (`admin`, `client`, `freelancer`)
+- Database: PostgreSQL target, SQLite fallback for local setup
+- Keep architecture modular and API-first
+- Maintain responsive dashboard UI
