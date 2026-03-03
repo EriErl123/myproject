@@ -195,13 +195,6 @@ $(document).ready(function () {
     },
   });
 
-  // Download CV Button
-  $("#downloadCV").click(function(e) {
-    e.preventDefault();
-    alert("CV download functionality will be implemented. Please add your CV file to the project.");
-    // To implement: Add your CV file and update the href or create download logic
-  });
-
   // Contact Form Submission with EmailJS
   $("#contactForm").submit(function(e) {
     e.preventDefault();
