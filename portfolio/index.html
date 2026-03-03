@@ -1,390 +1,375 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Erl Jay Ramas - Futuristic portfolio of an IT student and web developer creating high-impact digital products."
-    />
-    <meta
-      name="keywords"
-      content="Erl Jay Ramas, Portfolio, Web Developer, IT Student, HTML, CSS, JavaScript, PHP"
-    />
-    <meta name="author" content="Erl Jay Ramas" />
-    <title>Erl Jay Ramas | PHL</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Erl Jay Ramas - Developer portfolio. Full-stack systems, AI tools, and security dashboards." />
+  <meta name="author" content="Erl Jay Ramas" />
+  <title>ERL - Developer Portfolio</title>
 
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
+</head>
+<body>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  </head>
-  <body class="dark-theme">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-
-    <div class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">
-      <i class="fas fa-moon"></i>
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="loader-inner">
+      <svg class="loader-svg" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="42" />
+      </svg>
+      <span class="loader-logo">E</span>
     </div>
+    <div class="loader-progress"><div class="loader-bar" id="loaderBar"></div></div>
+  </div>
 
-    <div class="scroll-up-btn">
-      <i class="fas fa-angle-double-up"></i>
-    </div>
+  <!-- CURSOR -->
+  <div class="cur" id="cur"></div>
+  <div class="cur-follow" id="curFollow"></div>
 
-    <nav class="navbar">
-      <div class="max-width">
-        <div class="logo">
-          <a href="#home">ERL<span>.SYSTEM</span></a>
+  <!-- CANVAS -->
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- GRAIN -->
+  <div class="grain"></div>
+
+  <!-- SCROLL INDICATOR -->
+  <div class="scroll-line" id="scrollLine"></div>
+
+  <!-- SIDE NAV -->
+  <nav class="side-nav" id="sideNav">
+    <a href="#hero" class="sn active" data-sec="hero"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="#about" class="sn" data-sec="about"><i class="fa-solid fa-user"></i><span>About</span></a>
+    <a href="#skills" class="sn" data-sec="skills"><i class="fa-solid fa-code"></i><span>Skills</span></a>
+    <a href="#works" class="sn" data-sec="works"><i class="fa-solid fa-layer-group"></i><span>Works</span></a>
+    <a href="#lab" class="sn" data-sec="lab"><i class="fa-solid fa-flask"></i><span>Lab</span></a>
+    <a href="#contact" class="sn" data-sec="contact"><i class="fa-solid fa-envelope"></i><span>Contact</span></a>
+  </nav>
+
+  <!-- TOP BAR -->
+  <header class="topbar" id="topbar">
+    <a href="#hero" class="topbar-logo">ERL<span>.</span>DEV</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mob-menu" id="mobMenu">
+    <a href="#hero">Home</a>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#works">Works</a>
+    <a href="#lab">Lab</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-left">
+          <div class="hero-tag"><span class="pulse-dot"></span> Available for projects</div>
+          <p class="hero-sub">Hi, I am</p>
+          <h1 class="hero-name" data-text="Erl Jay Ramas">Erl Jay Ramas</h1>
+          <div class="hero-role">I build things as a <span class="typed" id="typed"></span><span class="typed-cursor">|</span></div>
+          <p class="hero-desc">
+            I craft high-performance web systems, AI-driven tools, and secure
+            digital products with focus on usability, clean code, and results.
+          </p>
+          <div class="hero-btns">
+            <a href="#works" class="btn btn-primary"><i class="fa-solid fa-arrow-down"></i> View Works</a>
+            <a href="#contact" class="btn btn-ghost"><i class="fa-solid fa-paper-plane"></i> Let's Talk</a>
+            <a href="Ramas_Erl_Jay_Cv.pdf" download class="btn btn-ghost"><i class="fa-solid fa-download"></i> CV</a>
+          </div>
         </div>
-        <ul class="menu">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#about">Profile</a></li>
-          <li><a href="#skills">Capabilities</a></li>
-          <li><a href="#projects">Works</a></li>
-          <li><a href="#lab">Lab</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-        <div class="menu-toggle">
-          <i class="fas fa-bars"></i>
-        </div>
-      </div>
-    </nav>
-
-    <section class="home" id="home">
-      <div class="max-width">
-        <div class="home-grid fadein">
-          <div class="home-content">
-            <div class="badge">Open to freelance projects and internship opportunities</div>
-            <div class="text-1">Future-focused web developer</div>
-            <h1 class="text-2">Erl Jay P. Ramas</h1>
-            <div class="text-3">Currently building as a <span class="typing"></span></div>
-            <p class="hero-description">
-              I design and build modern, responsive digital experiences with strong
-              attention to clean architecture, usability, and performance.
-            </p>
-            <div class="hero-cta">
-              <a class="web" href="#projects">Explore Projects <i class="fas fa-rocket"></i></a>
-              <a href="#contact" class="web">Start a Conversation <i class="fas fa-angle-right"></i></a>
-              <a href="CV.doc" download class="web download-cv" id="downloadCV">Download CV <i class="fas fa-download"></i></a>
+        <div class="hero-right">
+          <div class="term-card">
+            <div class="term-dots"><i></i><i></i><i></i></div>
+            <div class="term-body">
+              <p><span class="t-green">erl</span>@portfolio <span class="t-dim">~</span> $ whoami</p>
+              <p class="t-accent" id="termTyped"></p>
+              <p><span class="t-green">erl</span>@portfolio <span class="t-dim">~</span> $ cat status.txt</p>
+              <p class="t-dim">-> Location: Sagay City, Philippines</p>
+              <p class="t-dim">-> Focus: Full-Stack / AI / Security</p>
+              <p class="t-dim">-> Status: <span class="t-green">Open to work</span></p>
             </div>
           </div>
-
-          <aside class="hero-panel">
-            <div class="terminal-card">
-              <div class="terminal-head">
-                <span></span><span></span><span></span>
-              </div>
-              <div class="terminal-body">
-                <p>&gt; profile.init()</p>
-                <p>&gt; role: <strong><span class="typing2"></span></strong></p>
-                <p>&gt; location: Sagay City, Philippines</p>
-                <p>&gt; status: Available for projects</p>
-                <p>&gt; focus: Frontend, UI, and web systems</p>
-              </div>
-            </div>
-            <div class="hero-metrics">
-              <div><strong>4+</strong><span>Core Technologies</span></div>
-              <div><strong>3</strong><span>Featured Builds</span></div>
-              <div><strong>100%</strong><span>Learning Drive</span></div>
-            </div>
-
-            <div class="signal-box">
-              <div class="signal-top">
-                <span class="signal-dot"></span>
-                <p>Live creative signal</p>
-              </div>
-              <div class="signal-wave" id="signalWave">
-                <span></span><span></span><span></span><span></span><span></span><span></span>
-              </div>
-              <button type="button" class="signal-btn" id="signalBtn">Shift Creative Mode</button>
-            </div>
-          </aside>
+          <div class="stats-row">
+            <div class="stat-card"><strong class="count" data-to="4">0</strong><span>Technologies</span></div>
+            <div class="stat-card"><strong class="count" data-to="3">0</strong><span>Projects</span></div>
+            <div class="stat-card"><strong class="count" data-to="100">0</strong><span>% Drive</span></div>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
+    <div class="hero-scroll"><span>Scroll</span><i class="fa-solid fa-chevron-down"></i></div>
+  </section>
 
-    <section class="lab" id="lab">
-      <div class="max-width">
-        <h2 class="title fadein">Creative Lab</h2>
-        <div class="lab-grid">
-          <article class="lab-panel fadein">
-            <h3>Reality Switch</h3>
-            <p>
-              Not a static portfolio. Pick a visual universe and watch the whole page morph in real-time.
-            </p>
-            <div class="mode-switches">
-              <button class="mode-btn active" data-mode="cosmos">Cosmos</button>
-              <button class="mode-btn" data-mode="neon">Neon Grid</button>
-              <button class="mode-btn" data-mode="mono">Mono Elite</button>
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="container">
+      <h2 class="sec-title" data-num="01">About Me</h2>
+      <div class="about-grid">
+        <div class="about-img">
+          <div class="img-frame">
+            <img src="images/me.jpg" alt="Erl Jay Ramas" />
+            <div class="img-border"></div>
+          </div>
+          <div class="about-socials">
+            <a href="https://www.facebook.com/erljayramas" target="_blank" rel="noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://github.com/EriErl123" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i></a>
+          </div>
+        </div>
+        <div class="about-text">
+          <h3>A developer who blends logic and design</h3>
+          <p>
+            I am an IT student from the Philippines passionate about building
+            user-centered digital products. I transform complex problems into
+            clean, intuitive, and high-performance web solutions.
+          </p>
+          <p>
+            My goal is to contribute to teams that value quality engineering,
+            collaboration, and meaningful digital impact.
+          </p>
+          <div class="about-cards">
+            <div class="a-card">
+              <i class="fa-solid fa-code"></i>
+              <h4>Clean Code</h4>
+              <p>Structured, maintainable front-end architecture</p>
             </div>
-            <p class="mode-status">Current mode: <strong id="modeLabel">Cosmos</strong></p>
-          </article>
-
-          <article class="lab-panel fadein">
-            <h3>Random Build Manifesto</h3>
-            <p id="manifestoText">
-              I build interfaces that feel like stories: high-clarity UX wrapped in cinematic micro-interactions.
-            </p>
-            <button type="button" class="manifesto-btn" id="manifestoBtn">Generate New Manifesto</button>
-          </article>
-
-          <article class="lab-panel wide fadein">
-            <h3>Timeline of Momentum</h3>
-            <div class="timeline-track">
-              <div class="timeline-node">
-                <span>2023</span>
-                <p>Started web foundations and committed to frontend craft.</p>
-              </div>
-              <div class="timeline-node">
-                <span>2024</span>
-                <p>Built practical academic systems and collaborative projects.</p>
-              </div>
-              <div class="timeline-node">
-                <span>2025</span>
-                <p>Focused on cleaner architecture and product-level UI polish.</p>
-              </div>
-              <div class="timeline-node">
-                <span>2026</span>
-                <p>Now seeking impact-driven teams and real-world product challenges.</p>
-              </div>
+            <div class="a-card">
+              <i class="fa-solid fa-arrows-rotate"></i>
+              <h4>Adaptability</h4>
+              <p>Continuous learning and rapid skill acquisition</p>
             </div>
-          </article>
+            <div class="a-card">
+              <i class="fa-solid fa-handshake"></i>
+              <h4>Reliability</h4>
+              <p>Clear communication and dependable execution</p>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="about" id="about">
-      <div class="max-width">
-        <h2 class="title fadein">Profile</h2>
-        <div class="about-content bento-layout">
-          <article class="column left fadein profile-image-card">
-            <img src="images/me.jpg" alt="Portrait of Erl Jay Ramas" />
-            <div class="wrapper social-row">
-              <a class="button1" href="https://www.facebook.com/erljayramas" target="_blank" rel="noreferrer">
-                <div class="icon"><i class="fab fa-facebook-f"></i></div>
-                <span>Facebook</span>
-              </a>
-              <a class="button1" href="https://github.com/EriErl123" target="_blank" rel="noreferrer">
-                <div class="icon"><i class="fab fa-github"></i></div>
-                <span>GitHub</span>
-              </a>
+  <!-- SKILLS -->
+  <section class="skills" id="skills">
+    <div class="container">
+      <h2 class="sec-title" data-num="02">Skills</h2>
+      <div class="skills-grid">
+        <div class="skills-info">
+          <h3>Technology Stack</h3>
+          <p>
+            I build modern web interfaces with responsive layouts, efficient
+            styling systems, and interactive client-side behavior. Comfortable
+            with Git-based workflows and team collaboration.
+          </p>
+          <a href="#works" class="btn btn-primary"><i class="fa-solid fa-arrow-right"></i> See My Work</a>
+        </div>
+        <div class="skills-cards">
+          <div class="sk-card" data-skill="HTML5">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noreferrer">
+              <img src="./images/html5.png" alt="HTML5" width="56" height="56" />
+              <h4>HTML5</h4>
+              <div class="sk-bar"><div class="sk-fill" data-w="92"></div></div>
+              <span class="sk-pct">92%</span>
+            </a>
+          </div>
+          <div class="sk-card" data-skill="CSS3">
+            <a href="https://www.w3schools.com/css/" target="_blank" rel="noreferrer">
+              <img src="./images/css3.png" alt="CSS3" width="56" height="56" />
+              <h4>CSS3</h4>
+              <div class="sk-bar"><div class="sk-fill" data-w="88"></div></div>
+              <span class="sk-pct">88%</span>
+            </a>
+          </div>
+          <div class="sk-card" data-skill="JavaScript">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer">
+              <img src="./images/javascript.png" alt="JavaScript" width="56" height="56" />
+              <h4>JavaScript</h4>
+              <div class="sk-bar"><div class="sk-fill" data-w="84"></div></div>
+              <span class="sk-pct">84%</span>
+            </a>
+          </div>
+          <div class="sk-card" data-skill="PHP">
+            <a href="https://www.php.net/" target="_blank" rel="noreferrer">
+              <img src="./images/php.jpg" alt="PHP" width="56" height="56" />
+              <h4>PHP</h4>
+              <div class="sk-bar"><div class="sk-fill" data-w="76"></div></div>
+              <span class="sk-pct">76%</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKS -->
+  <section class="works" id="works">
+    <div class="container">
+      <h2 class="sec-title" data-num="03">Works</h2>
+      <div class="works-grid">
+
+        <!-- PROJECT 1 -->
+        <article class="w-card">
+          <div class="w-visual v-freelancer">
+            <div class="w-grid-bg"></div>
+            <div class="w-icons">
+              <i class="fa-solid fa-briefcase"></i>
+              <i class="fa-solid fa-users"></i>
+              <i class="fa-solid fa-list-check"></i>
             </div>
-          </article>
-
-          <article class="column right fadein profile-text-card">
-            <div class="text">A developer who blends logic and design</div>
-            <p>
-              I am an IT student from the Philippines with a strong passion for
-              software development and user-centered interfaces. I enjoy transforming
-              complex ideas into practical, intuitive, and polished web solutions.
-            </p>
-            <p>
-              My objective is to contribute to teams that value quality engineering,
-              collaborative problem-solving, and meaningful digital impact.
-            </p>
-          </article>
-
-          <article class="fadein value-card">
-            <h3>What I bring</h3>
-            <ul>
-              <li>Structured coding practices and maintainable front-end architecture</li>
-              <li>Strong adaptability and continuous learning mindset</li>
-              <li>Clear communication and dependable execution</li>
+            <span class="w-num">01</span>
+          </div>
+          <div class="w-body">
+            <div class="w-head">
+              <h3>Freelancer Project Management</h3>
+              <a href="https://github.com/EriErl123/myproject/tree/main/Freelancer%20Project%20Management%20Platform" target="_blank" rel="noreferrer" class="w-link" title="View on GitHub"><i class="fa-brands fa-github"></i></a>
+            </div>
+            <p class="w-sub">Full-Stack Collaboration Platform</p>
+            <div class="w-tags">
+              <span>React</span><span>FastAPI</span><span>PostgreSQL</span><span>JWT</span>
+            </div>
+            <ul class="w-feats">
+              <li>Role-based access (admin / client / freelancer)</li>
+              <li>Proposal submit + approve/reject workflow</li>
+              <li>Dashboard metrics by role</li>
+              <li>Admin user management (suspend / activate)</li>
             </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="skills" id="skills">
-      <div class="max-width">
-        <h2 class="title fadein">Capabilities</h2>
-        <div class="skills-content">
-          <div class="column left fadein">
-            <div class="text">Technology stack and development strengths</div>
-            <p>
-              I build modern web interfaces with responsive layouts, efficient
-              styling systems, and interactive client-side behavior. I am comfortable
-              using Git-based workflows and collaborating on iterative improvements.
-            </p>
-            <a href="#projects">View selected work <i class="fas fa-angle-double-right"></i></a>
+            <p class="w-desc">End-to-end platform with JWT auth, themed responsive dashboard, and complete project lifecycle management.</p>
+            <a href="https://github.com/EriErl123/myproject/tree/main/Freelancer%20Project%20Management%20Platform" target="_blank" rel="noreferrer" class="btn btn-sm">View Project <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
           </div>
+        </article>
 
-          <div class="column right fadein">
-            <div class="info">
-              <div class="skill-box" data-skill="HTML5">
-                <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noreferrer">
-                  <img src="./images/html5.png" alt="HTML5" width="80" height="80" />
-                  <h4>HTML5</h4>
-                  <div class="skill-bar"><div class="skill-progress" data-progress="92"></div></div>
-                  <span class="skill-percent">92%</span>
-                </a>
-              </div>
-              <div class="skill-box" data-skill="CSS3">
-                <a href="https://www.w3schools.com/css/" target="_blank" rel="noreferrer">
-                  <img src="./images/css3.png" alt="CSS3" width="80" height="80" />
-                  <h4>CSS3</h4>
-                  <div class="skill-bar"><div class="skill-progress" data-progress="88"></div></div>
-                  <span class="skill-percent">88%</span>
-                </a>
-              </div>
-              <div class="skill-box" data-skill="JavaScript">
-                <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer">
-                  <img src="./images/javascript.png" alt="JavaScript" width="80" height="80" />
-                  <h4>JavaScript</h4>
-                  <div class="skill-bar"><div class="skill-progress" data-progress="84"></div></div>
-                  <span class="skill-percent">84%</span>
-                </a>
-              </div>
-              <div class="skill-box" data-skill="PHP">
-                <a href="https://www.php.net/" target="_blank" rel="noreferrer">
-                  <img src="./images/php.jpg" alt="PHP" width="80" height="80" />
-                  <h4>PHP</h4>
-                  <div class="skill-bar"><div class="skill-progress" data-progress="76"></div></div>
-                  <span class="skill-percent">76%</span>
-                </a>
-              </div>
+        <!-- PROJECT 2 -->
+        <article class="w-card">
+          <div class="w-visual v-resume">
+            <div class="w-grid-bg"></div>
+            <div class="w-icons">
+              <i class="fa-solid fa-file-lines"></i>
+              <i class="fa-solid fa-brain"></i>
+              <i class="fa-solid fa-chart-line"></i>
             </div>
+            <span class="w-num">02</span>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="projects" id="projects">
-      <div class="max-width">
-        <h2 class="title fadein">Selected Works</h2>
-        <div class="carousel owl-carousel">
-          <div class="card">
-            <a href="#" target="_blank" rel="noreferrer">
-              <div class="box">
-                <img src="./images/eventscheduler.png" alt="Event Scheduler project preview" />
-                <p>Event Scheduler Platform</p>
-                <p>HTML, CSS, JavaScript</p>
-              </div>
-            </a>
-          </div>
-          <div class="card">
-            <a href="#" target="_blank" rel="noreferrer">
-              <div class="box">
-                <img src="./images/customercomplaint.jpg" alt="Customer complaint system preview" />
-                <p>Customer Complaint Management System</p>
-                <p>PHP, HTML, CSS</p>
-              </div>
-            </a>
-          </div>
-          <div class="card">
-            <a href="#" target="_blank" rel="noreferrer">
-              <div class="box">
-                <img src="./images/website.png" alt="Portfolio website preview" />
-                <p>Modern Portfolio Website</p>
-                <p>HTML, CSS, JavaScript</p>
-              </div>
-            </a>
-          </div>
-          <div class="card">
-            <a href="#" target="_blank" rel="noreferrer">
-              <div class="box">
-                <img src="./images/website.png" alt="UI concept preview" />
-                <p>UI Concept Prototype</p>
-                <p>Responsive UI, Component Layouts</p>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="contact" id="contact">
-      <div class="max-width">
-        <h2 class="title fadein">Contact</h2>
-        <div class="contact-content">
-          <div class="column left fadein">
-            <div class="text">Let us create something exceptional.</div>
-            <p>
-              If you need a developer who values quality, clarity, and execution,
-              feel free to reach out. I am open to project collaborations and internship opportunities.
-            </p>
-
-            <div class="icons">
-              <div class="row">
-                <i class="fas fa-user"></i>
-                <div class="info">
-                  <div class="head">Name</div>
-                  <div class="sub-title">Erl Jay Ramas</div>
-                </div>
-              </div>
-              <div class="row">
-                <i class="fas fa-map-marker-alt"></i>
-                <div class="info">
-                  <div class="head">Location</div>
-                  <div class="sub-title">Sagay City, Negros Occidental, Philippines</div>
-                </div>
-              </div>
-              <div class="row">
-                <i class="fas fa-envelope"></i>
-                <div class="info">
-                  <div class="head">Email</div>
-                  <div class="sub-title">ramaserljay5@gmail.com</div>
-                </div>
-              </div>
+          <div class="w-body">
+            <div class="w-head">
+              <h3>AI Resume Analyzer</h3>
+              <a href="https://github.com/EriErl123/myproject/tree/main/Resume%20Analyzer" target="_blank" rel="noreferrer" class="w-link" title="View on GitHub"><i class="fa-brands fa-github"></i></a>
             </div>
-
-            <div class="text1">Connect</div>
-            <div class="wrapper social-row">
-              <a class="button1" href="https://www.facebook.com/erljayramas" target="_blank" rel="noreferrer">
-                <div class="icon"><i class="fab fa-facebook-f"></i></div>
-                <span>Facebook</span>
-              </a>
-              <a class="button1" href="https://github.com/EriErl123" target="_blank" rel="noreferrer">
-                <div class="icon"><i class="fab fa-github"></i></div>
-                <span>GitHub</span>
-              </a>
+            <p class="w-sub">NLP-Powered Career Tool</p>
+            <div class="w-tags">
+              <span>Python</span><span>NLP</span><span>Semantic AI</span><span>PDF Parser</span>
             </div>
+            <ul class="w-feats">
+              <li>Weighted ATS-style score breakdown</li>
+              <li>AI mode scoring (Balanced / Strict / Creative)</li>
+              <li>Semantic similarity + section coverage</li>
+              <li>ATS risk flags and bullet rewrite suggestions</li>
+            </ul>
+            <p class="w-desc">Advanced resume analysis with NLP feedback, keyword matching against job descriptions, and priority gap suggestions.</p>
+            <a href="https://github.com/EriErl123/myproject/tree/main/Resume%20Analyzer" target="_blank" rel="noreferrer" class="btn btn-sm">View Project <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
           </div>
+        </article>
 
-          <div class="column right fadein">
-            <div class="text">Send a message</div>
-            <form id="contactForm">
-              <div class="fields">
-                <div class="field name">
-                  <input type="text" id="userName" placeholder="Your name" required />
-                </div>
-                <div class="field email">
-                  <input type="email" id="userEmail" placeholder="Your email" name="email" required />
-                </div>
-              </div>
-              <div class="field">
-                <input type="text" id="subject" placeholder="Project subject" required />
-              </div>
-              <div class="field textarea">
-                <textarea cols="30" rows="10" id="message" placeholder="Describe your project or idea..." required></textarea>
-              </div>
-              <div class="button">
-                <button type="submit" id="submitBtn">
-                  <span class="btn-text">Send Message</span>
-                  <i class="fas fa-paper-plane"></i>
-                </button>
-              </div>
-              <div id="formMessage" class="form-message"></div>
-            </form>
+        <!-- PROJECT 3 -->
+        <article class="w-card">
+          <div class="w-visual v-scanner">
+            <div class="w-grid-bg"></div>
+            <div class="w-icons">
+              <i class="fa-solid fa-shield-halved"></i>
+              <i class="fa-solid fa-network-wired"></i>
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <span class="w-num">03</span>
+          </div>
+          <div class="w-body">
+            <div class="w-head">
+              <h3>Web Vulnerability Scanner</h3>
+              <a href="https://github.com/EriErl123/myproject/tree/main/Web-Based%20Vulnerability%20Scanner" target="_blank" rel="noreferrer" class="w-link" title="View on GitHub"><i class="fa-brands fa-github"></i></a>
+            </div>
+            <p class="w-sub">Security Testing Dashboard</p>
+            <div class="w-tags">
+              <span>Flask</span><span>TCP Scanning</span><span>SQLite</span><span>TLS</span>
+            </div>
+            <ul class="w-feats">
+              <li>Multi-threaded TCP port scanning</li>
+              <li>Service detection and banner grabbing</li>
+              <li>HTTP security header analysis</li>
+              <li>HTML and PDF report export</li>
+            </ul>
+            <p class="w-desc">Comprehensive vulnerability scanner with risk scoring, TLS checks, and persistent SQLite scan history.</p>
+            <a href="https://github.com/EriErl123/myproject/tree/main/Web-Based%20Vulnerability%20Scanner" target="_blank" rel="noreferrer" class="btn btn-sm">View Project <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- LAB -->
+  <section class="lab" id="lab">
+    <div class="container">
+      <h2 class="sec-title" data-num="04">Lab</h2>
+      <div class="lab-grid">
+        <div class="lab-card">
+          <h3><i class="fa-solid fa-palette"></i> Reality Switch</h3>
+          <p>Pick a visual universe and watch the entire page transform.</p>
+          <div class="mode-row">
+            <button class="mode-btn active" data-mode="ember">Ember</button>
+            <button class="mode-btn" data-mode="ice">Arctic</button>
+            <button class="mode-btn" data-mode="void">Void</button>
+          </div>
+          <p class="mode-label">Active: <strong id="modeLabel">Ember</strong></p>
+        </div>
+        <div class="lab-card">
+          <h3><i class="fa-solid fa-quote-left"></i> Build Manifesto</h3>
+          <p id="manifestoText">I build interfaces that feel like stories - high-clarity UX wrapped in cinematic micro-interactions.</p>
+          <button class="btn btn-sm" id="manifestoBtn"><i class="fa-solid fa-shuffle"></i> Generate</button>
+        </div>
+        <div class="lab-card lab-wide">
+          <h3><i class="fa-solid fa-timeline"></i> Timeline</h3>
+          <div class="tl-track">
+            <div class="tl-node"><span>2023</span><p>Web foundations - committed to frontend craft.</p></div>
+            <div class="tl-node"><span>2024</span><p>Academic systems and collaborative projects.</p></div>
+            <div class="tl-node"><span>2025</span><p>Cleaner architecture, product-level polish.</p></div>
+            <div class="tl-node"><span>2026</span><p>Full-stack, AI tools, security - seeking real impact.</p></div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <footer>
-      <span>
-        Designed and built by <a href="https://www.facebook.com/erljayramas" target="_blank" rel="noreferrer">Erl Jay</a>
-        · <span class="far fa-copyright"></span> <span id="currentYear">2026</span>
-      </span>
-    </footer>
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <h2 class="sec-title" data-num="05">Contact</h2>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h3>Let's create something exceptional.</h3>
+          <p>Open to project collaborations and internship opportunities.</p>
+          <div class="c-rows">
+            <div class="c-row"><i class="fa-solid fa-user"></i><div><strong>Name</strong><span>Erl Jay Ramas</span></div></div>
+            <div class="c-row"><i class="fa-solid fa-location-dot"></i><div><strong>Location</strong><span>Sagay City, Negros Occidental, PH</span></div></div>
+            <div class="c-row"><i class="fa-solid fa-envelope"></i><div><strong>Email</strong><span>ramaserljay5@gmail.com</span></div></div>
+          </div>
+          <div class="c-socials">
+            <a href="https://www.facebook.com/erljayramas" target="_blank" rel="noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://github.com/EriErl123" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <script src="script.js" async></script>
-  </body>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-line"></div>
+    <p>Built by <a href="https://www.facebook.com/erljayramas" target="_blank" rel="noreferrer">Erl Jay Ramas</a> - <span id="yr">2026</span></p>
+  </footer>
+</body>
 </html>

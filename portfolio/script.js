@@ -1,268 +1,334 @@
-$(document).ready(function () {
-  // Theme Toggle Functionality
-  const themeToggle = $("#themeToggle");
-  const body = $("body");
-  const themeIcon = themeToggle.find("i");
-  
-  // Check for saved theme preference (default to dark)
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme === "light") {
-    body.removeClass("dark-theme");
-    themeIcon.removeClass("fa-sun").addClass("fa-moon");
-  } else {
-    body.addClass("dark-theme");
-    themeIcon.removeClass("fa-moon").addClass("fa-sun");
-  }
-  
-  themeToggle.click(function () {
-    body.toggleClass("dark-theme");
-    if (body.hasClass("dark-theme")) {
-      themeIcon.removeClass("fa-moon").addClass("fa-sun");
-      localStorage.setItem("theme", "dark");
-    } else {
-      themeIcon.removeClass("fa-sun").addClass("fa-moon");
-      localStorage.setItem("theme", "light");
+﻿/* ========================================================
+   ERL PORTFOLIO  SCRIPT (Ember Edition)
+   ======================================================== */
+(function () {
+  "use strict";
+
+  /* ---------- LOADER ---------- */
+  const loader = document.getElementById("loader");
+  const loaderBar = document.getElementById("loaderBar");
+  let loaderPct = 0;
+  const loaderInt = setInterval(() => {
+    loaderPct += Math.random() * 18 + 4;
+    if (loaderPct > 100) loaderPct = 100;
+    loaderBar.style.width = loaderPct + "%";
+    if (loaderPct >= 100) {
+      clearInterval(loaderInt);
+      setTimeout(() => loader.classList.add("done"), 400);
     }
+  }, 120);
+  // safety
+  window.addEventListener("load", () => {
+    loaderBar.style.width = "100%";
+    setTimeout(() => loader.classList.add("done"), 600);
   });
 
-  // Scroll down sticky navbar script start
-  function handleScrollEffects() {
-    if (window.scrollY > 20) {
-      $(".navbar").addClass("sticky");
-    } else {
-      $(".navbar").removeClass("sticky");
-    }
-     
-    if (window.scrollY > 500) {
-      $(".scroll-up-btn").addClass("show");
-    } else {
-      $(".scroll-up-btn").removeClass("show");
-    }
-    
-    $(".fadein").each(function () {
-      var bottom_of_element = $(this).offset().top + $(this).outerHeight();
-      var bottom_of_window = $(window).scrollTop() + $(window).height() + 120;
+  /* ---------- CUSTOM CURSOR ---------- */
+  const cur = document.getElementById("cur");
+  const curFollow = document.getElementById("curFollow");
+  let mx = 0, my = 0, fx = 0, fy = 0;
+  document.addEventListener("mousemove", (e) => {
+    mx = e.clientX;
+    my = e.clientY;
+    cur.style.left = mx + "px";
+    cur.style.top = my + "px";
+  });
+  (function moveCurFollow() {
+    fx += (mx - fx) * 0.12;
+    fy += (my - fy) * 0.12;
+    curFollow.style.left = fx + "px";
+    curFollow.style.top = fy + "px";
+    requestAnimationFrame(moveCurFollow);
+  })();
+  document.querySelectorAll("a, button, .btn, .sk-card, .w-card, .mode-btn, .lab-card, .stat-card, input, textarea").forEach((el) => {
+    el.addEventListener("mouseenter", () => { cur.classList.add("active"); curFollow.classList.add("active"); });
+    el.addEventListener("mouseleave", () => { cur.classList.remove("active"); curFollow.classList.remove("active"); });
+  });
+  document.addEventListener("mousedown", () => cur.style.transform = "translate(-50%,-50%) scale(.7)");
+  document.addEventListener("mouseup", () => cur.style.transform = "translate(-50%,-50%) scale(1)");
 
-      if (bottom_of_window > bottom_of_element) {
-        $(this).addClass("showme");
+  /* ---------- PARTICLE CANVAS ---------- */
+  const canvas = document.getElementById("bgCanvas");
+  const ctx = canvas.getContext("2d");
+  let W, H;
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  const PARTICLE_COUNT = 60;
+  const particles = [];
+  function getAccentRGB() {
+    const s = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim();
+    const c = document.createElement("canvas").getContext("2d");
+    c.fillStyle = s;
+    c.fillRect(0, 0, 1, 1);
+    const d = c.getImageData(0, 0, 1, 1).data;
+    return [d[0], d[1], d[2]];
+  }
+  let accentRGB = getAccentRGB();
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    particles.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 1.8 + 0.5,
+    });
+  }
+  function drawParticles() {
+    ctx.clearRect(0, 0, W, H);
+    const [r, g, b] = accentRGB;
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0) p.x = W;
+      if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H;
+      if (p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(" + r + "," + g + "," + b + ",0.15)";
+      ctx.fill();
+      // connections
+      for (let j = i + 1; j < particles.length; j++) {
+        const q = particles[j];
+        const dx = p.x - q.x;
+        const dy = p.y - q.y;
+        const dist = dx * dx + dy * dy;
+        if (dist < 18000) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + "," + (0.04 * (1 - dist / 18000)) + ")";
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
       }
-      if (bottom_of_window < bottom_of_element) {
-        $(this).removeClass("showme");
+    }
+    requestAnimationFrame(drawParticles);
+  }
+  drawParticles();
+
+  /* ---------- SCROLL PROGRESS ---------- */
+  const scrollLine = document.getElementById("scrollLine");
+  function updateScroll() {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+    scrollLine.style.width = pct + "%";
+  }
+
+  /* ---------- TOPBAR SCROLL ---------- */
+  const topbar = document.getElementById("topbar");
+  function updateTopbar() {
+    topbar.classList.toggle("scrolled", window.scrollY > 60);
+  }
+
+  /* ---------- SIDE NAV ACTIVE ---------- */
+  const sections = document.querySelectorAll("section[id]");
+  const navLinks = document.querySelectorAll(".sn");
+  function updateSideNav() {
+    let current = "";
+    sections.forEach((sec) => {
+      const top = sec.offsetTop - 200;
+      if (window.scrollY >= top) current = sec.id;
+    });
+    navLinks.forEach((link) => {
+      link.classList.toggle("active", link.dataset.sec === current);
+    });
+  }
+
+  /* ---------- COUNTER ---------- */
+  let counterDone = false;
+  function animateCounters() {
+    if (counterDone) return;
+    const counters = document.querySelectorAll(".count");
+    if (!counters.length) return;
+    const first = counters[0];
+    const rect = first.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.85) {
+      counterDone = true;
+      counters.forEach((c) => {
+        const to = parseInt(c.dataset.to, 10);
+        let val = 0;
+        const step = Math.max(1, Math.floor(to / 40));
+        const interval = setInterval(() => {
+          val += step;
+          if (val >= to) {
+            val = to;
+            clearInterval(interval);
+          }
+          c.textContent = val;
+        }, 30);
+      });
+    }
+  }
+
+  /* ---------- SKILL BAR FILL ---------- */
+  let skillsDone = false;
+  function animateSkills() {
+    if (skillsDone) return;
+    const fills = document.querySelectorAll(".sk-fill");
+    if (!fills.length) return;
+    const rect = fills[0].getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.9) {
+      skillsDone = true;
+      fills.forEach((f) => {
+        f.style.width = f.dataset.w + "%";
+      });
+    }
+  }
+
+  /* ---------- SCROLL REVEALS ---------- */
+  function initReveals() {
+    document.querySelectorAll(".sec-title, .hero-left, .hero-right, .about-img, .skills-info").forEach((el) => el.classList.add("reveal"));
+    document.querySelectorAll(".about-text, .contact-info").forEach((el) => el.classList.add("reveal-right"));
+    document.querySelectorAll(".contact-form").forEach((el) => el.classList.add("reveal-left"));
+    document.querySelectorAll(".about-cards, .skills-cards, .stats-row, .works-grid, .lab-grid, .tl-track, .w-tags, .w-feats").forEach((el) => el.classList.add("stagger"));
+    document.querySelectorAll(".w-card, .sk-card, .lab-card, .a-card, .stat-card").forEach((el) => el.classList.add("reveal-scale"));
+  }
+  function checkReveals() {
+    document.querySelectorAll(".reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger").forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.88) {
+        el.classList.add("visible");
       }
     });
+  }
+  initReveals();
 
-    // Animate skill bars on scroll
-    $(".skill-box").each(function() {
-      var bottom_of_element = $(this).offset().top + $(this).outerHeight();
-      var bottom_of_window = $(window).scrollTop() + $(window).height();
-      
-      if (bottom_of_window > bottom_of_element && !$(this).hasClass("animated")) {
-        $(this).addClass("animated");
-        var progress = $(this).find(".skill-progress").data("progress");
-        $(this).find(".skill-progress").css("width", progress + "%");
+  /* ---------- UNIFIED SCROLL ---------- */
+  window.addEventListener("scroll", () => {
+    updateScroll();
+    updateTopbar();
+    updateSideNav();
+    animateCounters();
+    animateSkills();
+    checkReveals();
+  }, { passive: true });
+  // initial trigger
+  setTimeout(() => {
+    updateScroll();
+    updateTopbar();
+    updateSideNav();
+    animateCounters();
+    animateSkills();
+    checkReveals();
+  }, 100);
+
+  /* ---------- TYPED EFFECT ---------- */
+  const typedEl = document.getElementById("typed");
+  const words = ["Full-Stack Developer", "AI Enthusiast", "Security Learner", "Problem Solver"];
+  let wordIdx = 0, charIdx = 0, deleting = false;
+  function typeLoop() {
+    const word = words[wordIdx];
+    if (!deleting) {
+      charIdx++;
+      typedEl.textContent = word.substring(0, charIdx);
+      if (charIdx === word.length) {
+        setTimeout(() => { deleting = true; typeLoop(); }, 1800);
+        return;
       }
-    });
-  }
-
-  $(window).scroll(handleScrollEffects);
-  handleScrollEffects();
-
-  // Subtle tilt interaction for hero cards
-  $(".home-content, .terminal-card").on("mousemove", function (e) {
-    const $card = $(this);
-    const rect = this.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const rotateX = ((y / rect.height) - 0.5) * -6;
-    const rotateY = ((x / rect.width) - 0.5) * 6;
-
-    $card.css("transform", `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`);
-  });
-
-  $(".home-content, .terminal-card").on("mouseleave", function () {
-    $(this).css("transform", "perspective(900px) rotateX(0deg) rotateY(0deg)");
-  });
-
-  
-  $(".scroll-up-btn").click(function () {
-    $("html").animate({ scrollTop: 0 });
-  });
-  
-  var typed = new Typed(".typing", {
-    strings: ["Web Developer", "Frontend Engineer", "UI Builder", "IT Student"],
-    typeSpeed: 100,
-    backSpeed: 60,
-    loop: true,
-  });
-
-  var typed = new Typed(".typing2", {
-    strings: ["Web Developer", "Interface Engineer", "Creative Technologist", "Continuous Learner"],
-    typeSpeed: 100,
-    backSpeed: 60,
-    loop: true,
-  });
-
-  // Dynamic footer year
-  $("#currentYear").text(new Date().getFullYear());
-
-  // Creative mode switcher
-  const modeButtons = $(".mode-btn");
-  const modeLabel = $("#modeLabel");
-
-  function applyVisualMode(mode) {
-    $("body").removeClass("mode-neon mode-mono");
-
-    if (mode === "neon") {
-      $("body").addClass("mode-neon");
-      modeLabel.text("Neon Grid");
-    } else if (mode === "mono") {
-      $("body").addClass("mode-mono");
-      modeLabel.text("Mono Elite");
+      setTimeout(typeLoop, 70);
     } else {
-      modeLabel.text("Cosmos");
+      charIdx--;
+      typedEl.textContent = word.substring(0, charIdx);
+      if (charIdx === 0) {
+        deleting = false;
+        wordIdx = (wordIdx + 1) % words.length;
+        setTimeout(typeLoop, 400);
+        return;
+      }
+      setTimeout(typeLoop, 40);
     }
-
-    localStorage.setItem("visualMode", mode);
   }
+  typeLoop();
 
-  const savedVisualMode = localStorage.getItem("visualMode") || "cosmos";
-  applyVisualMode(savedVisualMode);
-  modeButtons.removeClass("active");
-  $(`.mode-btn[data-mode='${savedVisualMode}']`).addClass("active");
+  /* ---------- TERMINAL TYPED ---------- */
+  const termTyped = document.getElementById("termTyped");
+  const termText = "Full-stack developer crafting digital solutions.";
+  let ti = 0;
+  function termType() {
+    if (ti <= termText.length) {
+      termTyped.textContent = termText.substring(0, ti);
+      ti++;
+      setTimeout(termType, 50);
+    }
+  }
+  setTimeout(termType, 1200);
 
-  modeButtons.click(function () {
-    const mode = $(this).data("mode");
-    modeButtons.removeClass("active");
-    $(this).addClass("active");
-    applyVisualMode(mode);
+  /* ---------- SMOOTH SCROLL (nav) ---------- */
+  document.querySelectorAll('a[href^="#"]').forEach((a) => {
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      const id = a.getAttribute("href");
+      const target = document.querySelector(id);
+      if (!target) return;
+      target.scrollIntoView({ behavior: "smooth" });
+      // close mobile menu
+      mobMenu.classList.remove("open");
+      menuBtn.classList.remove("open");
+    });
   });
 
-  // Manifesto generator
-  const manifestoLines = [
-    "I design web experiences like game levels: intuitive flow, surprising moments, and a rewarding finish.",
-    "My code style is cinematic minimalism: less noise, more impact, always responsive.",
-    "I treat every interface as a conversation between logic, emotion, and speed.",
-    "I build products that feel alive: elegant systems, fast performance, and memorable interaction.",
-    "I turn complex requirements into frictionless journeys users can trust instantly."
+  /* ---------- MOBILE MENU ---------- */
+  const menuBtn = document.getElementById("menuBtn");
+  const mobMenu = document.getElementById("mobMenu");
+  menuBtn.addEventListener("click", () => {
+    menuBtn.classList.toggle("open");
+    mobMenu.classList.toggle("open");
+  });
+
+  /* ---------- MODE SWITCHER ---------- */
+  const modeButtons = document.querySelectorAll(".mode-btn");
+  const modeLabel = document.getElementById("modeLabel");
+  const savedMode = localStorage.getItem("erl-mode") || "ember";
+
+  function applyMode(mode) {
+    document.body.classList.remove("mode-ice", "mode-void");
+    if (mode !== "ember") document.body.classList.add("mode-" + mode);
+    modeButtons.forEach((b) => b.classList.toggle("active", b.dataset.mode === mode));
+    if (modeLabel) modeLabel.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
+    localStorage.setItem("erl-mode", mode);
+    // update particles color
+    accentRGB = getAccentRGB();
+  }
+  applyMode(savedMode);
+
+  modeButtons.forEach((btn) => {
+    btn.addEventListener("click", () => applyMode(btn.dataset.mode));
+  });
+
+  /* ---------- MANIFESTO GENERATOR ---------- */
+  const manifestos = [
+    "I build interfaces that feel like stories - high-clarity UX wrapped in cinematic micro-interactions.",
+    "Code is my medium, pixels are my canvas. Every interaction should spark curiosity.",
+    "Security-first mindset meets design-forward thinking. No compromises.",
+    "I obsess over the details other devs skip - that is where exceptional products are born.",
+    "Clean architecture, zero bloat, maximum impact. Engineering with intention.",
+    "From database schemas to pixel-perfect UIs - I think in systems, I build in layers.",
+    "The best code I write is the code nobody notices, because it just works seamlessly.",
+    "I do not just build features - I engineer experiences that users remember.",
   ];
-
-  $("#manifestoBtn").click(function () {
-    const randomLine = manifestoLines[Math.floor(Math.random() * manifestoLines.length)];
-    const manifestoText = $("#manifestoText");
-    manifestoText.fadeOut(120, function () {
-      manifestoText.text(randomLine).fadeIn(220);
+  const manifestoBtn = document.getElementById("manifestoBtn");
+  const manifestoText = document.getElementById("manifestoText");
+  if (manifestoBtn) {
+    manifestoBtn.addEventListener("click", () => {
+      const idx = Math.floor(Math.random() * manifestos.length);
+      manifestoText.style.opacity = 0;
+      setTimeout(() => {
+        manifestoText.textContent = manifestos[idx];
+        manifestoText.style.opacity = 1;
+      }, 300);
     });
-  });
+  }
 
-  // Signal pulse behavior
-  $("#signalBtn").click(function () {
-    const wave = $("#signalWave");
-    wave.toggleClass("boosted");
-    const button = $(this);
-    button.text(wave.hasClass("boosted") ? "Stabilize Signal" : "Shift Creative Mode");
-  });
 
-  
-  $(".menu-toggle").click(function () {
-    $(".navbar .menu").toggleClass("active");
-    $(".menu-toggle i").toggleClass("active");
-  });
+  /* ---------- YEAR ---------- */
+  const yrEl = document.getElementById("yr");
+  if (yrEl) yrEl.textContent = new Date().getFullYear();
 
-  // Close mobile menu when clicking on a menu item
-  $(".navbar .menu li a").click(function() {
-    $(".navbar .menu").removeClass("active");
-    $(".menu-toggle i").removeClass("active");
-  });
-  
-  $(".carousel").owlCarousel({
-    margin: 20,
-    loop: true,
-    autoplayTimeout: 2500,
-    autoplayHoverPause: true,
-    responsive: {
-      0: {
-        items: 1,
-        nav: false,
-      },
-      600: {
-        items: 2,
-        nav: false,
-      },
-      1000: {
-        items: 3,
-        nav: false,
-      },
-    },
-  });
-
-  // Contact Form Submission with EmailJS
-  $("#contactForm").submit(function(e) {
-    e.preventDefault();
-    
-    const submitBtn = $("#submitBtn");
-    const btnText = submitBtn.find(".btn-text");
-    const formMessage = $("#formMessage");
-    
-    // Get form values
-    const userName = $("#userName").val();
-    const userEmail = $("#userEmail").val();
-    const subject = $("#subject").val();
-    const message = $("#message").val();
-    
-    // Basic validation
-    if (!userName || !userEmail || !subject || !message) {
-      formMessage.removeClass("success").addClass("error");
-      formMessage.text("Please fill in all fields.");
-      return;
-    }
-    
-    // Disable button and show loading state
-    submitBtn.prop("disabled", true);
-    btnText.text("Sending...");
-    formMessage.hide().removeClass("success error");
-    
-    // Simulate form submission (replace with actual EmailJS implementation)
-    setTimeout(function() {
-      // Success
-      formMessage.removeClass("error").addClass("success");
-      formMessage.text("Message sent successfully! I'll get back to you soon.");
-      
-      // Reset form
-      $("#contactForm")[0].reset();
-      
-      // Re-enable button
-      submitBtn.prop("disabled", false);
-      btnText.text("Send Message");
-      
-      // Hide message after 5 seconds
-      setTimeout(function() {
-        formMessage.fadeOut();
-      }, 5000);
-    }, 2000);
-    
-    /* 
-    // Uncomment and configure this for actual EmailJS integration:
-    emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
-      from_name: userName,
-      from_email: userEmail,
-      subject: subject,
-      message: message
-    }).then(function(response) {
-      formMessage.removeClass("error").addClass("success");
-      formMessage.text("Message sent successfully! I'll get back to you soon.");
-      $("#contactForm")[0].reset();
-      submitBtn.prop("disabled", false);
-      btnText.text("Send Message");
-      setTimeout(function() {
-        formMessage.fadeOut();
-      }, 5000);
-    }, function(error) {
-      formMessage.removeClass("success").addClass("error");
-      formMessage.text("Failed to send message. Please try again.");
-      submitBtn.prop("disabled", false);
-      btnText.text("Send Message");
-    });
-    */
-  });
-  
-});
+})();
