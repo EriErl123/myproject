@@ -47,6 +47,7 @@
           <li><a href="#about">Profile</a></li>
           <li><a href="#skills">Capabilities</a></li>
           <li><a href="#projects">Works</a></li>
+          <li><a href="#lab">Lab</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
         <div class="menu-toggle">
@@ -92,7 +93,68 @@
               <div><strong>3</strong><span>Featured Builds</span></div>
               <div><strong>100%</strong><span>Learning Drive</span></div>
             </div>
+
+            <div class="signal-box">
+              <div class="signal-top">
+                <span class="signal-dot"></span>
+                <p>Live creative signal</p>
+              </div>
+              <div class="signal-wave" id="signalWave">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <button type="button" class="signal-btn" id="signalBtn">Shift Creative Mode</button>
+            </div>
           </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="lab" id="lab">
+      <div class="max-width">
+        <h2 class="title fadein">Creative Lab</h2>
+        <div class="lab-grid">
+          <article class="lab-panel fadein">
+            <h3>Reality Switch</h3>
+            <p>
+              Not a static portfolio. Pick a visual universe and watch the whole page morph in real-time.
+            </p>
+            <div class="mode-switches">
+              <button class="mode-btn active" data-mode="cosmos">Cosmos</button>
+              <button class="mode-btn" data-mode="neon">Neon Grid</button>
+              <button class="mode-btn" data-mode="mono">Mono Elite</button>
+            </div>
+            <p class="mode-status">Current mode: <strong id="modeLabel">Cosmos</strong></p>
+          </article>
+
+          <article class="lab-panel fadein">
+            <h3>Random Build Manifesto</h3>
+            <p id="manifestoText">
+              I build interfaces that feel like stories: high-clarity UX wrapped in cinematic micro-interactions.
+            </p>
+            <button type="button" class="manifesto-btn" id="manifestoBtn">Generate New Manifesto</button>
+          </article>
+
+          <article class="lab-panel wide fadein">
+            <h3>Timeline of Momentum</h3>
+            <div class="timeline-track">
+              <div class="timeline-node">
+                <span>2023</span>
+                <p>Started web foundations and committed to frontend craft.</p>
+              </div>
+              <div class="timeline-node">
+                <span>2024</span>
+                <p>Built practical academic systems and collaborative projects.</p>
+              </div>
+              <div class="timeline-node">
+                <span>2025</span>
+                <p>Focused on cleaner architecture and product-level UI polish.</p>
+              </div>
+              <div class="timeline-node">
+                <span>2026</span>
+                <p>Now seeking impact-driven teams and real-world product challenges.</p>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
     </section>

@@ -105,6 +105,63 @@ $(document).ready(function () {
   // Dynamic footer year
   $("#currentYear").text(new Date().getFullYear());
 
+  // Creative mode switcher
+  const modeButtons = $(".mode-btn");
+  const modeLabel = $("#modeLabel");
+
+  function applyVisualMode(mode) {
+    $("body").removeClass("mode-neon mode-mono");
+
+    if (mode === "neon") {
+      $("body").addClass("mode-neon");
+      modeLabel.text("Neon Grid");
+    } else if (mode === "mono") {
+      $("body").addClass("mode-mono");
+      modeLabel.text("Mono Elite");
+    } else {
+      modeLabel.text("Cosmos");
+    }
+
+    localStorage.setItem("visualMode", mode);
+  }
+
+  const savedVisualMode = localStorage.getItem("visualMode") || "cosmos";
+  applyVisualMode(savedVisualMode);
+  modeButtons.removeClass("active");
+  $(`.mode-btn[data-mode='${savedVisualMode}']`).addClass("active");
+
+  modeButtons.click(function () {
+    const mode = $(this).data("mode");
+    modeButtons.removeClass("active");
+    $(this).addClass("active");
+    applyVisualMode(mode);
+  });
+
+  // Manifesto generator
+  const manifestoLines = [
+    "I design web experiences like game levels: intuitive flow, surprising moments, and a rewarding finish.",
+    "My code style is cinematic minimalism: less noise, more impact, always responsive.",
+    "I treat every interface as a conversation between logic, emotion, and speed.",
+    "I build products that feel alive: elegant systems, fast performance, and memorable interaction.",
+    "I turn complex requirements into frictionless journeys users can trust instantly."
+  ];
+
+  $("#manifestoBtn").click(function () {
+    const randomLine = manifestoLines[Math.floor(Math.random() * manifestoLines.length)];
+    const manifestoText = $("#manifestoText");
+    manifestoText.fadeOut(120, function () {
+      manifestoText.text(randomLine).fadeIn(220);
+    });
+  });
+
+  // Signal pulse behavior
+  $("#signalBtn").click(function () {
+    const wave = $("#signalWave");
+    wave.toggleClass("boosted");
+    const button = $(this);
+    button.text(wave.hasClass("boosted") ? "Stabilize Signal" : "Shift Creative Mode");
+  });
+
   
   $(".menu-toggle").click(function () {
     $(".navbar .menu").toggleClass("active");
