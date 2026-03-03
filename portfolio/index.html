@@ -46,7 +46,7 @@
     <a href="#about" class="sn" data-sec="about"><i class="fa-solid fa-user"></i><span>About</span></a>
     <a href="#skills" class="sn" data-sec="skills"><i class="fa-solid fa-code"></i><span>Skills</span></a>
     <a href="#works" class="sn" data-sec="works"><i class="fa-solid fa-layer-group"></i><span>Works</span></a>
-    <a href="#lab" class="sn" data-sec="lab"><i class="fa-solid fa-flask"></i><span>Lab</span></a>
+    <a href="#expertise" class="sn" data-sec="expertise"><i class="fa-solid fa-lightbulb"></i><span>Expertise</span></a>
     <a href="#contact" class="sn" data-sec="contact"><i class="fa-solid fa-envelope"></i><span>Contact</span></a>
   </nav>
 
@@ -62,7 +62,7 @@
     <a href="#about">About</a>
     <a href="#skills">Skills</a>
     <a href="#works">Works</a>
-    <a href="#lab">Lab</a>
+    <a href="#expertise">Expertise</a>
     <a href="#contact">Contact</a>
   </div>
 
@@ -99,7 +99,7 @@
           </div>
           <div class="stats-row">
             <div class="stat-card"><strong class="count" data-to="4">0</strong><span>Technologies</span></div>
-            <div class="stat-card"><strong class="count" data-to="3">0</strong><span>Projects</span></div>
+            <div class="stat-card"><strong class="count" data-to="4">0</strong><span>Projects</span></div>
             <div class="stat-card"><strong class="count" data-to="100">0</strong><span>% Drive</span></div>
           </div>
         </div>
@@ -121,6 +121,7 @@
           <div class="about-socials">
             <a href="https://www.facebook.com/erljayramas" target="_blank" rel="noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
             <a href="https://github.com/EriErl123" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/erl-jay-ramas-1114b4332/" target="_blank" rel="noreferrer"><i class="fa-brands fa-linkedin-in"></i></a>
           </div>
         </div>
         <div class="about-text">
@@ -212,16 +213,15 @@
   <section class="works" id="works">
     <div class="container">
       <h2 class="sec-title" data-num="03">Works</h2>
-      <div class="works-grid">
+      <div class="works-grid" id="worksGrid">
 
         <!-- PROJECT 1 -->
         <article class="w-card">
-          <div class="w-visual v-freelancer">
+          <div class="w-thumb v-freelancer">
             <div class="w-grid-bg"></div>
             <div class="w-icons">
               <i class="fa-solid fa-briefcase"></i>
               <i class="fa-solid fa-users"></i>
-              <i class="fa-solid fa-list-check"></i>
             </div>
             <span class="w-num">01</span>
           </div>
@@ -234,12 +234,6 @@
             <div class="w-tags">
               <span>React</span><span>FastAPI</span><span>PostgreSQL</span><span>JWT</span>
             </div>
-            <ul class="w-feats">
-              <li>Role-based access (admin / client / freelancer)</li>
-              <li>Proposal submit + approve/reject workflow</li>
-              <li>Dashboard metrics by role</li>
-              <li>Admin user management (suspend / activate)</li>
-            </ul>
             <p class="w-desc">End-to-end platform with JWT auth, themed responsive dashboard, and complete project lifecycle management.</p>
             <a href="https://github.com/EriErl123/myproject/tree/main/Freelancer%20Project%20Management%20Platform" target="_blank" rel="noreferrer" class="btn btn-sm">View Project <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
           </div>
@@ -247,12 +241,11 @@
 
         <!-- PROJECT 2 -->
         <article class="w-card">
-          <div class="w-visual v-resume">
+          <div class="w-thumb v-resume">
             <div class="w-grid-bg"></div>
             <div class="w-icons">
               <i class="fa-solid fa-file-lines"></i>
               <i class="fa-solid fa-brain"></i>
-              <i class="fa-solid fa-chart-line"></i>
             </div>
             <span class="w-num">02</span>
           </div>
@@ -265,12 +258,6 @@
             <div class="w-tags">
               <span>Python</span><span>NLP</span><span>Semantic AI</span><span>PDF Parser</span>
             </div>
-            <ul class="w-feats">
-              <li>Weighted ATS-style score breakdown</li>
-              <li>AI mode scoring (Balanced / Strict / Creative)</li>
-              <li>Semantic similarity + section coverage</li>
-              <li>ATS risk flags and bullet rewrite suggestions</li>
-            </ul>
             <p class="w-desc">Advanced resume analysis with NLP feedback, keyword matching against job descriptions, and priority gap suggestions.</p>
             <a href="https://github.com/EriErl123/myproject/tree/main/Resume%20Analyzer" target="_blank" rel="noreferrer" class="btn btn-sm">View Project <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
           </div>
@@ -278,12 +265,11 @@
 
         <!-- PROJECT 3 -->
         <article class="w-card">
-          <div class="w-visual v-scanner">
+          <div class="w-thumb v-scanner">
             <div class="w-grid-bg"></div>
             <div class="w-icons">
               <i class="fa-solid fa-shield-halved"></i>
               <i class="fa-solid fa-network-wired"></i>
-              <i class="fa-solid fa-triangle-exclamation"></i>
             </div>
             <span class="w-num">03</span>
           </div>
@@ -296,49 +282,103 @@
             <div class="w-tags">
               <span>Flask</span><span>TCP Scanning</span><span>SQLite</span><span>TLS</span>
             </div>
-            <ul class="w-feats">
-              <li>Multi-threaded TCP port scanning</li>
-              <li>Service detection and banner grabbing</li>
-              <li>HTTP security header analysis</li>
-              <li>HTML and PDF report export</li>
-            </ul>
             <p class="w-desc">Comprehensive vulnerability scanner with risk scoring, TLS checks, and persistent SQLite scan history.</p>
             <a href="https://github.com/EriErl123/myproject/tree/main/Web-Based%20Vulnerability%20Scanner" target="_blank" rel="noreferrer" class="btn btn-sm">View Project <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
           </div>
         </article>
 
+        <!-- PROJECT 4 -->
+        <article class="w-card">
+          <div class="w-thumb v-storepos">
+            <div class="w-grid-bg"></div>
+            <div class="w-icons">
+              <i class="fa-solid fa-cash-register"></i>
+              <i class="fa-solid fa-cart-shopping"></i>
+            </div>
+            <span class="w-num">04</span>
+          </div>
+          <div class="w-body">
+            <div class="w-head">
+              <h3>StorePOS - Point of Sale</h3>
+              <a href="https://github.com/EriErl123/myproject/tree/main/storepos" target="_blank" rel="noreferrer" class="w-link" title="View on GitHub"><i class="fa-brands fa-github"></i></a>
+            </div>
+            <p class="w-sub">Compact POS System</p>
+            <div class="w-tags">
+              <span>React</span><span>TypeScript</span><span>Node.js</span><span>SQLite</span><span>Tailwind</span>
+            </div>
+            <p class="w-desc">Fast, intuitive POS system for small to medium businesses with offline capability, JWT auth, and Zustand state management.</p>
+            <a href="https://github.com/EriErl123/myproject/tree/main/storepos" target="_blank" rel="noreferrer" class="btn btn-sm">View Project <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </div>
+        </article>
+
+      </div>
+      <!-- PAGINATION -->
+      <div class="works-pagination" id="worksPagination">
+        <button class="works-pg-btn" id="worksPrev" aria-label="Previous page"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="works-pg-dots" id="worksDots"></div>
+        <button class="works-pg-btn" id="worksNext" aria-label="Next page"><i class="fa-solid fa-chevron-right"></i></button>
       </div>
     </div>
   </section>
 
-  <!-- LAB -->
-  <section class="lab" id="lab">
+  <!-- EXPERTISE -->
+  <section class="expertise" id="expertise">
     <div class="container">
-      <h2 class="sec-title" data-num="04">Lab</h2>
-      <div class="lab-grid">
-        <div class="lab-card">
-          <h3><i class="fa-solid fa-palette"></i> Reality Switch</h3>
-          <p>Pick a visual universe and watch the entire page transform.</p>
-          <div class="mode-row">
-            <button class="mode-btn active" data-mode="ember">Ember</button>
-            <button class="mode-btn" data-mode="ice">Arctic</button>
-            <button class="mode-btn" data-mode="void">Void</button>
-          </div>
-          <p class="mode-label">Active: <strong id="modeLabel">Ember</strong></p>
+      <h2 class="sec-title" data-num="04">Expertise</h2>
+      <h3 class="expertise-subtitle">What I Work With</h3>
+      <div class="expertise-grid">
+        <div class="expertise-card">
+          <i class="fa-solid fa-server"></i>
+          <h4>Backend</h4>
+          <ul>
+            <li>FastAPI</li>
+            <li>Flask</li>
+            <li>PHP</li>
+            <li>PostgreSQL</li>
+            <li>SQLite</li>
+          </ul>
         </div>
-        <div class="lab-card">
-          <h3><i class="fa-solid fa-quote-left"></i> Build Manifesto</h3>
-          <p id="manifestoText">I build interfaces that feel like stories - high-clarity UX wrapped in cinematic micro-interactions.</p>
-          <button class="btn btn-sm" id="manifestoBtn"><i class="fa-solid fa-shuffle"></i> Generate</button>
+        <div class="expertise-card">
+          <i class="fa-solid fa-code"></i>
+          <h4>Languages</h4>
+          <ul>
+            <li>JavaScript</li>
+            <li>Python</li>
+            <li>PHP</li>
+            <li>HTML5</li>
+            <li>CSS3</li>
+          </ul>
         </div>
-        <div class="lab-card lab-wide">
-          <h3><i class="fa-solid fa-timeline"></i> Timeline</h3>
-          <div class="tl-track">
-            <div class="tl-node"><span>2023</span><p>Web foundations - committed to frontend craft.</p></div>
-            <div class="tl-node"><span>2024</span><p>Academic systems and collaborative projects.</p></div>
-            <div class="tl-node"><span>2025</span><p>Cleaner architecture, product-level polish.</p></div>
-            <div class="tl-node"><span>2026</span><p>Full-stack, AI tools, security - seeking real impact.</p></div>
-          </div>
+        <div class="expertise-card">
+          <i class="fa-solid fa-toolbox"></i>
+          <h4>Tools & Platforms</h4>
+          <ul>
+            <li>Git & GitHub</li>
+            <li>VS Code</li>
+            <li>React</li>
+            <li>JWT Auth</li>
+            <li>REST APIs</li>
+          </ul>
+        </div>
+        <div class="expertise-card">
+          <i class="fa-solid fa-palette"></i>
+          <h4>Design</h4>
+          <ul>
+            <li>UI/UX</li>
+            <li>Responsive Layouts</li>
+            <li>Micro-interactions</li>
+            <li>Visual Systems</li>
+            <li>Figma</li>
+          </ul>
+        </div>
+      </div>
+      <div class="expertise-timeline">
+        <h3><i class="fa-solid fa-timeline"></i> Timeline</h3>
+        <div class="tl-track">
+          <div class="tl-node"><span>2023</span><p>Web foundations - committed to frontend craft.</p></div>
+          <div class="tl-node"><span>2024</span><p>Academic systems and collaborative projects.</p></div>
+          <div class="tl-node"><span>2025</span><p>Cleaner architecture, product-level polish.</p></div>
+          <div class="tl-node"><span>2026</span><p>Full-stack, AI tools, security - seeking real impact.</p></div>
         </div>
       </div>
     </div>
@@ -360,6 +400,7 @@
           <div class="c-socials">
             <a href="https://www.facebook.com/erljayramas" target="_blank" rel="noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
             <a href="https://github.com/EriErl123" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/erl-jay-ramas-1114b4332/" target="_blank" rel="noreferrer"><i class="fa-brands fa-linkedin-in"></i></a>
           </div>
         </div>
       </div>

@@ -40,7 +40,7 @@
     curFollow.style.top = fy + "px";
     requestAnimationFrame(moveCurFollow);
   })();
-  document.querySelectorAll("a, button, .btn, .sk-card, .w-card, .mode-btn, .lab-card, .stat-card, input, textarea").forEach((el) => {
+  document.querySelectorAll("a, button, .btn, .sk-card, .w-card, .expertise-card, .stat-card, input, textarea").forEach((el) => {
     el.addEventListener("mouseenter", () => { cur.classList.add("active"); curFollow.classList.add("active"); });
     el.addEventListener("mouseleave", () => { cur.classList.remove("active"); curFollow.classList.remove("active"); });
   });
@@ -187,8 +187,8 @@
     document.querySelectorAll(".sec-title, .hero-left, .hero-right, .about-img, .skills-info").forEach((el) => el.classList.add("reveal"));
     document.querySelectorAll(".about-text, .contact-info").forEach((el) => el.classList.add("reveal-right"));
     document.querySelectorAll(".contact-form").forEach((el) => el.classList.add("reveal-left"));
-    document.querySelectorAll(".about-cards, .skills-cards, .stats-row, .works-grid, .lab-grid, .tl-track, .w-tags, .w-feats").forEach((el) => el.classList.add("stagger"));
-    document.querySelectorAll(".w-card, .sk-card, .lab-card, .a-card, .stat-card").forEach((el) => el.classList.add("reveal-scale"));
+    document.querySelectorAll(".about-cards, .skills-cards, .stats-row, .works-grid, .expertise-grid, .tl-track, .w-tags, .w-feats").forEach((el) => el.classList.add("stagger"));
+    document.querySelectorAll(".w-card, .sk-card, .expertise-card, .a-card, .stat-card").forEach((el) => el.classList.add("reveal-scale"));
   }
   function checkReveals() {
     document.querySelectorAll(".reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger").forEach((el) => {
@@ -282,50 +282,50 @@
     mobMenu.classList.toggle("open");
   });
 
-  /* ---------- MODE SWITCHER ---------- */
-  const modeButtons = document.querySelectorAll(".mode-btn");
-  const modeLabel = document.getElementById("modeLabel");
-  const savedMode = localStorage.getItem("erl-mode") || "ember";
+  /* ---------- WORKS PAGINATION ---------- */
+  const WORKS_PER_PAGE = 3;
+  const worksGrid = document.getElementById("worksGrid");
+  const worksPrev = document.getElementById("worksPrev");
+  const worksNext = document.getElementById("worksNext");
+  const worksDots = document.getElementById("worksDots");
+  if (worksGrid && worksPrev && worksNext && worksDots) {
+    const allCards = Array.from(worksGrid.querySelectorAll(".w-card"));
+    const totalPages = Math.ceil(allCards.length / WORKS_PER_PAGE);
+    let currentPage = 0;
 
-  function applyMode(mode) {
-    document.body.classList.remove("mode-ice", "mode-void");
-    if (mode !== "ember") document.body.classList.add("mode-" + mode);
-    modeButtons.forEach((b) => b.classList.toggle("active", b.dataset.mode === mode));
-    if (modeLabel) modeLabel.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
-    localStorage.setItem("erl-mode", mode);
-    // update particles color
-    accentRGB = getAccentRGB();
+    // build dots
+    for (let i = 0; i < totalPages; i++) {
+      const dot = document.createElement("span");
+      dot.classList.add("works-pg-dot");
+      if (i === 0) dot.classList.add("active");
+      dot.addEventListener("click", () => goToPage(i));
+      worksDots.appendChild(dot);
+    }
+
+    function goToPage(page) {
+      currentPage = page;
+      allCards.forEach((card, idx) => {
+        const start = currentPage * WORKS_PER_PAGE;
+        const end = start + WORKS_PER_PAGE;
+        if (idx >= start && idx < end) {
+          card.classList.remove("w-hidden");
+        } else {
+          card.classList.add("w-hidden");
+        }
+      });
+      // update dots
+      worksDots.querySelectorAll(".works-pg-dot").forEach((d, i) => {
+        d.classList.toggle("active", i === currentPage);
+      });
+      // update buttons
+      worksPrev.disabled = currentPage === 0;
+      worksNext.disabled = currentPage === totalPages - 1;
+    }
+
+    worksPrev.addEventListener("click", () => { if (currentPage > 0) goToPage(currentPage - 1); });
+    worksNext.addEventListener("click", () => { if (currentPage < totalPages - 1) goToPage(currentPage + 1); });
+    goToPage(0);
   }
-  applyMode(savedMode);
-
-  modeButtons.forEach((btn) => {
-    btn.addEventListener("click", () => applyMode(btn.dataset.mode));
-  });
-
-  /* ---------- MANIFESTO GENERATOR ---------- */
-  const manifestos = [
-    "I build interfaces that feel like stories - high-clarity UX wrapped in cinematic micro-interactions.",
-    "Code is my medium, pixels are my canvas. Every interaction should spark curiosity.",
-    "Security-first mindset meets design-forward thinking. No compromises.",
-    "I obsess over the details other devs skip - that is where exceptional products are born.",
-    "Clean architecture, zero bloat, maximum impact. Engineering with intention.",
-    "From database schemas to pixel-perfect UIs - I think in systems, I build in layers.",
-    "The best code I write is the code nobody notices, because it just works seamlessly.",
-    "I do not just build features - I engineer experiences that users remember.",
-  ];
-  const manifestoBtn = document.getElementById("manifestoBtn");
-  const manifestoText = document.getElementById("manifestoText");
-  if (manifestoBtn) {
-    manifestoBtn.addEventListener("click", () => {
-      const idx = Math.floor(Math.random() * manifestos.length);
-      manifestoText.style.opacity = 0;
-      setTimeout(() => {
-        manifestoText.textContent = manifestos[idx];
-        manifestoText.style.opacity = 1;
-      }, 300);
-    });
-  }
-
 
   /* ---------- YEAR ---------- */
   const yrEl = document.getElementById("yr");
