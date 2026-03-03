@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Resume Analyzer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container app-shell">
+    <header class="hero card">
+      <div class="hero-main">
+        <p class="eyebrow">AI PRO ANALYZER</p>
+        <h1>AI Resume Analyzer</h1>
+        <p>Advanced resume intelligence with semantic matching, ATS risk detection, and role-tailored guidance.</p>
+      </div>
+      <div class="hero-badges">
+        <span class="badge-pill">Semantic Fit</span>
+        <span class="badge-pill">ATS Risk Guard</span>
+        <span class="badge-pill">Role-Tailored Coaching</span>
+      </div>
+    </header>
+
+    <section class="inputs card">
+      <h2 class="section-title">Analyzer Workspace</h2>
+
+      <div class="grid-three controls-grid">
+        <div class="input-group">
+          <label for="analysisMode">Analysis Mode</label>
+          <select id="analysisMode">
+            <option value="balanced">Balanced</option>
+            <option value="strict">Strict ATS</option>
+            <option value="creative">Creative Coach</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label for="targetRole">Target Role</label>
+          <input id="targetRole" type="text" placeholder="e.g. Data Analyst" />
+        </div>
+        <div class="input-group">
+          <label for="experienceLevel">Experience Level</label>
+          <select id="experienceLevel">
+            <option value="entry">Entry</option>
+            <option value="mid" selected>Mid</option>
+            <option value="senior">Senior</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="resumeFile">Upload Resume (.txt or .pdf)</label>
+        <input id="resumeFile" type="file" accept=".txt,.pdf" />
+        <p id="uploadStatus" class="status" aria-live="polite"></p>
+      </div>
+
+      <div class="editor-grid">
+        <div class="input-group editor-panel">
+          <label for="resumeText">Resume Text</label>
+          <textarea id="resumeText" placeholder="Paste your resume text here..."></textarea>
+        </div>
+
+        <div class="input-group editor-panel">
+          <label for="jobText">Job Description</label>
+          <textarea id="jobText" placeholder="Paste the job description here..."></textarea>
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <button id="analyzeBtn" class="analyze-btn">Analyze Resume</button>
+        <button id="sampleBtn" class="ghost-btn" type="button">Load Sample</button>
+        <button id="clearBtn" class="ghost-btn" type="button">Clear</button>
+      </div>
+      <p id="errorMsg" class="error" aria-live="polite"></p>
+    </section>
+
+    <section id="results" class="results hidden" aria-live="polite">
+      <div class="card score-card">
+        <h2>AI Resume Score</h2>
+        <div class="score-wrap">
+          <div id="scoreRing" class="score-ring">
+            <span id="scoreValue">0%</span>
+          </div>
+          <div>
+            <p id="scoreSummary"></p>
+            <ul id="scoreBreakdown" class="score-breakdown"></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-four">
+        <div class="card metric-card metric-highlight">
+          <h3>Action Verbs</h3>
+          <p id="metricActions" class="metric-value">0</p>
+        </div>
+        <div class="card metric-card metric-highlight">
+          <h3>Quantified Results</h3>
+          <p id="metricNumbers" class="metric-value">0</p>
+        </div>
+        <div class="card metric-card metric-highlight">
+          <h3>Readability</h3>
+          <p id="metricReadability" class="metric-value">0</p>
+        </div>
+        <div class="card metric-card metric-highlight">
+          <h3>Semantic Fit</h3>
+          <p id="metricSemantic" class="metric-value">0</p>
+        </div>
+      </div>
+
+      <div class="grid-two">
+        <div class="card">
+          <h3>Matched Keywords</h3>
+          <ul id="matchedKeywords" class="chip-list"></ul>
+        </div>
+
+        <div class="card">
+          <h3>Missing Keywords</h3>
+          <ul id="missingKeywords" class="chip-list"></ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Priority Gaps</h3>
+        <ul id="priorityKeywords" class="feedback-list"></ul>
+      </div>
+
+      <div class="grid-two">
+        <div class="card">
+          <h3>AI Coach Feedback</h3>
+          <ul id="nlpFeedback" class="feedback-list"></ul>
+        </div>
+        <div class="card">
+          <h3>AI Insights</h3>
+          <ul id="aiInsights" class="feedback-list"></ul>
+        </div>
+      </div>
+
+      <div class="grid-two">
+        <div class="card">
+          <h3>Tailored Bullet Suggestions</h3>
+          <ul id="rewriteSuggestions" class="feedback-list"></ul>
+        </div>
+        <div class="card">
+          <h3>ATS Risk Flags</h3>
+          <ul id="atsRisks" class="feedback-list"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.5.136/pdf.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
