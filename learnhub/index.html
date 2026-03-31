@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f59e0b" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="LearnHub" />
+  <meta name="description" content="LearnHub — Offline learning platform for students. Works without internet." />
+  <title>LearnHub — Offline Learning</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- App Shell -->
+  <div id="app">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <span class="logo-icon">📚</span>
+          <span class="logo-text">LearnHub</span>
+        </div>
+        <button class="sidebar-close" id="sidebarClose" aria-label="Close sidebar">✕</button>
+      </div>
+
+      <div class="student-card" id="studentCard">
+        <div class="student-avatar" id="studentAvatar">?</div>
+        <div class="student-info">
+          <div class="student-name" id="studentName">Guest</div>
+          <div class="student-xp" id="studentXp">0 XP</div>
+        </div>
+      </div>
+
+      <ul class="nav-list">
+        <li><a href="#" class="nav-link active" data-view="dashboard" id="nav-dashboard">
+          <span class="nav-icon">🏠</span> Dashboard
+        </a></li>
+        <li><a href="#" class="nav-link" data-view="courses" id="nav-courses">
+          <span class="nav-icon">📖</span> My Courses
+        </a></li>
+        <li><a href="#" class="nav-link" data-view="progress" id="nav-progress">
+          <span class="nav-icon">📊</span> Progress
+        </a></li>
+        <li><a href="#" class="nav-link" data-view="badges" id="nav-badges">
+          <span class="nav-icon">🏆</span> Badges
+        </a></li>
+        <li><a href="#" class="nav-link" data-view="admin" id="nav-admin">
+          <span class="nav-icon">⚙️</span> Admin
+        </a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="offline-badge" id="offlineBadge">
+          <span class="offline-dot"></span> Offline Ready
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="topbar-title" id="topbarTitle">Dashboard</div>
+        <div class="topbar-actions">
+          <div class="search-box" id="searchBox" style="display:none;">
+            <input type="text" id="searchInput" placeholder="Search courses..." aria-label="Search courses" />
+            <span class="search-icon">🔍</span>
+          </div>
+          <button class="profile-btn" id="profileBtn" title="Edit profile">👤</button>
+        </div>
+      </header>
+
+      <!-- View Container -->
+      <main class="content-area" id="contentArea">
+        <!-- Views rendered here by app.js -->
+        <div class="view-loading">
+          <div class="spinner"></div>
+          <p>Loading LearnHub…</p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Overlay for sidebar on mobile -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <h3 id="modalTitle">Modal</h3>
+        <button class="modal-close" id="modalClose">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-footer" id="modalFooter"></div>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Navigation -->
+  <nav class="bottom-nav" id="bottomNav">
+    <div class="bottom-nav-inner">
+      <button class="bottom-nav-item active" id="bnav-dashboard" data-view="dashboard" onclick="App.navigate('dashboard')">
+        <span class="bottom-nav-icon">🏠</span>
+        <span class="bottom-nav-label">Home</span>
+      </button>
+      <button class="bottom-nav-item" id="bnav-courses" data-view="courses" onclick="App.navigate('courses')">
+        <span class="bottom-nav-icon">📖</span>
+        <span class="bottom-nav-label">Courses</span>
+      </button>
+      <button class="bottom-nav-item" id="bnav-progress" data-view="progress" onclick="App.navigate('progress')">
+        <span class="bottom-nav-icon">📊</span>
+        <span class="bottom-nav-label">Progress</span>
+      </button>
+      <button class="bottom-nav-item" id="bnav-badges" data-view="badges" onclick="App.navigate('badges')">
+        <span class="bottom-nav-icon">🏆</span>
+        <span class="bottom-nav-label">Badges</span>
+      </button>
+      <button class="bottom-nav-item" id="bnav-admin" data-view="admin" onclick="App.navigate('admin')">
+        <span class="bottom-nav-icon">⚙️</span>
+        <span class="bottom-nav-label">Admin</span>
+      </button>
+    </div>
+  </nav>
+
+  <script src="js/storage.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
