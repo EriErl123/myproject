@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parking Slot Finder</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+      html,body,#map { height: 100%; margin:0; padding:0 }
+      #controls { position: absolute; top: 8px; left: 8px; z-index:1000; background: white; padding:8px; border-radius:4px }
+    </style>
+  </head>
+  <body>
+    <div id="controls">Click a marker to reserve</div>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+      const apiBase = '/api'
+      const map = L.map('map').setView([37.7750, -122.4194], 16)
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19}).addTo(map)
+
+      const slotMarkers = new Map()
+
+      function colorForStatus(s){ return s==='free' ? 'green' : 'red' }
+
+      function addOrUpdateSlots(slots){
+        slots.forEach(slot => {
+          const key = slot.id
+          const latlng = [slot.lat, slot.lng]
+          if(slotMarkers.has(key)){
+            const m = slotMarkers.get(key)
+            m.setLatLng(latlng)
+            m.setIcon(defaultIcon(colorForStatus(slot.status)))
+            m.getPopup().setContent(popupHtml(slot))
+          } else {
+            const m = L.marker(latlng, {icon: defaultIcon(colorForStatus(slot.status))})
+            m.addTo(map).bindPopup(popupHtml(slot))
+            m.on('popupopen', ()=>{ updatePopupButtons(slot) })
+            slotMarkers.set(key, m)
+          }
+        })
+      }
+
+      function defaultIcon(color){
+        return L.divIcon({className:'custom-icon', html:`<div style="width:16px;height:16px;border-radius:8px;background:${color};border:2px solid white"></div>`, iconSize:[16,16]})
+      }
+
+      function popupHtml(slot){
+        const minsLeft = slot.reserved_until ? Math.max(0, Math.round((slot.reserved_until - Date.now()/1000)/60)) : 0
+        return `<div><strong>${slot.name}</strong><br>Status: ${slot.status}${slot.status==='occupied' ? ` (${minsLeft} min left)` : ''}<br><button data-id="${slot.id}" class="reserve">Reserve 30m</button></div>`
+      }
+
+      function updatePopupButtons(slot){
+        const popup = document.querySelector('.leaflet-popup')
+        if(!popup) return
+        const btn = popup.querySelector('button.reserve')
+        if(btn){
+          btn.onclick = async ()=>{
+            try{
+              const resp = await fetch(`${apiBase}/reserve`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({slot_id: slot.id, minutes:30})})
+              const j = await resp.json()
+              if(j.ok){
+                alert('Reserved — you will be notified when time is up')
+              } else {
+                alert('Failed: ' + (j.error || 'unknown'))
+              }
+            }catch(e){ alert('Network error') }
+          }
+        }
+      }
+
+      async function loadInitial(){
+        const r = await fetch(apiBase + '/slots')
+        const j = await r.json()
+        addOrUpdateSlots(j.slots)
+      }
+
+      const socket = io()
+      socket.on('slots_update', data => { addOrUpdateSlots(data.slots) })
+
+      loadInitial()
+    </script>
+  </body>
+</html>

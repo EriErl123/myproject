@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /admin.css
+Disallow: /admin.js
+Disallow: /firebase-config.js
+
+Sitemap: https://acentratech.web.app/sitemap.xml

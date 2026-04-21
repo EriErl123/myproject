@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acentra — Complete IT Solutions | PC Repair, Web Development & Creative Media</title>
+  <meta name="description" content="Acentra — From Hardware to Web, Complete IT Solutions. Professional PC Repairs, Custom Web Development, Creative Media Services. Affordable pricing, remote & on-site support." />
+  <meta name="keywords" content="IT solutions, PC repair, web development, creative media, website design, computer repair, tech support, freelance developer, Acentra, software development, graphic design, video editing" />
+  <meta name="author" content="Erl Jay Ramas" />
+  <meta name="robots" content="index, follow" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <!-- Security headers via meta tags -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
+  <link rel="canonical" href="https://acentratech.web.app/" />
+
+  <!-- Open Graph (Facebook, LinkedIn, etc.) -->
+  <meta property="og:title" content="Acentra — Complete IT Solutions" />
+  <meta property="og:description" content="From Hardware to Web — Professional PC Repairs, Custom Web Development, Creative Media Services. Affordable pricing, remote & on-site support." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://acentratech.web.app/" />
+  <meta property="og:image" content="https://acentratech.web.app/img/logocircle.png" />
+  <meta property="og:image:alt" content="Acentra Logo" />
+  <meta property="og:site_name" content="Acentra" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Acentra — Complete IT Solutions" />
+  <meta name="twitter:description" content="From Hardware to Web — PC Repairs, Web Development, Creative Media. Remote & On-Site." />
+  <meta name="twitter:image" content="https://acentratech.web.app/img/logocircle.png" />
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Acentra",
+    "url": "https://acentratech.web.app",
+    "logo": "https://acentratech.web.app/img/logocircle.png",
+    "image": "https://acentratech.web.app/img/logocircle.png",
+    "description": "Acentra — From Hardware to Web — Complete IT Solutions. Professional PC Repairs, Custom Web Development, Creative Media Services.",
+    "founder": {
+      "@type": "Person",
+      "name": "Erl Jay Ramas",
+      "jobTitle": "CEO & Lead Developer"
+    },
+    "serviceType": ["PC Repair", "Web Development", "Creative Media", "Tech Support"],
+    "areaServed": {
+      "@type": "Place",
+      "name": "Worldwide (Remote & On-Site)"
+    },
+    "priceRange": "$$",
+    "sameAs": [],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Customer Support",
+      "availableLanguage": ["English", "Filipino"]
+    }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js" defer crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js" defer crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js" defer crossorigin="anonymous"></script>
+  <!-- EmailJS SDK for chat notifications -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer crossorigin="anonymous"></script>
+  <script src="firebase-config.js" defer></script>
+  <script src="script.js" defer></script>
+  <!-- Anti-inspect / DevTools protection -->
+  <script>
+    !function(){
+      // Disable right-click context menu
+      document.addEventListener("contextmenu",function(e){e.preventDefault()});
+      // Block common DevTools shortcuts
+      document.addEventListener("keydown",function(e){
+        if(e.key==="F12"||(e.ctrlKey&&e.shiftKey&&["I","J","C","K"].includes(e.key.toUpperCase()))||(e.ctrlKey&&e.key.toUpperCase()==="U"))
+        {e.preventDefault();e.stopPropagation()}
+      },true);
+      // Debugger trap — pauses execution if DevTools is open
+      !function d(){try{!function c(a){if((""+a/a).length!==1||a%20===0)!function(){}.constructor("debugger")();c(++a)}(0)}catch(e){}setTimeout(d,2000)}();
+      // Console‑clear loop to deter casual inspection
+      var w=Object.defineProperty;try{w(console,"_c",{get:function(){throw""}});console.log("%c","_c")}catch(e){}
+      setInterval(function(){console.clear()},3000);
+      // DevTools size detection — redirect if detected
+      var threshold=160;
+      setInterval(function(){
+        if(window.outerWidth-window.innerWidth>threshold||window.outerHeight-window.innerHeight>threshold){
+          document.title="Acentra";
+        }
+      },1000);
+      // Block drag events (prevents dragging page elements to inspect)
+      document.addEventListener("dragstart",function(e){e.preventDefault()});
+      // Block print-screen / Ctrl+P
+      document.addEventListener("keydown",function(e){
+        if((e.ctrlKey&&e.key.toUpperCase()==="P")||(e.ctrlKey&&e.key.toUpperCase()==="S"))
+        {e.preventDefault()}
+      },true);
+    }();
+  </script>
+</head>
+<body>
+
+  <!-- ===== HEADER / NAVIGATION ===== -->
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="#hero" class="logo" aria-label="ACENTRA"><span class="logo-text">ACENTRA</span></a>
+      <nav class="nav" id="nav">
+        <a href="#hero" class="nav-link active">Home</a>
+        <a href="#services" class="nav-link">Services</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="#portfolio" class="nav-link">Portfolio</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <a href="#request" class="btn btn-primary nav-cta">Request Service</a>
+      </nav>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== MOBILE MENU ===== -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#hero">Home</a>
+    <a href="#services">Services</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+    <a href="#request" class="btn btn-primary" style="margin-top:1rem;text-align:center;">Request Service</a>
+  </div>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero" id="hero">
+    <canvas id="heroCanvas" class="hero-canvas" aria-hidden="true"></canvas>
+    <div class="container hero-content">
+      <div class="hero-left">
+        <p class="hero-badge"><i class="fa-solid fa-circle-check"></i> Available for Projects</p>
+        <h1 class="hero-title"><span class="gradient-text">Acentra</span></h1>
+        <p class="hero-tagline">From Hardware to Web — <span class="typed-wrap"><span id="typed"></span><span class="typed-cursor">|</span></span></p>
+        <p class="hero-desc">Professional IT services, web development, and creative media solutions — delivered remotely or on-site by our team.</p>
+        <div class="hero-btns">
+          <a href="#request" class="btn btn-primary btn-lg"><i class="fa-solid fa-paper-plane"></i> Request Service</a>
+          <a href="#portfolio" class="btn btn-outline btn-lg"><i class="fa-solid fa-eye"></i> View Portfolio</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <strong class="counter" id="statProjects" data-target="18" data-base="18">0</strong><span>+</span>
+            <p>Projects Done</p>
+          </div>
+          <div class="hero-stat">
+            <strong class="counter" id="statClients" data-target="10" data-base="10">0</strong><span>+</span>
+            <p>Happy Clients</p>
+          </div>
+          <div class="hero-stat">
+            <strong class="counter" id="statYears" data-target="4">0</strong>
+            <p>Years Experience</p>
+          </div>
+        </div>
+      </div>
+      <aside class="hero-right" aria-hidden="true">
+        <div class="card-glass">
+          <h4>Why Acentra?</h4>
+          <ul class="why-list">
+            <li><strong>Total IT:</strong> Hardware, software, cloud — one partner.</li>
+            <li><strong>Accessible:</strong> Remote & on-site, student-friendly pricing.</li>
+            <li><strong>Secure:</strong> Modern tools, clean architecture, privacy-first.</li>
+          </ul>
+          <div class="card-cta">
+            <a href="#request" class="btn btn-primary">Get a free consult</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <div class="hero-scroll">
+      <span>Scroll down</span>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </section>
+
+  <!-- ===== SERVICES SECTION ===== -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">What We Offer</p>
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-sub">We design fast, modern websites and digital tools that help businesses attract customers, generate leads, and grow online.</p>
+      </div>
+      <div class="services-grid">
+        <!-- Offer: Website development for local businesses -->
+        <div class="service-card" data-aos="fade-up">
+          <div class="service-icon"><i class="fa-solid fa-store"></i></div>
+          <h3>Websites for Local Businesses</h3>
+          <p>Professional, mobile-friendly websites built to help local businesses get found on Google and convert visitors into customers.</p>
+          <strong>Includes</strong>
+          <ul class="service-list">
+            <li><i class="fa-solid fa-check"></i> Local SEO-optimized pages</li>
+            <li><i class="fa-solid fa-check"></i> Contact, booking, or inquiry forms</li>
+            <li><i class="fa-solid fa-check"></i> Fast loading and mobile-first design</li>
+          </ul>
+          <a href="#request" class="btn btn-sm" data-service="Website for Local Businesses">Request Quote <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <!-- Offer: Landing pages for startups -->
+        <div class="service-card featured" data-aos="fade-up" data-aos-delay="80">
+          <div class="service-badge">Top Offer</div>
+          <div class="service-icon"><i class="fa-solid fa-rocket-launch"></i></div>
+          <h3>Landing Pages for Startups</h3>
+          <p>Conversion-focused landing pages built for product launches, marketing campaigns, and lead generation.</p>
+          <strong>Includes</strong>
+          <ul class="service-list">
+            <li><i class="fa-solid fa-check"></i> Lead capture forms and analytics tracking</li>
+            <li><i class="fa-solid fa-check"></i> Conversion-focused layouts</li>
+            <li><i class="fa-solid fa-check"></i> Fast and accessible design</li>
+          </ul>
+          <a href="#request" class="btn btn-primary btn-sm" data-service="Landing Page for Startups">Request Quote <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <!-- Offer: E-Commerce Stores -->
+        <div class="service-card" data-aos="fade-up" data-aos-delay="160">
+          <div class="service-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+          <h3>E-Commerce Stores</h3>
+          <p>Secure online stores that make it easy for customers to browse, pay, and complete purchases smoothly.</p>
+          <strong>Includes</strong>
+          <ul class="service-list">
+            <li><i class="fa-solid fa-check"></i> GCash / bank / payment integration</li>
+            <li><i class="fa-solid fa-check"></i> Simple inventory and order management</li>
+            <li><i class="fa-solid fa-check"></i> Optimized checkout flow</li>
+          </ul>
+          <a href="#request" class="btn btn-sm" data-service="E-commerce Store">Request Quote <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <!-- Offer: Portfolio Websites -->
+        <div class="service-card" data-aos="fade-up" data-aos-delay="220">
+          <div class="service-icon"><i class="fa-solid fa-briefcase"></i></div>
+          <h3>Portfolio Websites</h3>
+          <p>Clean and modern portfolio websites for creatives and professionals who want to showcase their work and attract clients.</p>
+          <strong>Includes</strong>
+          <ul class="service-list">
+            <li><i class="fa-solid fa-check"></i> Project and gallery pages</li>
+            <li><i class="fa-solid fa-check"></i> Contact form and downloadable CV</li>
+            <li><i class="fa-solid fa-check"></i> Mobile-optimized design</li>
+          </ul>
+          <a href="#request" class="btn btn-sm" data-service="Portfolio Website">Request Quote <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <!-- Offer: Automation Tools -->
+        <div class="service-card" data-aos="fade-up" data-aos-delay="280">
+          <div class="service-icon"><i class="fa-solid fa-robot"></i></div>
+          <h3>Automation Tools</h3>
+          <p>Custom automation tools that help businesses save time and reduce manual work.</p>
+          <strong>Includes</strong>
+          <ul class="service-list">
+            <li><i class="fa-solid fa-check"></i> Task automation scripts</li>
+            <li><i class="fa-solid fa-check"></i> Data syncing and integrations</li>
+            <li><i class="fa-solid fa-check"></i> Lightweight dashboards and reporting</li>
+          </ul>
+          <a href="#request" class="btn btn-sm" data-service="Automation Tools">Request Quote <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <!-- Offer: Website Redesign -->
+        <div class="service-card" data-aos="fade-up" data-aos-delay="340">
+          <div class="service-icon"><i class="fa-solid fa-arrows-rotate"></i></div>
+          <h3>Website Redesign</h3>
+          <p>Upgrade your existing website with better design, faster performance, and improved user experience.</p>
+          <strong>Includes</strong>
+          <ul class="service-list">
+            <li><i class="fa-solid fa-check"></i> Modern UI/UX redesign</li>
+            <li><i class="fa-solid fa-check"></i> Performance and SEO improvements</li>
+            <li><i class="fa-solid fa-check"></i> Mobile optimization</li>
+          </ul>
+          <a href="#request" class="btn btn-sm" data-service="Website Redesign">Request Quote <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="process" id="process">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">How It Works</p>
+        <h2 class="section-title">Simple Process</h2>
+        <p class="section-sub">Getting your project done is easy. Four simple steps from inquiry to delivery.</p>
+      </div>
+      <div class="process-grid">
+        <div class="process-step">
+          <div class="process-num">01</div>
+          <div class="process-icon"><i class="fa-solid fa-comments"></i></div>
+          <h3>Reach Out</h3>
+          <p>Contact us through the form, Messenger, or email. Tell us what you need.</p>
+        </div>
+        <div class="process-connector"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="process-step">
+          <div class="process-num">02</div>
+          <div class="process-icon"><i class="fa-solid fa-clipboard-check"></i></div>
+          <h3>Get a Quote</h3>
+          <p>We assess your needs and send a detailed quote with timeline and pricing.</p>
+        </div>
+        <div class="process-connector"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="process-step">
+          <div class="process-num">03</div>
+          <div class="process-icon"><i class="fa-solid fa-code"></i></div>
+          <h3>We Build It</h3>
+          <p>Work begins with regular updates. You review progress and give feedback.</p>
+        </div>
+        <div class="process-connector"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="process-step">
+          <div class="process-num">04</div>
+          <div class="process-icon"><i class="fa-solid fa-rocket"></i></div>
+          <h3>Delivery</h3>
+          <p>Final delivery with testing, handover, and post-delivery support included.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRICING SECTION ===== -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Pricing</p>
+        <h2 class="section-title">Service Rates</h2>
+        <p class="section-sub">Transparent, affordable pricing. All rates are negotiable based on project scope.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <i class="fa-solid fa-laptop-medical"></i>
+            <h3>IT & PC Services</h3>
+          </div>
+          <div class="pricing-body">
+            <ul class="pricing-list">
+              <li><span>OS Installation &amp; Setup</span><strong>₱300 – ₱500</strong></li>
+              <li><span>Virus Removal &amp; Cleanup</span><strong>₱200 – ₱500</strong></li>
+              <li><span>Hardware Repair / Upgrade</span><strong>₱300 – ₱1,500</strong></li>
+              <li><span>Preventive Maintenance</span><strong>₱200 – ₱400</strong></li>
+              <li><span>Full PC Diagnostic</span><strong>₱150 – ₱300</strong></li>
+              <li><span>Data Backup &amp; Recovery</span><strong>₱300 – ₱800</strong></li>
+            </ul>
+            <a href="#request" class="btn btn-sm" style="width:100%;justify-content:center;">Request Quote <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="pricing-card featured">
+          <div class="pricing-badge">Best Value</div>
+          <div class="pricing-header">
+            <i class="fa-solid fa-globe"></i>
+            <h3>Web & System Dev</h3>
+          </div>
+          <div class="pricing-body">
+            <ul class="pricing-list">
+              <li><span>Landing Page / Single Page</span><strong>₱1,000 – ₱3,000</strong></li>
+              <li><span>Business Website (Multi-page)</span><strong>₱2,500 – ₱8,000</strong></li>
+              <li><span>Portfolio Website</span><strong>₱1,000 – ₱4,000</strong></li>
+              <li><span>E-Commerce / Web App</span><strong>₱5,000 – ₱12,000+</strong></li>
+              <li><span>Custom System / Database</span><strong>₱4,000 – ₱10,000+</strong></li>
+              <li><span>Website Maintenance (monthly)</span><strong>₱300 – ₱1,000</strong></li>
+            </ul>
+            <a href="#request" class="btn btn-primary btn-sm" style="width:100%;justify-content:center;">Request Quote <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <i class="fa-solid fa-palette"></i>
+            <h3>Creative Media</h3>
+          </div>
+          <div class="pricing-body">
+            <ul class="pricing-list">
+              <li><span>Event Photography</span><strong>₱1,500 – ₱5,000</strong></li>
+              <li><span>Product Photography</span><strong>₱500 – ₱2,000</strong></li>
+              <li><span>Short Video Production</span><strong>₱2,000 – ₱8,000</strong></li>
+              <li><span>Video Editing (per minute)</span><strong>₱300 – ₱1,000</strong></li>
+              <li><span>Social Media Content Pack</span><strong>₱1,500 – ₱4,000</strong></li>
+              <li><span>Logo &amp; Brand Design</span><strong>₱1,000 – ₱3,000</strong></li>
+            </ul>
+            <a href="#request" class="btn btn-sm" style="width:100%;justify-content:center;">Request Quote <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+      <p class="pricing-note"><i class="fa-solid fa-circle-info"></i> Prices are student-friendly and negotiable based on scope. Free consultation available — <a href="https://www.facebook.com/messages/t/erljayramas" target="_blank" rel="noopener noreferrer">message us</a> for an exact quote.</p>
+    </div>
+  </section>
+
+  <!-- ===== PORTFOLIO SECTION ===== -->
+  <section class="portfolio" id="portfolio">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Our Work</p>
+        <h2 class="section-title">Portfolio</h2>
+        <p class="section-sub">A selection of projects showcasing our expertise in web development, systems, and creative solutions.</p>
+      </div>
+      <!-- Filter Tabs -->
+      <div class="portfolio-filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="web">Web</button>
+        <button class="filter-btn" data-filter="system">Systems</button>
+        <button class="filter-btn" data-filter="creative">Creative</button>
+      </div>
+      <!-- Portfolio Grid -->
+      <div class="portfolio-grid" id="portfolioGrid">
+        <!-- New portfolio entries (Acentratech) -->
+        <div class="portfolio-card" data-category="system">
+          <div class="portfolio-thumb">
+            <div class="portfolio-overlay"><a href="#request" class="portfolio-link"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></div>
+            <div class="portfolio-thumb-bg" style="background:linear-gradient(135deg,#081827,#142d52);"><i class="fa-solid fa-chart-line"></i></div>
+          </div>
+          <div class="portfolio-info">
+            <h3>OmniTrack: Real-Time Business Analytics Dashboard</h3>
+            <p>A comprehensive dashboard for small business owners to monitor KPIs in real-time — secure client login, interactive visualizations (sales, traffic, growth), and dynamic notifications that turn raw data into actionable insights.</p>
+            <div class="portfolio-tags"><span>React</span><span>Firebase</span><span>Chart.js</span><span>Real-time Data</span></div>
+          </div>
+        </div>
+
+        <div class="portfolio-card" data-category="web">
+          <div class="portfolio-thumb">
+            <div class="portfolio-overlay"><a href="#request" class="portfolio-link"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></div>
+            <div class="portfolio-thumb-bg" style="background:linear-gradient(135deg,#0b1020,#1a2540);"><i class="fa-solid fa-robot"></i></div>
+          </div>
+          <div class="portfolio-info">
+            <h3>SmartServe: AI-Driven Customer Support Portal</h3>
+            <p>An automated support hub that uses an AI chatbot trained on your business data to answer FAQs and troubleshoot common issues — reduces human support overhead and scales help instantly.</p>
+            <div class="portfolio-tags"><span>Next.js</span><span>Tailwind</span><span>Gemini API</span><span>Node.js</span></div>
+          </div>
+        </div>
+
+        <div class="portfolio-card" data-category="web">
+          <div class="portfolio-thumb">
+            <div class="portfolio-overlay"><a href="#request" class="portfolio-link"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></div>
+            <div class="portfolio-thumb-bg" style="background:linear-gradient(135deg,#08101a,#213044);"><i class="fa-solid fa-rocket"></i></div>
+          </div>
+          <div class="portfolio-info">
+            <h3>Lumina: High-Performance SaaS Landing Engine</h3>
+            <p>A lightning-fast, SEO-optimized landing template with high-fidelity animations, subscription pricing engine, and leads capture — built for performance and conversions.</p>
+            <div class="portfolio-tags"><span>Framer Motion</span><span>Vercel</span><span>TypeScript</span><span>SEO</span></div>
+          </div>
+        </div>
+
+        <div class="portfolio-card" data-category="web">
+          <div class="portfolio-thumb">
+            <div class="portfolio-overlay"><a href="#request" class="portfolio-link"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></div>
+            <div class="portfolio-thumb-bg" style="background:linear-gradient(135deg,#0a2233,#10405a);"><i class="fa-solid fa-cloud-sun"></i></div>
+          </div>
+          <div class="portfolio-info">
+            <h3>Quick-Check: Weather & Travel Planner</h3>
+            <p>Tells you what to wear and whether to bring an umbrella with live weather and a 5-day forecast — simple, mobile-ready, and easy to use.</p>
+            <div class="portfolio-tags"><span>Beginner Friendly</span><span>Live Data</span><span>Mobile Ready</span></div>
+          </div>
+        </div>
+
+        <div class="portfolio-card" data-category="web">
+          <div class="portfolio-thumb">
+            <div class="portfolio-overlay"><a href="#request" class="portfolio-link"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></div>
+            <div class="portfolio-thumb-bg" style="background:linear-gradient(135deg,#162022,#2a3b44);"><i class="fa-solid fa-list-check"></i></div>
+          </div>
+          <div class="portfolio-info">
+            <h3>FocusFlow: Simple Daily Task Manager</h3>
+            <p>A clean to-do app that helps you stay organized — add tasks, mark complete, filter by category, and the app remembers your list even after closing the browser.</p>
+            <div class="portfolio-tags"><span>Productivity</span><span>Easy to Use</span><span>Saved Progress</span></div>
+          </div>
+        </div>
+
+        <div class="portfolio-card" data-category="web">
+          <div class="portfolio-thumb">
+            <div class="portfolio-overlay"><a href="#request" class="portfolio-link"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></div>
+            <div class="portfolio-thumb-bg" style="background:linear-gradient(135deg,#2a1a10,#4a2e1b);"><i class="fa-solid fa-utensils"></i></div>
+          </div>
+          <div class="portfolio-info">
+            <h3>FreshBites: Local Restaurant Menu Page</h3>
+            <p>A modern one-page menu with clear pricing, a 'Find Us' map, and a contact form for reservations — fast loading and great on mobile.</p>
+            <div class="portfolio-tags"><span>Small Business</span><span>Clean Design</span><span>Fast Loading</span></div>
+          </div>
+        </div>
+        <!-- Additional community / local projects (pageable) -->
+        <div class="portfolio-card" data-category="web">
+          <div class="portfolio-thumb">
+            <div class="portfolio-overlay"><a href="#request" class="portfolio-link"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></div>
+            <div class="portfolio-thumb-bg" style="background:linear-gradient(135deg,#123B2D,#1E6F4B);"><i class="fa-solid fa-wallet"></i></div>
+          </div>
+          <div class="portfolio-info">
+            <h3>Sari-Sari Digital: Inventory &amp; GCash Tracker</h3>
+            <p>A lightweight app for neighborhood stores to track daily sales and stock, with a GCash &amp; Maya payment log — mobile-first and budget-friendly.</p>
+            <div class="portfolio-tags"><span>Mobile-First</span><span>Cashless Payments</span><span>Inventory</span></div>
+          </div>
+        </div>
+
+        <div class="portfolio-card" data-category="web">
+          <div class="portfolio-thumb">
+            <div class="portfolio-overlay"><a href="#request" class="portfolio-link"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></div>
+            <div class="portfolio-thumb-bg" style="background:linear-gradient(135deg,#2b1b3a,#4b2a66);"><i class="fa-solid fa-toolbox"></i></div>
+          </div>
+          <div class="portfolio-info">
+            <h3>JuanFix: Local Home Service Booking</h3>
+            <p>A platform that connects homeowners with local handymen — booking, schedule management, maps, and provider dashboards for easy appointments.</p>
+            <div class="portfolio-tags"><span>Booking System</span><span>Google Maps API</span><span>SMS Notifications</span></div>
+          </div>
+        </div>
+
+        <div class="portfolio-card" data-category="web">
+          <div class="portfolio-thumb">
+            <div class="portfolio-overlay"><a href="#request" class="portfolio-link"><i class="fa-solid fa-arrow-up-right-from-square"></i></a></div>
+            <div class="portfolio-thumb-bg" style="background:linear-gradient(135deg,#3a2410,#6b3b16);"><i class="fa-solid fa-bowl-food"></i></div>
+          </div>
+          <div class="portfolio-info">
+            <h3>LokalEats: Direct-to-Customer Ordering</h3>
+            <p>A simple ordering system for home-based food sellers that sends orders directly to WhatsApp or Messenger — low-cost, practical, and optimized for local SEO.</p>
+            <div class="portfolio-tags"><span>E-commerce</span><span>WhatsApp Integration</span><span>Local SEO</span></div>
+          </div>
+        </div>
+
+      </div>
+      <div id="portfolioPagination" class="portfolio-pagination" aria-label="Portfolio pages"></div>
+    </div>
+  </section>
+
+  <!-- ===== SERVICE REQUEST SECTION ===== -->
+  <section class="request" id="request">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Get In Touch</p>
+        <h2 class="section-title">Request a Service</h2>
+        <p class="section-sub">Tell us what you need and we'll get back to you with a solution.</p>
+      </div>
+      <div class="request-wrapper">
+        <div class="request-info">
+          <div class="request-info-card">
+            <i class="fa-solid fa-bolt"></i>
+            <h4>Fast Turnaround</h4>
+            <p>We respond within 24 hours and deliver on schedule.</p>
+          </div>
+          <div class="request-info-card">
+            <i class="fa-solid fa-shield-halved"></i>
+            <h4>Quality Guaranteed</h4>
+            <p>Every project is built to professional standards.</p>
+          </div>
+          <div class="request-info-card">
+            <i class="fa-solid fa-tags"></i>
+            <h4>Affordable Pricing</h4>
+            <p>Competitive rates for individuals and businesses.</p>
+          </div>
+        </div>
+        <form class="request-form" id="requestForm" action="https://formspree.io/f/xreankjb" method="POST">
+          <input type="hidden" name="_subject" value="New Service Request — Acentra" />
+          <!-- Honeypot anti-spam field (hidden from real users) -->
+          <input type="text" name="_gotcha" style="display:none !important" tabindex="-1" autocomplete="off" />
+          <div class="form-row">
+            <div class="form-group">
+              <label for="reqName">Full Name</label>
+              <input type="text" id="reqName" name="name" placeholder="Juan Dela Cruz" required maxlength="200" />
+            </div>
+            <div class="form-group">
+              <label for="reqEmail">Email / Contact</label>
+              <input type="text" id="reqEmail" name="contact" placeholder="email@example.com or 09XX-XXX-XXXX" required maxlength="200" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="reqService">Type of Service</label>
+              <select id="reqService" name="service" required>
+                <option value="" disabled selected>Select a service...</option>
+                <option value="Website for Local Businesses">Website for Local Businesses</option>
+                <option value="Landing Page for Startups">Landing Page for Startups</option>
+                <option value="E-commerce Store">E-commerce Store</option>
+                <option value="Portfolio Website">Portfolio Website</option>
+                <option value="Automation Tools">Automation Tools</option>
+                <option value="Website Redesign">Website Redesign</option>
+                <option value="IT & PC Services">IT &amp; PC Services</option>
+                <option value="Creative Media Services">Creative Media Services</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="reqDevice">Device Type <small>(if PC repair)</small></label>
+              <input type="text" id="reqDevice" name="device" placeholder="e.g. Laptop, Desktop, etc." maxlength="100" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="reqDetails">Issue / Project Details</label>
+            <textarea id="reqDetails" name="details" rows="4" placeholder="Describe your project or issue..." required maxlength="2000"></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="reqBudget">Budget Range</label>
+              <select id="reqBudget" name="budget">
+                <option value="" disabled selected>Select budget...</option>
+                <option value="Under ₱1,000">Under ₱1,000</option>
+                <option value="₱1,000 - ₱5,000">₱1,000 – ₱5,000</option>
+                <option value="₱5,000 - ₱15,000">₱5,000 – ₱15,000</option>
+                <option value="₱15,000+">₱15,000+</option>
+                <option value="Negotiable">Negotiable</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="reqDeadline">Preferred Deadline</label>
+              <input type="date" id="reqDeadline" name="deadline" />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg btn-submit">
+            <i class="fa-solid fa-paper-plane"></i> Submit Request
+          </button>
+          <p class="form-message" id="formMessage"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ SECTION ===== -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">FAQ</p>
+        <h2 class="section-title">Common Questions</h2>
+        <p class="section-sub">Quick answers to the things clients ask most.</p>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How long does a website project take?</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>A simple landing page takes 3–5 days. Multi-page business sites take 1–3 weeks, and complex web apps can take 3–6 weeks. We agree on a timeline before starting.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Do you offer after-service support?</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Yes! All projects include 1 week of free support for bug fixes. We also offer monthly maintenance packages for ongoing website management.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Can I see progress while you work on my project?</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Absolutely. We share progress updates via Messenger, with preview links for web projects so you can review and give feedback in real-time.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>What payment methods do you accept?</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>We accept GCash, bank transfer (BPI/BDO), and cash for local clients. 50% upfront payment is required for projects over ₱5,000.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Do you accept rush orders?</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Yes, rush orders are accepted with a 20–30% surcharge depending on the urgency. Message us on Messenger for fastest response.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Can you fix my PC remotely?</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>For software issues like virus removal, OS errors, and optimization — yes, via remote desktop. Hardware issues require an on-site visit at your location.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT SECTION ===== -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Who We Are</p>
+        <h2 class="section-title">About</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-image">
+          <div class="about-img-frame">
+            <img src="img/me.jpg" alt="Erl Jay Ramas" />
+            <div class="about-img-border"></div>
+          </div>
+        </div>
+        <div class="about-content">
+          <h3>Erl Jay Ramas</h3>
+          <p class="about-role">CEO &amp; Founder — Acentra</p>
+          <p>I'm Erl Jay Ramas, the CEO and founder of Acentra. Together with my team, we deliver complete IT solutions — from PC repairs and full-stack web development to creative media services — for students, individuals, and businesses.</p>
+          <p>Based in <strong>Sagay City, Negros Occidental</strong>, we operate <strong>remotely</strong> and can also work <strong>on-site</strong> at the client's location. No office visit needed — we come to you or work online.</p>
+              <div class="about-timeline">
+            <div class="tl-item">
+              <span class="tl-year">2023</span>
+              <p>Web development foundations — committed to the craft.</p>
+            </div>
+            <div class="tl-item">
+              <span class="tl-year">2024</span>
+              <p>Academic systems, collaborative projects, and IT services.</p>
+            </div>
+            <div class="tl-item">
+              <span class="tl-year">2025</span>
+              <p>Cleaner architecture, product-level polish, creative media.</p>
+            </div>
+            <div class="tl-item">
+              <span class="tl-year">2026</span>
+              <p>Full-stack, AI tools, security — Acentra launched.</p>
+            </div>
+          </div>
+          <div class="about-skills">
+            <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>React</span>
+            <span>Python</span><span>FastAPI</span><span>Flask</span><span>PHP</span>
+            <span>PostgreSQL</span><span>SQLite</span><span>Git</span><span>UI/UX</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- VISION & MISSION -->
+      <section class="brand-vision" id="vision-mission">
+        <div class="container">
+          <div class="section-header">
+            <p class="section-tag">Brand</p>
+            <h2 class="section-title">Acentra</h2>
+            <p class="brand-tagline">"Your Vision, Our Code. Your Growth, Our Mission."</p>
+          </div>
+          <div class="vm-grid">
+            <div class="vm-block">
+              <h3>Vision</h3>
+              <p>To be the most trusted IT partner in the Philippines—empowering people and businesses through affordable, future-ready technology.</p>
+            </div>
+            <div class="vm-block">
+              <h3>Mission</h3>
+              <ul>
+                <li><strong>Total IT Solutions:</strong> Provide everything from hardware repair to full-stack development under one roof.</li>
+                <li><strong>True Accessibility:</strong> Ensure no client is left behind through affordable pricing and on-site or remote support.</li>
+                <li><strong>Quality First:</strong> Deliver professional-grade work using clean architecture and modern, secure tools.</li>
+                <li><strong>Constant Innovation:</strong> Evolve alongside our clients by integrating AI, Cloud, and Cybersecurity.</li>
+                <li><strong>Empowered Talent:</strong> Foster a culture at Acentra where excellence and continuous learning drive every project.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Team Grid -->
+      <div class="team-section">
+        <h3 class="team-heading">Meet the Team</h3>
+        <div class="team-grid">
+          <div class="team-card">
+            <div class="team-photo"><img src="img/luste.jpg" alt="John Mark Derrama Luste" /></div>
+            <h4>John Mark Luste</h4>
+            <p>Lead Developer</p>
+          </div>
+          <div class="team-card">
+            <div class="team-photo"><img src="img/tibor.jpg" alt="Jasper Tibor" /></div>
+            <h4>Jasper Tibor</h4>
+            <p>Backend Engineer</p>
+          </div>
+          <div class="team-card">
+            <div class="team-photo"><img src="img/pastor.jpg" alt="Jose Lito Pastor" /></div>
+            <h4>Jose Lito Pastor</h4>
+            <p>Frontend Engineer</p>
+          </div>
+          <div class="team-card">
+            <div class="team-photo"><img src="img/casas.jpg" alt="Ramonito Casas" /></div>
+            <h4>Ramonito Casas</h4>
+            <p>Systems &amp; Infrastructure Engineer</p>
+          </div>
+          <div class="team-card">
+            <div class="team-photo"><img src="img/bitar.jpg" alt="John Mark Bitar" /></div>
+            <h4>John Mark Bitar</h4>
+            <p>Software Engineer</p>
+          </div>
+          <div class="team-card">
+            <div class="team-photo"><img src="img/torres.jpg" alt="Carlos Miguel V Torres" /></div>
+            <h4>Carlos Miguel Torres</h4>
+            <p>QA Engineer &amp; IT Operations</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT SECTION ===== -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-tag">Reach Out</p>
+        <h2 class="section-title">Contact Us</h2>
+        <p class="section-sub">Have a question or want to work together? Reach out through any channel below.</p>
+      </div>
+      <div class="contact-cards-centered">
+        <div class="contact-card">
+          <i class="fa-solid fa-envelope"></i>
+          <div>
+            <h4>Email</h4>
+            <a href="mailto:acentraworkplace@gmail.com">acentraworkplace@gmail.com</a>
+          </div>
+        </div>
+        <div class="contact-card">
+          <i class="fa-solid fa-laptop-house"></i>
+          <div>
+            <h4>Work Setup</h4>
+            <p>Remote &amp; On-Site — Based in Sagay City, Negros Occidental</p>
+          </div>
+        </div>
+        <div class="contact-card">
+          <i class="fa-solid fa-clock"></i>
+          <div>
+            <h4>Availability</h4>
+            <p>Mon–Sat, 8:00 AM – 6:00 PM</p>
+          </div>
+        </div>
+        <div class="contact-card">
+          <i class="fa-brands fa-facebook-messenger"></i>
+          <div>
+            <h4>Message Us</h4>
+            <a href="https://www.facebook.com/messages/t/erljayramas" target="_blank" rel="noopener noreferrer">Chat on Facebook</a>
+          </div>
+        </div>
+        <div class="contact-socials">
+          <a href="https://www.facebook.com/erljayramas" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://www.linkedin.com/in/erl-jay-ramas-1114b4332/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" id="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="#hero" class="logo"><img src="img/logolandscape.png" alt="Acentra" /></a>
+        <p>From Hardware to Web — Complete IT Solutions</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <a href="#hero">Home</a>
+        <a href="#services">Services</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-links">
+        <h4>Services</h4>
+        <a href="#services">IT &amp; PC Services</a>
+        <a href="#services">Web Development</a>
+        <a href="#services">Creative Media</a>
+        <a href="#request">Request Service</a>
+      </div>
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <a href="mailto:acentraworkplace@gmail.com">acentraworkplace@gmail.com</a>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/erljayramas" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://www.linkedin.com/in/erl-jay-ramas-1114b4332/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </div>
+      <div class="footer-bottom">
+      <p>&copy; <span id="footerYear" style="cursor:default;">2026</span> Acentra. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <i class="fa-solid fa-chevron-up"></i>
+  </button>
+
+  <!-- ===== LIVE CHAT WIDGET ===== -->
+  <div class="chat-widget" id="chatWidget">
+    <button class="chat-toggle" id="chatToggle" aria-label="Chat with us">
+      <i class="fa-solid fa-comments chat-icon-open"></i>
+      <i class="fa-solid fa-xmark chat-icon-close"></i>
+      <span class="chat-badge">1</span>
+    </button>
+
+    <div class="chat-panel" id="chatPanel" role="region" aria-label="Chat panel">
+      <div class="chat-panel-header">
+        <div class="chat-header-info">
+          <div class="chat-avatar">
+            <img src="img/logocircle.png" alt="Acentra" />
+            <span class="chat-online"></span>
+          </div>
+          <div>
+            <strong id="chatHeaderStatus">Acentra Support</strong>
+            <div id="chatAuthNote" class="chat-auth-note">Sign in to chat with an agent</div>
+          </div>
+        </div>
+        <div class="chat-panel-actions">
+          <button id="chatClose" class="chat-close" aria-label="Close chat"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+
+      <div class="chat-panel-body">
+        <!-- Bot UI -->
+        <div id="chatBot" class="chat-bot">
+          <div id="chatBotBody" class="chat-bot-body"></div>
+          <div id="chatBotOptions" class="chat-bot-options"></div>
+          <button id="chatBackToBot" class="chat-back-btn" style="display:none;">Back to bot</button>
+        </div>
+
+        <!-- Auth screen (shown when requesting agent) -->
+        <div id="chatAuth" class="chat-auth" style="display:none;">
+          <p>Please sign in to start a live chat.</p>
+          <button id="chatGoogleBtn" class="btn btn-outline">Sign in with Google</button>
+        </div>
+
+        <!-- Live chat body (messages) -->
+        <div id="chatBody" class="chat-body" style="display:none; flex-direction:column;"></div>
+      </div>
+
+      <div id="chatInputArea" class="chat-input-area" style="display:none;">
+        <input id="chatInput" class="chat-input" placeholder="Type a message..." aria-label="Message input" />
+        <button id="chatSend" class="btn btn-primary">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Simple particle background for hero canvas -->
+  <script>
+    (function(){
+      const canvas = document.getElementById('heroCanvas');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w=0,h=0,particles=[];
+      function resize(){
+        w = canvas.width = canvas.clientWidth = canvas.offsetWidth;
+        h = canvas.height = canvas.clientHeight = canvas.offsetHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+      function rand(min,max){return Math.random()*(max-min)+min}
+      for(let i=0;i<60;i++) particles.push({x:rand(0,w), y:rand(0,h), r:rand(0.6,2.8), vx:rand(-0.2,0.2), vy:rand(-0.15,0.15), hue:rand(160,280)});
+      function draw(){
+        ctx.clearRect(0,0,w,h);
+        particles.forEach(p=>{
+          p.x += p.vx; p.y += p.vy;
+          if(p.x< -10) p.x = w+10; if(p.x> w+10) p.x = -10;
+          if(p.y< -10) p.y = h+10; if(p.y> h+10) p.y = -10;
+          const g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*12);
+          g.addColorStop(0, 'hsla('+p.hue+',85%,65%,0.18)');
+          g.addColorStop(1, 'rgba(2,6,23,0)');
+          ctx.fillStyle = g;
+          ctx.beginPath(); ctx.arc(p.x,p.y,p.r*6,0,Math.PI*2); ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+  </script>
+
+  </body>
+  </html>
