@@ -524,9 +524,12 @@
 
     /* ===== PRINT STYLES ===== */
     @media print {
-      body {
+      body, html {
         background: #fff;
         color: #000;
+        height: auto !important;
+        min-height: auto !important;
+        overflow: visible !important;
       }
 
       .header,
@@ -545,6 +548,7 @@
         box-shadow: none;
         border: 1px solid #e2e8f0;
         border-radius: 0;
+        overflow: visible !important;
       }
 
       thead tr {
@@ -596,6 +600,26 @@
         color: #0f172a;
       }
 
+      .print-signature {
+        display: flex !important;
+        flex-direction: column;
+        align-items: flex-end;
+        margin-top: 50px;
+        padding-right: 20px;
+        page-break-inside: avoid;
+      }
+      .print-signature .sig-line {
+        width: 250px;
+        border-bottom: 1px solid #1e293b;
+        margin-bottom: 8px;
+      }
+      .print-signature p {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #0f172a;
+        margin-right: 24px;
+      }
+
       @page {
         margin: 5mm;
       }
@@ -603,9 +627,15 @@
       .pagination-wrap {
         display: none !important;
       }
+
+      .print-total {
+        display: table-row-group !important;
+      }
     }
 
-    .print-header {
+    .print-header,
+    .print-signature,
+    .print-total {
       display: none;
     }
 
@@ -780,8 +810,25 @@
             </td>
           </tr>
         </tbody>
+        <tfoot class="print-total">
+          <tr>
+            <td style="border-bottom: none;"></td>
+            <td style="border-bottom: none;"></td>
+            <td style="border-bottom: none;"></td>
+            <td style="border-bottom: none;"></td>
+            <td style="text-align: right; font-weight: 700; color: #1e293b; border-bottom: none; border-top: 1px solid #e2e8f0;">Total Hours:</td>
+            <td id="printTotalHours" style="font-weight: 800; color: #1e293b; border-bottom: none; border-top: 1px solid #e2e8f0;">0h 0m</td>
+            <td style="border-bottom: none;"></td>
+            <td style="border-bottom: none;"></td>
+          </tr>
+        </tfoot>
       </table>
       <div id="paginationWrap" class="pagination-wrap"></div>
+    </div>
+
+    <div class="print-signature">
+      <div class="sig-line"></div>
+      <p>Supervisor Name & Signature</p>
     </div>
 
     <!-- FOOTER ACTIONS -->
@@ -1572,7 +1619,7 @@
        PAGINATION STATE
        ============================================= */
     let currentPage = 1;
-    const ITEMS_PER_PAGE = 8;
+    let ITEMS_PER_PAGE = 8;
 
     function resetPageAndRender() {
       currentPage = 1;
@@ -1596,6 +1643,17 @@
       let filtered = records;
       if (search) filtered = filtered.filter(r => r.name.toLowerCase().includes(search));
       if (dateFilter) filtered = filtered.filter(r => r.dateKey === dateFilter);
+
+      let printTotalMin = 0;
+      filtered.forEach(r => {
+        if (r.timeOutRaw && r.timeInRaw) {
+          printTotalMin += Math.floor((r.timeOutRaw - r.timeInRaw) / 60000);
+        }
+      });
+      const printHh = Math.floor(printTotalMin / 60);
+      const printMm = printTotalMin % 60;
+      const elPrintTotal = document.getElementById('printTotalHours');
+      if (elPrintTotal) elPrintTotal.textContent = `${printHh}h ${pad(printMm)}m`;
 
       const tbody = document.getElementById('dtrBody');
       const pagWrap = document.getElementById('paginationWrap');
@@ -1681,6 +1739,17 @@
     /* =============================================
        PRINT
        ============================================= */
+    window.addEventListener('beforeprint', () => {
+      ITEMS_PER_PAGE = 999999;
+      renderTable();
+    });
+
+    window.addEventListener('afterprint', () => {
+      ITEMS_PER_PAGE = 8;
+      // Also make sure we don't end up on an invalid page
+      renderTable();
+    });
+
     function printRecord() {
       window.print();
     }
