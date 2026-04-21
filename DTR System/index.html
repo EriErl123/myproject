@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DTR System – Daily Time Record</title>
+  <meta name="description"
+    content="A simple Daily Time Record (DTR) system. Track Time In and Time Out with auto date. No login required." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <style>
+    /* ===== RESET & BASE ===== */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #08080a;
+      --surface: #101015;
+      --surface2: #16161c;
+      --border: rgba(255, 255, 255, 0.06);
+      --accent: #60a5fa;
+      --accent2: #818cf8;
+      --green: #10b981;
+      --red: #f43f5e;
+      --amber: #f59e0b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --radius: 8px;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .header-inner {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .logo-text h1 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .logo-text p {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .date-badge {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .date-badge span {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* ===== MAIN LAYOUT ===== */
+    .main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 20px 60px;
+    }
+
+    /* ===== COMPACT TOP SECTION ===== */
+    .top-section {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    /* ===== CLOCK & CONTROLS COMPACT ===== */
+    .clock-controls {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .clock-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .live-clock {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(90deg, #f8fafc, #94a3b8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .live-date-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .input-action-row {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .name-row {
+      flex: 1;
+    }
+
+    .name-row input {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .name-row input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* ===== STATS SIDEBAR ===== */
+    .stats-col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+
+    .stat-value {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .stat-value.green {
+      color: var(--green);
+    }
+
+    .stat-value.amber {
+      color: var(--amber);
+    }
+
+    .stat-value.accent {
+      color: var(--accent);
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: all 0.15s ease;
+      letter-spacing: 0.2px;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-in {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .btn-in:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-out {
+      background: var(--red);
+      color: #fff;
+    }
+
+    .btn-out:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 4px 12px rgba(244, 63, 94, 0.2);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .btn-ghost:hover {
+      color: var(--text);
+      border-color: rgba(255, 255, 255, 0.2);
+      background: var(--surface2);
+    }
+
+    .btn-export {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-export:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* ===== STATUS TOAST ===== */
+    #statusToast {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      animation: slideIn 0.2s ease;
+      width: 100%;
+    }
+
+    #statusToast.show {
+      display: flex;
+    }
+
+    #statusToast.success {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      color: #34d399;
+    }
+
+    #statusToast.error {
+      background: rgba(244, 63, 94, 0.1);
+      border: 1px solid rgba(244, 63, 94, 0.2);
+      color: #fb7185;
+    }
+
+    #statusToast.info {
+      background: rgba(96, 165, 250, 0.1);
+      border: 1px solid rgba(96, 165, 250, 0.2);
+      color: #93c5fd;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== TOOLS ROW ===== */
+    .tools-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      background: var(--surface);
+      padding: 12px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    .tools-left {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .tools-right {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .filter-input {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 6px 10px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.8rem;
+      outline: none;
+    }
+
+    .filter-input:focus {
+      border-color: var(--accent);
+    }
+
+    /* ===== TABLE ===== */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    thead tr {
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      padding: 12px 14px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    td {
+      padding: 10px 14px;
+      font-size: 0.82rem;
+      vertical-align: middle;
+      color: #cbd5e1;
+    }
+
+    .td-name {
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .td-date {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .td-time {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .td-hours {
+      font-weight: 600;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .badge-complete {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+    }
+
+    .badge-pending {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+    }
+
+    .del-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      padding: 4px;
+      border-radius: 4px;
+      transition: all 0.15s;
+      display: flex;
+    }
+
+    .del-btn:hover {
+      color: var(--red);
+      background: rgba(244, 63, 94, 0.1);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+    }
+
+    .empty-state .empty-icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      opacity: 0.5;
+    }
+
+    /* ===== FOOTER ACTIONS ===== */
+    .footer-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    /* ===== PRINT STYLES ===== */
+    @media print {
+      body {
+        background: #fff;
+        color: #000;
+      }
+
+      .header,
+      .top-section,
+      .tools-row,
+      .footer-actions,
+      .del-btn {
+        display: none !important;
+      }
+
+      .main {
+        padding: 0;
+      }
+
+      .table-wrap {
+        box-shadow: none;
+        border: 1px solid #e2e8f0;
+        border-radius: 0;
+      }
+
+      thead tr {
+        background: #f8fafc !important;
+      }
+
+      th {
+        color: #475569;
+        border-bottom: 2px solid #e2e8f0;
+      }
+
+      td {
+        color: #1e293b;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      /* Hide #, Status, and Action buttons when printing */
+      th:nth-child(1),
+      td:nth-child(1),
+      th:nth-child(7),
+      td:nth-child(7),
+      th:nth-child(8),
+      td:nth-child(8) {
+        display: none !important;
+      }
+
+      .badge-complete {
+        border: 1px solid #16a34a;
+        background: transparent;
+        color: #16a34a;
+      }
+
+      .badge-pending {
+        border: 1px solid #d97706;
+        background: transparent;
+        color: #d97706;
+      }
+
+      .print-header {
+        display: block !important;
+        text-align: center;
+        margin-bottom: 16px;
+        font-size: 0.85rem;
+        color: #64748b;
+      }
+
+      .print-header h2 {
+        font-size: 1.2rem;
+        color: #0f172a;
+      }
+
+      @page {
+        margin: 5mm;
+      }
+
+      .pagination-wrap {
+        display: none !important;
+      }
+    }
+
+    .print-header {
+      display: none;
+    }
+
+    /* ===== PAGINATION ===== */
+    .pagination-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+      border-top: 1px solid var(--border);
+      background: var(--surface2);
+      font-size: 0.8rem;
+    }
+
+    .page-info {
+      color: var(--muted);
+    }
+
+    .page-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+
+    .page-btn:hover:not(:disabled) {
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .top-section {
+        grid-template-columns: 1fr;
+      }
+
+      .input-action-row {
+        flex-direction: column;
+      }
+
+      .tools-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .tools-left input,
+      .tools-left select {
+        flex: 1;
+      }
+
+      th:nth-child(5),
+      td:nth-child(5) {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo-group">
+        <div class="logo-icon">⏱</div>
+        <div class="logo-text">
+          <h1>DTR System</h1>
+          <p>Daily Time Record</p>
+        </div>
+      </div>
+      <div class="date-badge">
+        📅 <span id="headerDate">—</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- COMPACT TOP SECTION -->
+    <div class="top-section">
+      <!-- CLOCK & CONTROLS -->
+      <div class="clock-controls">
+        <div class="clock-row">
+          <div class="live-clock" id="liveClock">00:00:00</div>
+          <div class="live-date-label" id="liveDateLabel">Loading…</div>
+        </div>
+
+        <div class="input-action-row">
+          <div class="name-row">
+            <input type="text" id="nameInput" placeholder="Enter your name…" autocomplete="off" spellcheck="false" />
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-in" id="btnIn" onclick="handleTimeIn()">▶ Time In</button>
+            <button class="btn btn-out" id="btnOut" onclick="handleTimeOut()">■ Time Out</button>
+          </div>
+        </div>
+
+        <div id="statusToast"></div>
+      </div>
+
+      <!-- STATS (SIDEBAR) -->
+      <div class="stats-col">
+        <div class="stat-card">
+          <div class="stat-label">Total Records</div>
+          <div class="stat-value accent" id="statTotal">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Completed Today</div>
+          <div class="stat-value green" id="statToday">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Hours Today</div>
+          <div class="stat-value amber" id="statHours">0h 0m</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOOLS ROW -->
+    <div class="tools-row">
+      <div class="tools-left">
+        <input class="filter-input" id="searchInput" type="text" placeholder="Search name…"
+          oninput="resetPageAndRender()" style="width:180px" />
+        <select class="filter-input" id="filterDate" onchange="resetPageAndRender()">
+          <option value="">All Dates</option>
+        </select>
+      </div>
+      <div class="tools-right">
+        <button class="btn btn-ghost" style="padding:8px 14px;font-size:0.82rem;" onclick="clearAll()">🗑 Clear
+          All</button>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-wrap">
+
+      <div class="print-header">
+        <h2>Daily Time Record (DTR)</h2>
+        <p id="printDate"></p>
+      </div>
+
+      <table id="dtrTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Time In</th>
+            <th>Time Out</th>
+            <th>Hours</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="dtrBody">
+          <tr>
+            <td colspan="8">
+              <div class="empty-state">
+                <div class="empty-icon">📋</div>
+                <p>No records yet. Enter a name and click <strong>Time In</strong> to start.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="paginationWrap" class="pagination-wrap"></div>
+    </div>
+
+    <!-- FOOTER ACTIONS -->
+    <div class="footer-actions">
+      <button class="btn btn-print" onclick="printRecord()">🖨 Print</button>
+      <button class="btn btn-export" onclick="exportCSV()">⬇ CSV</button>
+      <button class="btn btn-export"
+        style="background: linear-gradient(135deg, #ea580c, #f97316); box-shadow: 0 8px 24px rgba(249,115,22,0.3);"
+        onclick="exportJSON()">⬇ JSON</button>
+      <button class="btn btn-export"
+        style="background: linear-gradient(135deg, #0d9488, #14b8a6); box-shadow: 0 8px 24px rgba(20,184,166,0.3);"
+        onclick="document.getElementById('importJsonFile').click()">⬆ Import</button>
+      <input type="file" id="importJsonFile" accept=".json" style="display:none;" onchange="importJSON(event)" />
+    </div>
+
+  </main>
+
+  <script>
+    /* =============================================
+       DATA LAYER — localStorage
+       ============================================= */
+    const STORE_KEY = 'dtr_records_v2';
+
+    const DEFAULT_RECORDS = [
+      {
+        "id": 1713000000053,
+        "name": "Erl Ramas",
+        "dateKey": "2026-04-10",
+        "dateDisp": "Apr 10, 2026",
+        "timeIn": "08:00:59 AM",
+        "timeInRaw": 1775779259000,
+        "timeOut": "04:57:40 PM",
+        "timeOutRaw": 1775811460000,
+        "hours": "8h 56m"
+      },
+      {
+        "id": 1713000000052,
+        "name": "Erl Ramas",
+        "dateKey": "2026-04-09",
+        "dateDisp": "Apr 9, 2026",
+        "timeIn": "07:57:33 AM",
+        "timeInRaw": 1775692653000,
+        "timeOut": "04:59:35 PM",
+        "timeOutRaw": 1775725175000,
+        "hours": "9h 02m"
+      },
+      {
+        "id": 1713000000051,
+        "name": "Erl Ramas",
+        "dateKey": "2026-04-08",
+        "dateDisp": "Apr 8, 2026",
+        "timeIn": "08:00:23 AM",
+        "timeInRaw": 1775606423000,
+        "timeOut": "05:00:01 PM",
+        "timeOutRaw": 1775638801000,
+        "hours": "8h 59m"
+      },
+      {
+        "id": 1713000000050,
+        "name": "Erl Ramas",
+        "dateKey": "2026-04-07",
+        "dateDisp": "Apr 7, 2026",
+        "timeIn": "07:57:57 AM",
+        "timeInRaw": 1775519877000,
+        "timeOut": "04:57:57 PM",
+        "timeOutRaw": 1775552277000,
+        "hours": "9h 00m"
+      },
+      {
+        "id": 1713000000049,
+        "name": "Erl Ramas",
+        "dateKey": "2026-04-06",
+        "dateDisp": "Apr 6, 2026",
+        "timeIn": "07:56:22 AM",
+        "timeInRaw": 1775433382000,
+        "timeOut": "04:55:48 PM",
+        "timeOutRaw": 1775465748000,
+        "hours": "8h 59m"
+      },
+      {
+        "id": 1713000000048,
+        "name": "Erl Ramas",
+        "dateKey": "2026-04-02",
+        "dateDisp": "Apr 2, 2026",
+        "timeIn": "07:57:36 AM",
+        "timeInRaw": 1775087856000,
+        "timeOut": "04:59:42 PM",
+        "timeOutRaw": 1775120382000,
+        "hours": "9h 02m"
+      },
+      {
+        "id": 1713000000047,
+        "name": "Erl Ramas",
+        "dateKey": "2026-04-01",
+        "dateDisp": "Apr 1, 2026",
+        "timeIn": "08:00:31 AM",
+        "timeInRaw": 1775001631000,
+        "timeOut": "04:59:59 PM",
+        "timeOutRaw": 1775033999000,
+        "hours": "8h 59m"
+      },
+      {
+        "id": 1713000000046,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-31",
+        "dateDisp": "Mar 31, 2026",
+        "timeIn": "07:58:41 AM",
+        "timeInRaw": 1774915121000,
+        "timeOut": "04:56:14 PM",
+        "timeOutRaw": 1774947374000,
+        "hours": "8h 57m"
+      },
+      {
+        "id": 1713000000045,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-30",
+        "dateDisp": "Mar 30, 2026",
+        "timeIn": "07:56:49 AM",
+        "timeInRaw": 1774828609000,
+        "timeOut": "04:56:36 PM",
+        "timeOutRaw": 1774860996000,
+        "hours": "8h 59m"
+      },
+      {
+        "id": 1713000000044,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-27",
+        "dateDisp": "Mar 27, 2026",
+        "timeIn": "07:57:19 AM",
+        "timeInRaw": 1774569439000,
+        "timeOut": "05:00:36 PM",
+        "timeOutRaw": 1774602036000,
+        "hours": "9h 03m"
+      },
+      {
+        "id": 1713000000043,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-26",
+        "dateDisp": "Mar 26, 2026",
+        "timeIn": "07:59:22 AM",
+        "timeInRaw": 1774483162000,
+        "timeOut": "04:58:48 PM",
+        "timeOutRaw": 1774515528000,
+        "hours": "8h 59m"
+      },
+      {
+        "id": 1713000000042,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-25",
+        "dateDisp": "Mar 25, 2026",
+        "timeIn": "07:56:33 AM",
+        "timeInRaw": 1774396593000,
+        "timeOut": "04:58:25 PM",
+        "timeOutRaw": 1774429105000,
+        "hours": "9h 01m"
+      },
+      {
+        "id": 1713000000041,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-24",
+        "dateDisp": "Mar 24, 2026",
+        "timeIn": "07:58:51 AM",
+        "timeInRaw": 1774310331000,
+        "timeOut": "04:55:54 PM",
+        "timeOutRaw": 1774342554000,
+        "hours": "8h 57m"
+      },
+      {
+        "id": 1713000000040,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-23",
+        "dateDisp": "Mar 23, 2026",
+        "timeIn": "08:00:40 AM",
+        "timeInRaw": 1774224040000,
+        "timeOut": "04:56:35 PM",
+        "timeOutRaw": 1774256195000,
+        "hours": "8h 55m"
+      },
+      {
+        "id": 1713000000039,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-20",
+        "dateDisp": "Mar 20, 2026",
+        "timeIn": "07:56:19 AM",
+        "timeInRaw": 1773964579000,
+        "timeOut": "04:58:26 PM",
+        "timeOutRaw": 1773997106000,
+        "hours": "9h 02m"
+      },
+      {
+        "id": 1713000000038,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-19",
+        "dateDisp": "Mar 19, 2026",
+        "timeIn": "07:58:20 AM",
+        "timeInRaw": 1773878300000,
+        "timeOut": "04:56:25 PM",
+        "timeOutRaw": 1773910585000,
+        "hours": "8h 58m"
+      },
+      {
+        "id": 1713000000037,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-18",
+        "dateDisp": "Mar 18, 2026",
+        "timeIn": "07:57:59 AM",
+        "timeInRaw": 1773791879000,
+        "timeOut": "04:56:14 PM",
+        "timeOutRaw": 1773824174000,
+        "hours": "8h 58m"
+      },
+      {
+        "id": 1713000000036,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-17",
+        "dateDisp": "Mar 17, 2026",
+        "timeIn": "07:59:41 AM",
+        "timeInRaw": 1773705581000,
+        "timeOut": "04:56:33 PM",
+        "timeOutRaw": 1773737793000,
+        "hours": "8h 56m"
+      },
+      {
+        "id": 1713000000035,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-16",
+        "dateDisp": "Mar 16, 2026",
+        "timeIn": "07:57:10 AM",
+        "timeInRaw": 1773619030000,
+        "timeOut": "04:59:19 PM",
+        "timeOutRaw": 1773651559000,
+        "hours": "9h 02m"
+      },
+      {
+        "id": 1713000000034,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-13",
+        "dateDisp": "Mar 13, 2026",
+        "timeIn": "08:00:06 AM",
+        "timeInRaw": 1773360006000,
+        "timeOut": "04:55:24 PM",
+        "timeOutRaw": 1773392124000,
+        "hours": "8h 55m"
+      },
+      {
+        "id": 1713000000033,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-12",
+        "dateDisp": "Mar 12, 2026",
+        "timeIn": "08:00:04 AM",
+        "timeInRaw": 1773273604000,
+        "timeOut": "04:58:55 PM",
+        "timeOutRaw": 1773305935000,
+        "hours": "8h 58m"
+      },
+      {
+        "id": 1713000000032,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-11",
+        "dateDisp": "Mar 11, 2026",
+        "timeIn": "07:56:16 AM",
+        "timeInRaw": 1773186976000,
+        "timeOut": "04:57:49 PM",
+        "timeOutRaw": 1773219469000,
+        "hours": "9h 01m"
+      },
+      {
+        "id": 1713000000031,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-10",
+        "dateDisp": "Mar 10, 2026",
+        "timeIn": "07:57:01 AM",
+        "timeInRaw": 1773100621000,
+        "timeOut": "05:00:10 PM",
+        "timeOutRaw": 1773133210000,
+        "hours": "9h 03m"
+      },
+      {
+        "id": 1713000000030,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-09",
+        "dateDisp": "Mar 9, 2026",
+        "timeIn": "07:56:24 AM",
+        "timeInRaw": 1773014184000,
+        "timeOut": "04:56:31 PM",
+        "timeOutRaw": 1773046591000,
+        "hours": "9h 00m"
+      },
+      {
+        "id": 1713000000029,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-06",
+        "dateDisp": "Mar 6, 2026",
+        "timeIn": "07:58:30 AM",
+        "timeInRaw": 1772755110000,
+        "timeOut": "04:57:43 PM",
+        "timeOutRaw": 1772787463000,
+        "hours": "8h 59m"
+      },
+      {
+        "id": 1713000000028,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-05",
+        "dateDisp": "Mar 5, 2026",
+        "timeIn": "08:00:09 AM",
+        "timeInRaw": 1772668809000,
+        "timeOut": "04:58:41 PM",
+        "timeOutRaw": 1772701121000,
+        "hours": "8h 58m"
+      },
+      {
+        "id": 1713000000027,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-04",
+        "dateDisp": "Mar 4, 2026",
+        "timeIn": "08:00:59 AM",
+        "timeInRaw": 1772582459000,
+        "timeOut": "04:57:49 PM",
+        "timeOutRaw": 1772614669000,
+        "hours": "8h 56m"
+      },
+      {
+        "id": 1713000000026,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-03",
+        "dateDisp": "Mar 3, 2026",
+        "timeIn": "08:00:34 AM",
+        "timeInRaw": 1772496034000,
+        "timeOut": "04:58:45 PM",
+        "timeOutRaw": 1772528325000,
+        "hours": "8h 58m"
+      },
+      {
+        "id": 1713000000025,
+        "name": "Erl Ramas",
+        "dateKey": "2026-03-02",
+        "dateDisp": "Mar 2, 2026",
+        "timeIn": "07:58:00 AM",
+        "timeInRaw": 1772409480000,
+        "timeOut": "04:56:08 PM",
+        "timeOutRaw": 1772441768000,
+        "hours": "8h 58m"
+      },
+      {
+        "id": 1713000000024,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-27",
+        "dateDisp": "Feb 27, 2026",
+        "timeIn": "07:59:53 AM",
+        "timeInRaw": 1772150393000,
+        "timeOut": "05:00:28 PM",
+        "timeOutRaw": 1772182828000,
+        "hours": "9h 00m"
+      },
+      {
+        "id": 1713000000023,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-26",
+        "dateDisp": "Feb 26, 2026",
+        "timeIn": "08:00:17 AM",
+        "timeInRaw": 1772064017000,
+        "timeOut": "04:59:20 PM",
+        "timeOutRaw": 1772096360000,
+        "hours": "8h 59m"
+      },
+      {
+        "id": 1713000000022,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-25",
+        "dateDisp": "Feb 25, 2026",
+        "timeIn": "07:57:17 AM",
+        "timeInRaw": 1771977437000,
+        "timeOut": "04:55:24 PM",
+        "timeOutRaw": 1772009724000,
+        "hours": "8h 58m"
+      },
+      {
+        "id": 1713000000021,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-24",
+        "dateDisp": "Feb 24, 2026",
+        "timeIn": "07:56:43 AM",
+        "timeInRaw": 1771891003000,
+        "timeOut": "04:56:40 PM",
+        "timeOutRaw": 1771923400000,
+        "hours": "8h 59m"
+      },
+      {
+        "id": 1713000000020,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-23",
+        "dateDisp": "Feb 23, 2026",
+        "timeIn": "07:59:24 AM",
+        "timeInRaw": 1771804764000,
+        "timeOut": "04:58:39 PM",
+        "timeOutRaw": 1771837119000,
+        "hours": "8h 59m"
+      },
+      {
+        "id": 1713000000019,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-20",
+        "dateDisp": "Feb 20, 2026",
+        "timeIn": "07:58:50 AM",
+        "timeInRaw": 1771545530000,
+        "timeOut": "04:58:56 PM",
+        "timeOutRaw": 1771577936000,
+        "hours": "9h 00m"
+      },
+      {
+        "id": 1713000000018,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-19",
+        "dateDisp": "Feb 19, 2026",
+        "timeIn": "07:59:44 AM",
+        "timeInRaw": 1771459184000,
+        "timeOut": "04:58:20 PM",
+        "timeOutRaw": 1771491500000,
+        "hours": "8h 58m"
+      },
+      {
+        "id": 1713000000017,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-18",
+        "dateDisp": "Feb 18, 2026",
+        "timeIn": "07:58:18 AM",
+        "timeInRaw": 1771372698000,
+        "timeOut": "05:00:17 PM",
+        "timeOutRaw": 1771405217000,
+        "hours": "9h 01m"
+      },
+      {
+        "id": 1713000000016,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-17",
+        "dateDisp": "Feb 17, 2026",
+        "timeIn": "07:59:12 AM",
+        "timeInRaw": 1771286352000,
+        "timeOut": "04:56:06 PM",
+        "timeOutRaw": 1771318566000,
+        "hours": "8h 56m"
+      },
+      {
+        "id": 1713000000015,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-16",
+        "dateDisp": "Feb 16, 2026",
+        "timeIn": "07:58:05 AM",
+        "timeInRaw": 1771199885000,
+        "timeOut": "04:55:56 PM",
+        "timeOutRaw": 1771232156000,
+        "hours": "8h 57m"
+      },
+      {
+        "id": 1713000000014,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-13",
+        "dateDisp": "Feb 13, 2026",
+        "timeIn": "07:56:08 AM",
+        "timeInRaw": 1770940568000,
+        "timeOut": "04:56:31 PM",
+        "timeOutRaw": 1770972991000,
+        "hours": "9h 00m"
+      },
+      {
+        "id": 1713000000013,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-12",
+        "dateDisp": "Feb 12, 2026",
+        "timeIn": "07:58:23 AM",
+        "timeInRaw": 1770854303000,
+        "timeOut": "05:00:11 PM",
+        "timeOutRaw": 1770886811000,
+        "hours": "9h 01m"
+      },
+      {
+        "id": 1713000000012,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-11",
+        "dateDisp": "Feb 11, 2026",
+        "timeIn": "07:59:50 AM",
+        "timeInRaw": 1770767990000,
+        "timeOut": "04:59:32 PM",
+        "timeOutRaw": 1770800372000,
+        "hours": "8h 59m"
+      },
+      {
+        "id": 1713000000011,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-10",
+        "dateDisp": "Feb 10, 2026",
+        "timeIn": "07:56:43 AM",
+        "timeInRaw": 1770681403000,
+        "timeOut": "05:00:42 PM",
+        "timeOutRaw": 1770714042000,
+        "hours": "9h 03m"
+      },
+      {
+        "id": 1713000000010,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-09",
+        "dateDisp": "Feb 9, 2026",
+        "timeIn": "07:56:46 AM",
+        "timeInRaw": 1770595006000,
+        "timeOut": "04:57:35 PM",
+        "timeOutRaw": 1770627455000,
+        "hours": "9h 00m"
+      },
+      {
+        "id": 1713000000009,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-06",
+        "dateDisp": "Feb 6, 2026",
+        "timeIn": "07:59:25 AM",
+        "timeInRaw": 1770335965000,
+        "timeOut": "05:00:32 PM",
+        "timeOutRaw": 1770368432000,
+        "hours": "9h 01m"
+      },
+      {
+        "id": 1713000000008,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-05",
+        "dateDisp": "Feb 5, 2026",
+        "timeIn": "07:56:52 AM",
+        "timeInRaw": 1770249412000,
+        "timeOut": "04:55:12 PM",
+        "timeOutRaw": 1770281712000,
+        "hours": "8h 58m"
+      },
+      {
+        "id": 1713000000007,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-04",
+        "dateDisp": "Feb 4, 2026",
+        "timeIn": "07:56:43 AM",
+        "timeInRaw": 1770163003000,
+        "timeOut": "04:57:56 PM",
+        "timeOutRaw": 1770195476000,
+        "hours": "9h 01m"
+      },
+      {
+        "id": 1713000000006,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-03",
+        "dateDisp": "Feb 3, 2026",
+        "timeIn": "07:59:02 AM",
+        "timeInRaw": 1770076742000,
+        "timeOut": "04:58:49 PM",
+        "timeOutRaw": 1770109129000,
+        "hours": "8h 59m"
+      },
+      {
+        "id": 1713000000005,
+        "name": "Erl Ramas",
+        "dateKey": "2026-02-02",
+        "dateDisp": "Feb 2, 2026",
+        "timeIn": "07:57:29 AM",
+        "timeInRaw": 1769990249000,
+        "timeOut": "05:00:06 PM",
+        "timeOutRaw": 1770022806000,
+        "hours": "9h 02m"
+      },
+      {
+        "id": 1713000000004,
+        "name": "Erl Ramas",
+        "dateKey": "2026-01-30",
+        "dateDisp": "Jan 30, 2026",
+        "timeIn": "08:00:54 AM",
+        "timeInRaw": 1769731254000,
+        "timeOut": "04:56:35 PM",
+        "timeOutRaw": 1769763395000,
+        "hours": "8h 55m"
+      },
+      {
+        "id": 1713000000003,
+        "name": "Erl Ramas",
+        "dateKey": "2026-01-29",
+        "dateDisp": "Jan 29, 2026",
+        "timeIn": "07:57:20 AM",
+        "timeInRaw": 1769644640000,
+        "timeOut": "04:55:33 PM",
+        "timeOutRaw": 1769676933000,
+        "hours": "8h 58m"
+      },
+      {
+        "id": 1713000000002,
+        "name": "Erl Ramas",
+        "dateKey": "2026-01-28",
+        "dateDisp": "Jan 28, 2026",
+        "timeIn": "07:57:04 AM",
+        "timeInRaw": 1769558224000,
+        "timeOut": "04:55:15 PM",
+        "timeOutRaw": 1769590515000,
+        "hours": "8h 58m"
+      },
+      {
+        "id": 1713000000001,
+        "name": "Erl Ramas",
+        "dateKey": "2026-01-27",
+        "dateDisp": "Jan 27, 2026",
+        "timeIn": "08:00:04 AM",
+        "timeInRaw": 1769472004000,
+        "timeOut": "04:55:43 PM",
+        "timeOutRaw": 1769504143000,
+        "hours": "8h 55m"
+      },
+      {
+        "id": 1713000000000,
+        "name": "Erl Ramas",
+        "dateKey": "2026-01-26",
+        "dateDisp": "Jan 26, 2026",
+        "timeIn": "07:57:30 AM",
+        "timeInRaw": 1769385450000,
+        "timeOut": "05:00:14 PM",
+        "timeOutRaw": 1769418014000,
+        "hours": "9h 02m"
+      }
+    ];
+
+    function loadRecords() {
+      try {
+        const stored = localStorage.getItem(STORE_KEY);
+        if (!stored) {
+          // First load: seed with default records
+          localStorage.setItem(STORE_KEY, JSON.stringify(DEFAULT_RECORDS));
+          return DEFAULT_RECORDS;
+        }
+        return JSON.parse(stored) || [];
+      }
+      catch { return []; }
+    }
+    function saveRecords(records) {
+      localStorage.setItem(STORE_KEY, JSON.stringify(records));
+    }
+
+    let records = loadRecords();
+
+    /* =============================================
+       LIVE CLOCK
+       ============================================= */
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function formatTime12(date) {
+      let h = date.getHours(), m = date.getMinutes(), s = date.getSeconds();
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12 || 12;
+      return `${pad(h)}:${pad(m)}:${pad(s)} ${ampm}`;
+    }
+    function formatDate(date) {
+      return date.toLocaleDateString('en-PH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+    function formatDateShort(date) {
+      return date.toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+    function formatDateKey(date) {
+      // YYYY-MM-DD for grouping
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+    }
+
+    function tickClock() {
+      const now = new Date();
+      document.getElementById('liveClock').textContent = formatTime12(now);
+      document.getElementById('liveDateLabel').textContent = formatDate(now);
+      document.getElementById('headerDate').textContent = formatDateShort(now);
+      document.getElementById('printDate').textContent = 'Printed: ' + formatDate(now);
+    }
+    tickClock();
+    setInterval(tickClock, 1000);
+
+    /* =============================================
+       TOAST
+       ============================================= */
+    let toastTimer;
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('statusToast');
+      t.textContent = msg;
+      t.className = `show ${type}`;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { t.className = ''; }, 3200);
+    }
+
+    /* =============================================
+       TIME IN / OUT
+       ============================================= */
+    function handleTimeIn() {
+      const name = document.getElementById('nameInput').value.trim();
+      if (!name) { showToast('⚠️ Please enter your name first.', 'error'); return; }
+
+      const now = new Date();
+      const dateKey = formatDateKey(now);
+
+      // Check if already timed-in today and not yet timed-out
+      const existing = records.find(r => r.name.toLowerCase() === name.toLowerCase() && r.dateKey === dateKey && !r.timeOut);
+      if (existing) {
+        showToast(`⚠️ ${name} already has an open Time In today.`, 'error');
+        return;
+      }
+
+      const record = {
+        id: Date.now(),
+        name,
+        dateKey,
+        dateDisp: formatDateShort(now),
+        timeIn: formatTime12(now),
+        timeInRaw: now.getTime(),
+        timeOut: null,
+        timeOutRaw: null,
+        hours: null
+      };
+
+      records.unshift(record);
+      saveRecords(records);
+      renderTable();
+      updateStats();
+      showToast(`✅ Time In recorded for ${name} at ${record.timeIn}`, 'success');
+      document.getElementById('nameInput').value = '';
+    }
+
+    function handleTimeOut() {
+      const name = document.getElementById('nameInput').value.trim();
+      if (!name) { showToast('⚠️ Please enter your name first.', 'error'); return; }
+
+      const now = new Date();
+      const dateKey = formatDateKey(now);
+
+      const record = records.find(r => r.name.toLowerCase() === name.toLowerCase() && r.dateKey === dateKey && !r.timeOut);
+      if (!record) {
+        showToast(`⚠️ No open Time In found for ${name} today.`, 'error');
+        return;
+      }
+
+      record.timeOut = formatTime12(now);
+      record.timeOutRaw = now.getTime();
+
+      const diffMs = record.timeOutRaw - record.timeInRaw;
+      const totalMin = Math.floor(diffMs / 60000);
+      const hh = Math.floor(totalMin / 60);
+      const mm = totalMin % 60;
+      record.hours = `${hh}h ${pad(mm)}m`;
+
+      saveRecords(records);
+      renderTable();
+      updateStats();
+      showToast(`✅ Time Out recorded for ${name} at ${record.timeOut}  (${record.hours})`, 'success');
+      document.getElementById('nameInput').value = '';
+    }
+
+    /* =============================================
+       STATS
+       ============================================= */
+    function updateStats() {
+      const todayKey = formatDateKey(new Date());
+      const todayRecords = records.filter(r => r.dateKey === todayKey);
+      const completed = todayRecords.filter(r => r.timeOut);
+
+      document.getElementById('statTotal').textContent = records.length;
+      document.getElementById('statToday').textContent = completed.length;
+
+      let totalMin = 0;
+      completed.forEach(r => {
+        if (r.timeOutRaw && r.timeInRaw)
+          totalMin += Math.floor((r.timeOutRaw - r.timeInRaw) / 60000);
+      });
+      const hh = Math.floor(totalMin / 60), mm = totalMin % 60;
+      document.getElementById('statHours').textContent = `${hh}h ${mm}m`;
+    }
+
+    /* =============================================
+       DATE FILTER POPULATE
+       ============================================= */
+    function populateDateFilter() {
+      const sel = document.getElementById('filterDate');
+      const current = sel.value;
+      // Get unique date keys
+      const dates = [...new Set(records.map(r => r.dateKey))].sort().reverse();
+      sel.innerHTML = '<option value="">All Dates</option>';
+      dates.forEach(dk => {
+        const opt = document.createElement('option');
+        opt.value = dk;
+        opt.textContent = new Date(dk + 'T00:00:00').toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' });
+        sel.appendChild(opt);
+      });
+      sel.value = current;
+    }
+
+    /* =============================================
+       PAGINATION STATE
+       ============================================= */
+    let currentPage = 1;
+    const ITEMS_PER_PAGE = 8;
+
+    function resetPageAndRender() {
+      currentPage = 1;
+      renderTable();
+    }
+    function prevPage() {
+      if (currentPage > 1) { currentPage--; renderTable(); }
+    }
+    function nextPage() {
+      currentPage++; renderTable();
+    }
+
+    /* =============================================
+       RENDER TABLE
+       ============================================= */
+    function renderTable() {
+      populateDateFilter();
+      const search = document.getElementById('searchInput').value.trim().toLowerCase();
+      const dateFilter = document.getElementById('filterDate').value;
+
+      let filtered = records;
+      if (search) filtered = filtered.filter(r => r.name.toLowerCase().includes(search));
+      if (dateFilter) filtered = filtered.filter(r => r.dateKey === dateFilter);
+
+      const tbody = document.getElementById('dtrBody');
+      const pagWrap = document.getElementById('paginationWrap');
+
+      if (!filtered.length) {
+        tbody.innerHTML = `<tr><td colspan="8">
+      <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        <p>${records.length ? 'No records match your filter.' : 'No records yet. Enter a name and click <strong>Time In</strong> to start.'}</p>
+      </div></td></tr>`;
+        pagWrap.innerHTML = '';
+        return;
+      }
+
+      const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE) || 1;
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+
+      const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+      const paginated = filtered.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+      tbody.innerHTML = paginated.map((r, i) => `
+    <tr>
+      <td class="td-date">${filtered.length - startIndex - i}</td>
+      <td class="td-name">${escHtml(r.name)}</td>
+      <td class="td-date">${r.dateDisp}</td>
+      <td class="td-time">${r.timeIn}</td>
+      <td class="td-time">${r.timeOut || '<span style="color:var(--muted)">—</span>'}</td>
+      <td class="td-hours" style="color:${r.hours ? 'var(--amber)' : 'var(--muted)'}">
+        ${r.hours || '<span style="color:var(--muted)">—</span>'}
+      </td>
+      <td>
+        <span class="badge ${r.timeOut ? 'badge-complete' : 'badge-pending'}">
+          ${r.timeOut ? '✔ Complete' : '⏳ In'}
+        </span>
+      </td>
+      <td>
+        <button class="del-btn" onclick="deleteRecord(${r.id})" title="Delete">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+          </svg>
+        </button>
+      </td>
+    </tr>
+  `).join('');
+
+      pagWrap.innerHTML = `
+    <div class="page-info">Showing ${startIndex + 1} to ${Math.min(startIndex + ITEMS_PER_PAGE, filtered.length)} of ${filtered.length} entries</div>
+    <div style="display:flex; gap:6px;">
+      <button class="page-btn" onclick="prevPage()" ${currentPage === 1 ? 'disabled' : ''}>Prev</button>
+      <div style="padding: 6px 4px; font-weight:600; color:var(--text);">${currentPage} / ${totalPages}</div>
+      <button class="page-btn" onclick="nextPage()" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>
+    </div>
+  `;
+    }
+
+    function escHtml(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    /* =============================================
+       DELETE
+       ============================================= */
+    function deleteRecord(id) {
+      if (!confirm('Delete this record?')) return;
+      records = records.filter(r => r.id !== id);
+      saveRecords(records);
+      renderTable();
+      updateStats();
+      showToast('Record deleted.', 'info');
+    }
+
+    function clearAll() {
+      if (!records.length) { showToast('No records to clear.', 'info'); return; }
+      if (!confirm(`Delete ALL ${records.length} record(s)? This cannot be undone.`)) return;
+      records = [];
+      saveRecords(records);
+      renderTable();
+      updateStats();
+      showToast('All records cleared.', 'info');
+    }
+
+    /* =============================================
+       PRINT
+       ============================================= */
+    function printRecord() {
+      window.print();
+    }
+
+    /* =============================================
+       EXPORT CSV
+       ============================================= */
+    function exportCSV() {
+      if (!records.length) { showToast('No records to export.', 'error'); return; }
+
+      const search = document.getElementById('searchInput').value.trim().toLowerCase();
+      const dateFilter = document.getElementById('filterDate').value;
+      let data = records;
+      if (search) data = data.filter(r => r.name.toLowerCase().includes(search));
+      if (dateFilter) data = data.filter(r => r.dateKey === dateFilter);
+
+      const header = ['#', 'Name', 'Date', 'Time In', 'Time Out', 'Hours', 'Status'];
+      const rows = data.map((r, i) => [
+        i + 1,
+        `"${r.name.replace(/"/g, '""')}"`,
+        r.dateDisp,
+        r.timeIn,
+        r.timeOut || '',
+        r.hours || '',
+        r.timeOut ? 'Complete' : 'Pending'
+      ]);
+
+      const csv = [header, ...rows].map(r => r.join(',')).join('\r\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `DTR_${formatDateKey(new Date())}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('CSV exported successfully!', 'success');
+    }
+
+    /* =============================================
+       EXPORT & IMPORT JSON
+       ============================================= */
+    function exportJSON() {
+      if (!records.length) { showToast('No records to export.', 'error'); return; }
+
+      const search = document.getElementById('searchInput').value.trim().toLowerCase();
+      const dateFilter = document.getElementById('filterDate').value;
+      let dataExport = records;
+      if (search) dataExport = dataExport.filter(r => r.name.toLowerCase().includes(search));
+      if (dateFilter) dataExport = dataExport.filter(r => r.dateKey === dateFilter);
+
+      const json = JSON.stringify(dataExport, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `DTR_${formatDateKey(new Date())}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('JSON exported successfully!', 'success');
+    }
+
+    function importJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (!Array.isArray(imported)) throw new Error("Invalid format");
+
+          // Basic merge (could also just replace)
+          // Here we append preventing exact ID duplicates
+          let added = 0;
+          imported.forEach(imp => {
+            if (!records.find(r => r.id === imp.id)) {
+              records.push(imp);
+              added++;
+            }
+          });
+
+          records.sort((a, b) => b.timeInRaw - a.timeInRaw);
+          saveRecords(records);
+          renderTable();
+          updateStats();
+          showToast(`✅ Imported ${added} new records!`, 'success');
+        } catch (err) {
+          showToast('⚠️ Invalid JSON file.', 'error');
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = ""; // reset input
+    }
+
+    /* =============================================
+       INIT
+       ============================================= */
+    renderTable();
+    updateStats();
+
+    // Save name in sessionStorage for convenience
+    document.getElementById('nameInput').addEventListener('input', function () {
+      sessionStorage.setItem('dtr_last_name', this.value);
+    });
+    const lastName = sessionStorage.getItem('dtr_last_name');
+    if (lastName) document.getElementById('nameInput').value = lastName;
+  </script>
+</body>
+
+</html>
