@@ -398,6 +398,159 @@
       border-color: var(--accent);
     }
 
+    /* ===== DUTY DASHBOARD ===== */
+    .duty-dashboard {
+      margin-bottom: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .duty-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .duty-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .duty-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .duty-summary-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px;
+    }
+
+    .duty-summary-label {
+      color: var(--muted);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .duty-summary-value {
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .duty-controls {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .duty-controls .filter-input {
+      width: 100%;
+      height: 34px;
+    }
+
+    .duty-controls .btn {
+      height: 34px;
+      padding: 0 12px;
+      font-size: 0.75rem;
+    }
+
+    .duty-legend {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    .duty-calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .duty-day-head {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .duty-day {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      min-height: 52px;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .duty-day.blank {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .duty-day-num {
+      font-size: 0.76rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .duty-day-tag {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      color: #fff;
+      border-radius: 4px;
+      padding: 2px 4px;
+      text-align: center;
+    }
+
+    .tag-duty {
+      background: #0ea5e9;
+    }
+
+    .tag-logged {
+      background: #10b981;
+    }
+
+    .tag-off {
+      background: #f43f5e;
+    }
+
+    .tag-before {
+      background: #475569;
+    }
+
     /* ===== TABLE ===== */
     .table-wrap {
       background: var(--surface);
@@ -696,6 +849,11 @@
         flex: 1;
       }
 
+      .duty-summary,
+      .duty-controls {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       th:nth-child(5),
       td:nth-child(5) {
         display: none;
@@ -778,6 +936,48 @@
           All</button>
       </div>
     </div>
+
+    <!-- DUTY CALENDAR DASHBOARD -->
+    <section class="duty-dashboard">
+      <div class="duty-head">
+          <div class="duty-title">📆 Duty Calendar Dashboard</div>
+      </div>
+
+      <div class="duty-summary">
+          <div class="duty-summary-item">
+            <div class="duty-summary-label">Started Work</div>
+            <div class="duty-summary-value" id="dutyStartInfo">—</div>
+          </div>
+          <div class="duty-summary-item">
+            <div class="duty-summary-label">Duty Days (Month)</div>
+            <div class="duty-summary-value" id="dutyCountInfo">0</div>
+          </div>
+          <div class="duty-summary-item">
+            <div class="duty-summary-label">Day Off (Month)</div>
+            <div class="duty-summary-value" id="offCountInfo">0</div>
+          </div>
+          <div class="duty-summary-item">
+            <div class="duty-summary-label">Missing Logs</div>
+            <div class="duty-summary-value" id="missingCountInfo">0</div>
+          </div>
+      </div>
+
+      <div class="duty-controls">
+          <input class="filter-input" id="dutyMonth" type="month" />
+          <input class="filter-input" id="dutyStartDate" type="date" />
+          <input class="filter-input" id="offDaysInput" type="text" placeholder="Off days in month (e.g. 10,13,20)" />
+          <button class="btn btn-export" onclick="saveDutyProfile()">Save Duty Info</button>
+      </div>
+
+      <div class="duty-legend">
+          <span><span class="legend-dot" style="background:#10b981;"></span>Logged Duty</span>
+          <span><span class="legend-dot" style="background:#0ea5e9;"></span>Duty</span>
+          <span><span class="legend-dot" style="background:#f43f5e;"></span>Day Off</span>
+          <span><span class="legend-dot" style="background:#475569;"></span>Not Started</span>
+      </div>
+
+      <div class="duty-calendar-grid" id="dutyCalendar"></div>
+    </section>
 
     <!-- TABLE -->
     <div class="table-wrap">
