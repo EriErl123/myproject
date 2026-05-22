@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Duty Calendar — May 2026</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Duty Calendar — May 2026</h1>
+      <p class="subtitle">Track duty and days off at a glance.</p>
+    </header>
+
+    <section class="quick-entry">
+      <h2>Quick Entry</h2>
+      <form id="quickEntryForm">
+        <label>
+          Today’s date
+          <input type="date" id="todayDate" />
+        </label>
+        <label>
+          Status
+          <select id="todayStatus">
+            <option value="">Select</option>
+            <option value="DUTY">DUTY</option>
+            <option value="OFF">OFF</option>
+          </select>
+        </label>
+        <label>
+          Hours
+          <input type="text" id="todayHours" placeholder="e.g., 08:00-17:00" />
+        </label>
+        <label>
+          Location
+          <input type="text" id="todayLocation" placeholder="e.g., HQ" />
+        </label>
+        <label class="full">
+          Notes
+          <input type="text" id="todayNotes" placeholder="Anything to remember" />
+        </label>
+        <button type="submit">Save Entry</button>
+      </form>
+      <p class="hint">Saved entries appear below in “Daily Details.”</p>
+    </section>
+
+    <section class="calendar">
+      <h2>Monthly Grid (Sun–Sat)</h2>
+      <div class="grid" id="calendarGrid"></div>
+    </section>
+
+    <section class="details">
+      <h2>Daily Details</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Hours</th>
+            <th>Location</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="detailsBody">
+          <tr>
+            <td>May 2, 2026</td>
+            <td>DUTY</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>May 10, 2026</td>
+            <td>OFF</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>May 13, 2026</td>
+            <td>OFF</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>May 20, 2026</td>
+            <td>OFF</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
