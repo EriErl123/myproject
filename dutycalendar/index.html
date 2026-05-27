@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Duty Calendar — May 2026</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <div>
+        <p class="eyebrow">Duty tracking</p>
+        <h1>Duty Calendar — May 2026</h1>
+        <p class="subtitle">A clean, at-a-glance view of your duty and days off.</p>
+      </div>
+      <div class="header-cards">
+        <div class="mini-card">
+          <span>Start date</span>
+          <strong>May 2, 2026</strong>
+        </div>
+        <div class="mini-card">
+          <span>Days off</span>
+          <strong>May 10, 13, 20</strong>
+        </div>
+      </div>
+    </header>
+
+    <section class="summary">
+      <div class="section-header">
+        <h2>Month Overview</h2>
+        <p class="muted">Totals update automatically as you add entries.</p>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <span>Duty days</span>
+          <strong id="summaryDuty">0</strong>
+        </div>
+        <div class="summary-card">
+          <span>Days off</span>
+          <strong id="summaryOff">0</strong>
+        </div>
+        <div class="summary-card">
+          <span>Saved entries</span>
+          <strong id="summaryEntries">0</strong>
+        </div>
+        <div class="summary-card">
+          <span>Next off day</span>
+          <strong id="summaryNextOff">—</strong>
+        </div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="dot duty"></span>DUTY</div>
+        <div class="legend-item"><span class="dot off"></span>OFF</div>
+        <div class="legend-item"><span class="dot neutral"></span>Not set</div>
+      </div>
+    </section>
+
+    <section class="quick-entry">
+      <div class="section-header">
+        <h2>Quick Entry</h2>
+        <p class="muted">Entries are saved in your browser for quick access.</p>
+      </div>
+      <form id="quickEntryForm">
+        <label>
+          Date
+          <input type="date" id="todayDate" required />
+        </label>
+        <label>
+          Status
+          <select id="todayStatus" required>
+            <option value="">Select</option>
+            <option value="DUTY">DUTY</option>
+            <option value="OFF">OFF</option>
+          </select>
+        </label>
+        <label>
+          Hours
+          <input type="text" id="todayHours" placeholder="e.g., 08:00–17:00" />
+        </label>
+        <label>
+          Location
+          <input type="text" id="todayLocation" placeholder="e.g., HQ" />
+        </label>
+        <label class="full">
+          Notes
+          <input type="text" id="todayNotes" placeholder="Anything to remember" />
+        </label>
+        <div class="form-actions">
+          <button type="submit">Save Entry</button>
+          <button type="button" class="secondary" id="clearEntries">Clear saved entries</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="calendar">
+      <div class="section-header">
+        <h2>Monthly Grid (Sun–Sat)</h2>
+        <p class="muted">Today is highlighted automatically.</p>
+      </div>
+      <div class="grid" id="calendarGrid"></div>
+    </section>
+
+    <section class="details">
+      <div class="section-header">
+        <h2>Daily Details</h2>
+        <p class="muted">Entries appear in date order.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Hours</th>
+              <th>Location</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="detailsBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

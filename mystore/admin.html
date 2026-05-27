@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
+  <title>Admin Dashboard — Acentra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="admin.css" />
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js" crossorigin="anonymous"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" crossorigin="anonymous"></script>
+  <script src="firebase-config.js?v=20260304e"></script>
+  <script src="admin.js?v=20260304e" defer></script>
+</head>
+<body>
+
+  <!-- ===== LOGIN SCREEN ===== -->
+  <div class="admin-login" id="adminLogin">
+    <div class="admin-login-card">
+      <a href="index.html" class="logo"><img src="img/logolandscape.png" alt="Acentra" /></a>
+      <h2>Admin Dashboard</h2>
+      <p>Sign in with your admin Google account to continue.</p>
+      <button class="admin-login-btn" id="adminGoogleBtn">
+        <i class="fa-brands fa-google"></i> Sign in with Google
+      </button>
+      <p class="admin-login-error" id="loginError"></p>
+      <p class="admin-login-note">Access restricted to authorized admin accounts only.</p>
+    </div>
+  </div>
+
+  <!-- ===== DASHBOARD APP ===== -->
+  <div class="admin-app" id="adminApp" style="display:none;">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-brand">
+        <a href="index.html" class="logo"><img src="img/logolandscape.png" alt="Acentra" /></a>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link active" data-page="dashboard">
+          <i class="fa-solid fa-chart-line"></i> Dashboard
+        </a>
+        <a href="#" class="sidebar-link" data-page="projects">
+          <i class="fa-solid fa-folder-open"></i> Projects
+        </a>
+        <a href="#" class="sidebar-link" data-page="requests">
+          <i class="fa-solid fa-inbox"></i> Requests
+          <span class="sidebar-badge" id="requestBadge" style="display:none;">0</span>
+        </a>
+        <a href="#" class="sidebar-link" data-page="messages">
+          <i class="fa-solid fa-comments"></i> Messages
+          <span class="sidebar-badge" id="unreadBadge" style="display:none;">0</span>
+        </a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-user">
+          <img src="" alt="" id="sidebarUserPhoto" />
+          <span id="sidebarUserName">Admin</span>
+        </div>
+        <button class="sidebar-logout" id="adminLogout">
+          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <header class="admin-header">
+        <button class="sidebar-toggle" id="sidebarToggle">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <h1 id="pageTitle">Dashboard</h1>
+        <div class="header-actions">
+          <a href="index.html" target="_blank" class="header-btn">
+            <i class="fa-solid fa-external-link"></i> View Site
+          </a>
+        </div>
+      </header>
+
+      <!-- ===== DASHBOARD PAGE ===== -->
+      <div class="admin-page active" id="page-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card clickable" data-goto="projects">
+            <div class="stat-icon"><i class="fa-solid fa-folder-open"></i></div>
+            <div class="stat-info">
+              <h3 id="statTotalProjects">0</h3>
+              <p>Total Projects</p>
+            </div>
+          </div>
+          <div class="stat-card clickable" data-goto="projects" data-filter="in-progress">
+            <div class="stat-icon active"><i class="fa-solid fa-spinner"></i></div>
+            <div class="stat-info">
+              <h3 id="statActiveProjects">0</h3>
+              <p>Active Projects</p>
+            </div>
+          </div>
+          <div class="stat-card clickable" data-goto="requests">
+            <div class="stat-icon requests"><i class="fa-solid fa-inbox"></i></div>
+            <div class="stat-info">
+              <h3 id="statNewRequests">0</h3>
+              <p>New Requests</p>
+            </div>
+          </div>
+          <div class="stat-card clickable" data-goto="messages">
+            <div class="stat-icon messages"><i class="fa-solid fa-comments"></i></div>
+            <div class="stat-info">
+              <h3 id="statTotalChats">0</h3>
+              <p>Total Chats</p>
+            </div>
+          </div>
+          <div class="stat-card clickable" data-goto="messages">
+            <div class="stat-icon unread"><i class="fa-solid fa-envelope"></i></div>
+            <div class="stat-info">
+              <h3 id="statUnreadChats">0</h3>
+              <p>Unread Messages</p>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-grid">
+          <div class="dashboard-card">
+            <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Projects</h3>
+            <div id="recentProjects" class="recent-list">
+              <p class="empty-state">No projects yet.</p>
+            </div>
+          </div>
+          <div class="dashboard-card">
+            <h3><i class="fa-solid fa-inbox"></i> Recent Requests</h3>
+            <div id="recentRequests" class="recent-list">
+              <p class="empty-state">No requests yet.</p>
+            </div>
+          </div>
+          <div class="dashboard-card">
+            <h3><i class="fa-solid fa-comments"></i> Recent Messages</h3>
+            <div id="recentMessages" class="recent-list">
+              <p class="empty-state">No messages yet.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== PROJECTS PAGE ===== -->
+      <div class="admin-page" id="page-projects">
+        <div class="page-actions">
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-status="all">All</button>
+            <button class="filter-tab" data-status="pending">Pending</button>
+            <button class="filter-tab" data-status="in-progress">In Progress</button>
+            <button class="filter-tab" data-status="review">Review</button>
+            <button class="filter-tab" data-status="completed">Completed</button>
+          </div>
+          <div class="page-actions-right">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="projectSearch" placeholder="Search projects..." />
+            </div>
+            <button class="btn-add" id="addProjectBtn">
+              <i class="fa-solid fa-plus"></i> Add Project
+            </button>
+          </div>
+        </div>
+        <div class="projects-table-wrap">
+          <table class="projects-table">
+            <thead>
+              <tr>
+                <th>Project</th>
+                <th>Client</th>
+                <th>Service</th>
+                <th>Status</th>
+                <th>Budget</th>
+                <th>Deadline</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="projectsTableBody">
+              <tr><td colspan="7" class="empty-state">No projects yet. Click "Add Project" to get started.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===== REQUESTS PAGE ===== -->
+      <div class="admin-page" id="page-requests">
+        <div class="page-actions">
+          <div class="filter-tabs">
+            <button class="filter-tab req-filter active" data-status="all">All</button>
+            <button class="filter-tab req-filter" data-status="new">New</button>
+            <button class="filter-tab req-filter" data-status="contacted">Contacted</button>
+            <button class="filter-tab req-filter" data-status="converted">Converted</button>
+            <button class="filter-tab req-filter" data-status="archived">Archived</button>
+          </div>
+          <div class="page-actions-right">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="requestSearch" placeholder="Search requests..." />
+            </div>
+          </div>
+        </div>
+        <div class="projects-table-wrap">
+          <table class="projects-table requests-table">
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Contact</th>
+                <th>Service</th>
+                <th>Budget</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="requestsTableBody">
+              <tr><td colspan="7" class="empty-state">No requests yet. They'll appear here when clients submit the form.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===== MESSAGES PAGE ===== -->
+      <div class="admin-page" id="page-messages">
+        <div class="messages-layout">
+          <div class="chat-list" id="chatList">
+            <div class="chat-list-header">
+              <h3>Conversations</h3>
+              <span class="chat-filter-label" id="chatFilterLabel"></span>
+            </div>
+            <div class="chat-filter-tabs">
+              <button class="chat-tab active" data-filter="active">Active</button>
+              <button class="chat-tab" data-filter="archived">Archived</button>
+              <button class="chat-tab" data-filter="all">All</button>
+            </div>
+            <div class="chat-list-body" id="chatListBody">
+              <p class="empty-state">No conversations yet.</p>
+            </div>
+          </div>
+          <div class="chat-view" id="chatView">
+            <div class="chat-view-empty" id="chatViewEmpty">
+              <i class="fa-solid fa-comments"></i>
+              <p>Select a conversation to start replying</p>
+            </div>
+            <div class="chat-view-active" id="chatViewActive" style="display:none;">
+              <div class="chat-view-header">
+                <div class="chat-view-header-left">
+                  <h4 id="chatViewName">User</h4>
+                  <span class="chat-view-status" id="chatViewStatus">Active</span>
+                </div>
+                <div class="chat-view-header-right">
+                  <select class="chat-assign-select" id="chatAssignSelect" title="Assign agent">
+                    <option value="">Unassigned</option>
+                  </select>
+                  <button class="chat-action-btn archive" id="chatArchiveBtn" title="Archive chat">
+                    <i class="fa-solid fa-box-archive"></i>
+                  </button>
+                  <button class="chat-action-btn delete" id="chatDeleteBtn" title="Delete chat">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="chat-view-messages" id="chatViewMessages"></div>
+              <div class="chat-view-input">
+                <input type="text" id="adminChatInput" placeholder="Type a reply..." />
+                <button class="chat-view-send" id="adminChatSend">
+                  <i class="fa-solid fa-paper-plane"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ===== PROJECT DETAIL MODAL ===== -->
+  <div class="modal-overlay" id="projectDetailModal" style="display:none;">
+    <div class="modal-content detail-modal">
+      <div class="modal-header">
+        <h3 id="detailTitle">Project Details</h3>
+        <button class="modal-close" id="detailClose"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="detail-body" id="detailBody"></div>
+      <div class="detail-actions">
+        <button class="btn-detail-edit" id="detailEditBtn"><i class="fa-solid fa-pen"></i> Edit</button>
+        <button class="btn-detail-delete" id="detailDeleteBtn"><i class="fa-solid fa-trash"></i> Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== REQUEST DETAIL MODAL ===== -->
+  <div class="modal-overlay" id="requestDetailModal" style="display:none;">
+    <div class="modal-content detail-modal">
+      <div class="modal-header">
+        <h3 id="reqDetailTitle">Request Details</h3>
+        <button class="modal-close" id="reqDetailClose"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="detail-body" id="reqDetailBody"></div>
+      <div class="detail-actions request-detail-actions">
+        <button class="btn-detail-status" id="reqMarkContacted" data-status="contacted"><i class="fa-solid fa-phone"></i> Mark Contacted</button>
+        <button class="btn-detail-status convert" id="reqConvertProject" data-status="converted"><i class="fa-solid fa-folder-plus"></i> Convert to Project</button>
+        <button class="btn-detail-status archive" id="reqArchive" data-status="archived"><i class="fa-solid fa-box-archive"></i> Archive</button>
+        <button class="btn-detail-delete" id="reqDeleteBtn"><i class="fa-solid fa-trash"></i> Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST NOTIFICATION ===== -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ===== PROJECT MODAL ===== -->
+  <div class="modal-overlay" id="projectModal" style="display:none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Add Project</h3>
+        <button class="modal-close" id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="projectForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="projTitle">Project Title</label>
+            <input type="text" id="projTitle" required />
+          </div>
+          <div class="form-group">
+            <label for="projClient">Client Name</label>
+            <input type="text" id="projClient" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="projService">Service Type</label>
+            <select id="projService" required>
+              <option value="IT & PC Services">IT &amp; PC Services</option>
+              <option value="Web Development">Web Development</option>
+              <option value="Creative Media">Creative Media</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="projStatus">Status</label>
+            <select id="projStatus" required>
+              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
+              <option value="review">Review</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="projBudget">Budget</label>
+            <input type="text" id="projBudget" placeholder="e.g. ₱5,000" />
+          </div>
+          <div class="form-group">
+            <label for="projDeadline">Deadline</label>
+            <input type="date" id="projDeadline" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="projContact">Client Contact</label>
+          <input type="text" id="projContact" placeholder="Email or phone number" />
+        </div>
+        <div class="form-group">
+          <label for="projDetails">Details / Notes</label>
+          <textarea id="projDetails" rows="3" placeholder="Project details or notes..."></textarea>
+        </div>
+        <!-- Portfolio Settings -->
+        <div class="portfolio-fields" id="portfolioFields">
+          <div class="portfolio-toggle-row">
+            <label class="toggle-label">
+              <input type="checkbox" id="projShowPortfolio" />
+              <span class="toggle-switch"></span>
+              Show in Portfolio
+            </label>
+          </div>
+          <div class="portfolio-extra" id="portfolioExtra" style="display:none;">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="projPortfolioDesc">Portfolio Description</label>
+                <input type="text" id="projPortfolioDesc" placeholder="Short description for the portfolio card" />
+              </div>
+              <div class="form-group">
+                <label for="projPortfolioCategory">Category</label>
+                <select id="projPortfolioCategory">
+                  <option value="web">Web</option>
+                  <option value="system">Systems</option>
+                  <option value="creative">Creative</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="projPortfolioTags">Tech Tags <small>(comma separated)</small></label>
+              <input type="text" id="projPortfolioTags" placeholder="e.g. React, Node.js, Firebase" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" id="modalCancel">Cancel</button>
+          <button type="submit" class="btn-save">
+            <i class="fa-solid fa-check"></i> <span id="modalSaveText">Save Project</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

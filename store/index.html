@@ -1,0 +1,2376 @@
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07111f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.svg">
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+
+  :root {
+    --ui-bg: #07111f;
+    --ui-surface: #0c1a2e;
+    --ui-surface-2: #10233b;
+    --ui-border: rgba(112, 155, 221, 0.18);
+    --ui-text: #eef5ff;
+    --ui-muted: #9bb0cc;
+    --ui-brand: #4b9dff;
+    --ui-brand-2: #1b67ff;
+    --ui-danger: #ff6b7a;
+    --ui-radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Manrope", var(--font-sans, "Segoe UI", Tahoma, sans-serif);
+    color: var(--ui-text);
+    background:
+      radial-gradient(circle at 10% 10%, rgba(75, 157, 255, 0.22), transparent 28%),
+      radial-gradient(circle at 92% 0%, rgba(27, 103, 255, 0.2), transparent 26%),
+      linear-gradient(180deg, #091221 0%, var(--ui-bg) 100%);
+    min-height: 100vh;
+  }
+
+  .app {
+    max-width: 100%;
+    margin: 0;
+    min-height: 100vh;
+    padding: 16px;
+    border: none;
+    border-radius: 0;
+    background: linear-gradient(180deg, rgba(10, 20, 36, 0.92), rgba(7, 17, 31, 0.98));
+  }
+
+  .header-left h1 i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(130deg, rgba(75, 157, 255, 0.35), rgba(27, 103, 255, 0.3));
+    color: #d9ebff;
+    flex: 0 0 auto;
+  }
+
+  .header-left p {
+    font-size: 14px;
+    color: var(--ui-muted);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .stat-card {
+    background: linear-gradient(165deg, rgba(14, 30, 53, 0.94), rgba(10, 21, 38, 0.94));
+    border: 1px solid var(--ui-border);
+    border-radius: 14px;
+    padding: 0.75rem;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 26px rgba(0, 0, 0, 0.28);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--ui-muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    font-weight: 700;
+  }
+
+  .stat-value { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; }
+  .stat-value.green { color: #4b9dff; }
+  .stat-value.amber { color: #7cc4ff; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .section-header h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ui-text);
+  }
+
+  .controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  input[type=text], input[type=number], select, textarea { font-family: "Manrope", var(--font-sans, "Segoe UI", Tahoma, sans-serif); }
+  .controls > * { min-height: 38px; }
+  .controls .btn.sm {
+    padding: 7px 10px;
+    min-height: 36px;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(12, 26, 46, 0.96);
+    border: 1px solid var(--ui-border);
+    border-radius: 12px;
+    padding: 0 12px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+
+  .search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 13px;
+    color: var(--ui-text);
+    padding: 8px 0;
+    width: 180px;
+    font-weight: 500;
+  }
+
+  .search-box i { color: #8fa9ca; font-size: 15px; }
+
+  select {
+    font-size: 13px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--ui-border);
+    background: rgba(12, 26, 46, 0.96);
+    color: var(--ui-text);
+    outline: none;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--ui-border);
+    background: linear-gradient(180deg, rgba(20, 39, 65, 0.98), rgba(13, 28, 49, 0.98));
+    color: #ecf5ff;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 16px rgba(56, 45, 24, 0.12);
+  }
+
+  .btn.primary {
+    background: linear-gradient(125deg, #4b9dff, #1b67ff);
+    color: #f8fbff;
+    border-color: transparent;
+    box-shadow: 0 9px 22px rgba(27, 103, 255, 0.35);
+  }
+
+  .btn.primary:hover { transform: translateY(-2px); }
+  .btn.danger { color: #ffd0d4; border-color: rgba(255, 107, 122, 0.35); background: rgba(43, 18, 24, 0.98); }
+  .btn.danger:hover { background: rgba(58, 22, 30, 1); box-shadow: none; transform: none; }
+  .btn.sm { font-size: 12px; padding: 7px 10px; border-radius: 10px; }
+
+  .table-wrap {
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius);
+    overflow: auto;
+    background: rgba(10, 22, 39, 0.92);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+  }
+
+  .page-meta {
+    font-size: 12px;
+    color: var(--ui-muted);
+    font-weight: 600;
+  }
+
+  .product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 22px rgba(0, 0, 0, 0.24);
+  }
+
+  .product-card .product-thumb {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    border-radius: 14px;
+    cursor: pointer;
+  }
+
+  .product-card .product-name {
+    margin-top: 8px;
+    font-size: 14px;
+    text-align: center;
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 36px;
+  }
+
+  .product-card .product-meta {
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .product-card .badge {
+    margin-top: 8px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .product-card .tap-hint {
+    margin-top: 6px;
+    font-size: 11px;
+    color: #9fd0ff;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .pos-panel {
+    margin-bottom: 14px;
+    padding: 14px;
+    border-radius: 18px;
+    border: 1px solid var(--ui-border);
+    background: linear-gradient(180deg, rgba(16, 35, 59, 0.98), rgba(10, 22, 39, 0.98));
+    box-shadow: 0 12px 22px rgba(0, 0, 0, 0.18);
+  }
+
+  .pos-toolbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: start;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .pos-toolbar h3 {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+  }
+
+  .pos-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .pos-cart {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .pos-item {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: rgba(8, 19, 34, 0.96);
+    border: 1px solid rgba(155, 176, 204, 0.16);
+  }
+
+  .pos-item strong { display: block; font-size: 13px; }
+  .pos-item small { display: block; margin-top: 2px; color: var(--ui-muted); }
+
+  .pos-stepper {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .pos-stepper .qty {
+    min-width: 28px;
+    text-align: center;
+    font-weight: 800;
+  }
+
+  .pos-summary {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-top: 10px;
+    border-top: 1px solid rgba(155, 176, 204, 0.16);
+  }
+
+  .pos-summary .stat-value {
+    font-size: 22px;
+    line-height: 1.1;
+  }
+
+  .pagination-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .pagination-btn {
+    min-width: 42px;
+    justify-content: center;
+  }
+
+  .pagination-btn.active {
+    background: linear-gradient(125deg, #0f766e, #0f584f);
+    color: #fff;
+    border-color: transparent;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
+
+  th {
+    background: linear-gradient(180deg, rgba(16, 35, 59, 0.98), rgba(12, 26, 46, 0.98));
+    font-weight: 700;
+    font-size: 11px;
+    color: #b6cae6;
+    text-align: left;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--ui-border);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+  }
+
+  td {
+    padding: 12px 14px;
+    border-bottom: 1px dashed rgba(155, 176, 204, 0.18);
+    color: var(--ui-text);
+    vertical-align: middle;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(16, 35, 59, 0.95); }
+  .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 99px; }
+  .badge.in-stock { background: #e6f5f0; color: #0a5d54; }
+  .badge.low { background: #fff1db; color: #8d5108; }
+  .badge.out { background: #fce9e9; color: #9f2f2f; }
+  .price { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  .modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(26, 22, 16, 0.44);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    border-radius: var(--ui-radius);
+    padding: 0.75rem;
+  }
+
+  .modal {
+    background: linear-gradient(180deg, rgba(16, 35, 59, 0.99), rgba(10, 22, 39, 0.99));
+    border-radius: var(--ui-radius);
+    border: 1px solid var(--ui-border);
+    padding: 1rem 1.1rem;
+    width: 100%;
+    max-width: 760px;
+    max-height: calc(100vh - 1.5rem);
+    overflow-y: auto;
+    box-shadow: 0 22px 40px rgba(0, 0, 0, 0.22);
+  }
+
+  .modal h3 { font-size: 18px; font-weight: 800; margin-bottom: 0.9rem; letter-spacing: -0.02em; }
+  .form-row { margin-bottom: 10px; }
+
+  .form-row label {
+    display: block;
+    font-size: 11px;
+    color: var(--ui-muted);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+  }
+
+  .form-row input, .form-row select, .form-row textarea {
+    width: 100%;
+    padding: 10px 11px;
+    border-radius: 12px;
+    border: 1px solid var(--ui-border);
+    background: rgba(8, 19, 34, 0.96);
+    color: var(--ui-text);
+    font-size: 14px;
+    outline: none;
+  }
+
+  .form-row input:focus, .form-row select:focus {
+    border-color: var(--ui-brand);
+    box-shadow: 0 0 0 3px rgba(75, 157, 255, 0.14);
+  }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 0.9rem; }
+  .empty { text-align: center; padding: 3rem; color: var(--ui-muted); font-size: 13px; }
+  .empty i { font-size: 32px; display: block; margin-bottom: 8px; opacity: 0.4; }
+
+  .tab-bar {
+    display: inline-flex;
+    gap: 6px;
+    margin-bottom: 1.3rem;
+    padding: 5px;
+    border: 1px solid var(--ui-border);
+    border-radius: 12px;
+    background: rgba(12, 26, 46, 0.94);
+  }
+
+  .tab {
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ui-muted);
+    cursor: pointer;
+    border-radius: 9px;
+    transition: all 0.15s;
+  }
+
+  .tab.active {
+    color: #fff;
+    background: linear-gradient(125deg, #4b9dff, #1b67ff);
+    box-shadow: 0 7px 14px rgba(27, 103, 255, 0.28);
+  }
+
+  .tab:hover:not(.active) { color: #fff; background: rgba(75, 157, 255, 0.14); }
+  .col-name { width: 30%; }
+  .col-cat { width: 16%; }
+  .col-price { width: 13%; }
+  .col-cost { width: 12%; }
+  .col-stock { width: 11%; }
+  .col-status { width: 11%; }
+  .product-visual { display: flex; flex-direction: column; gap: 8px; }
+  .product-thumb {
+    width: 62px;
+    height: 62px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 1px solid var(--ui-border);
+    background: #f2ede2;
+  }
+  .product-thumb.placeholder {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ui-muted);
+  }
+  .product-name { font-weight: 700; line-height: 1.2; }
+  .product-meta { font-size: 11px; color: var(--ui-muted); margin-top: 2px; }
+  .inline-edit { border: none; background: transparent; font-size: 13px; color: var(--ui-text); width: 100%; outline: none; }
+  .inline-edit:focus { background: #f4f0e7; border-radius: 4px; padding: 2px 4px; }
+  #view-products { display: block; animation: reveal .35s ease; }
+  #view-reports { display: none; animation: reveal .35s ease; }
+  #view-manage { display: none; animation: reveal .35s ease; }
+
+  .report-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .report-card {
+    background: linear-gradient(180deg, rgba(16, 35, 59, 0.98), rgba(10, 22, 39, 0.98));
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius);
+    padding: 1rem 1.25rem;
+  }
+
+  .report-card h3 {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--ui-muted);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .report-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(155, 176, 204, 0.18);
+    font-size: 13px;
+  }
+
+  .report-item:last-child { border-bottom: none; }
+  .container { position: relative; }
+
+  .manage-wrap {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  .manage-card {
+    background: linear-gradient(180deg, rgba(16, 35, 59, 0.98), rgba(10, 22, 39, 0.98));
+    border: 1px solid var(--ui-border);
+    border-radius: 14px;
+    padding: 12px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+  }
+
+  .manage-media {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .manage-media .product-thumb {
+    width: 52px;
+    height: 52px;
+    flex: 0 0 auto;
+  }
+
+  .manage-title {
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    color: var(--ui-text);
+  }
+
+  .manage-meta {
+    font-size: 12px;
+    color: var(--ui-muted);
+    margin-bottom: 8px;
+  }
+
+  .manage-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: #3b342a;
+  }
+
+  .manage-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .manage-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .manage-head .manage-title {
+    margin-bottom: 0;
+  }
+
+  .report-list {
+    display: grid;
+    gap: 10px;
+  }
+
+  .sales-panel {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .sales-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .sales-form-shell.hidden {
+    display: none;
+  }
+
+  .sales-form {
+    border: 1px solid var(--ui-border);
+    border-radius: 16px;
+    background: rgba(12, 26, 46, 0.96);
+    padding: 14px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+  }
+
+  .sales-form .form-row { margin-bottom: 10px; }
+
+  .sales-form .inline-row {
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr 1fr;
+    gap: 10px;
+  }
+
+  .sales-form .inline-row .form-row { margin-bottom: 0; }
+
+  .sales-list {
+    display: grid;
+    gap: 10px;
+  }
+
+  .sales-item {
+    display: grid;
+    grid-template-columns: 1.5fr 0.6fr 0.8fr 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid var(--ui-border);
+    border-radius: 14px;
+    background: rgba(12, 26, 46, 0.95);
+  }
+
+  .sales-item strong { display: block; font-size: 13px; }
+  .sales-item small { display: block; margin-top: 2px; color: var(--ui-muted); }
+
+  .wallet-form-shell.hidden {
+    display: none;
+  }
+
+  .wallet-form {
+    border: 1px solid var(--ui-border);
+    border-radius: 16px;
+    background: rgba(12, 26, 46, 0.96);
+    padding: 14px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+  }
+
+  .wallet-form .inline-row {
+    display: grid;
+    grid-template-columns: 0.8fr 1fr 1fr;
+    gap: 10px;
+  }
+
+  .wallet-list {
+    display: grid;
+    gap: 10px;
+  }
+
+  .wallet-item {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid var(--ui-border);
+    border-radius: 14px;
+    background: rgba(12, 26, 46, 0.95);
+  }
+
+  .wallet-item strong { display: block; font-size: 13px; }
+  .wallet-item small { display: block; margin-top: 2px; color: var(--ui-muted); }
+
+  .wallet-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .wallet-pill.in { background: rgba(75, 157, 255, 0.14); color: #9fd0ff; }
+  .wallet-pill.out { background: rgba(255, 107, 122, 0.14); color: #ffd0d4; }
+
+  .report-row {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 0.8fr 0.8fr;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid var(--ui-border);
+    border-radius: 14px;
+    background: rgba(12, 26, 46, 0.95);
+  }
+
+  .report-row strong {
+    display: block;
+    font-size: 13px;
+  }
+
+  .report-row small {
+    display: block;
+    margin-top: 2px;
+    color: var(--ui-muted);
+  }
+
+  .image-help {
+    display: block;
+    font-size: 11px;
+    color: var(--ui-muted);
+    margin-top: 4px;
+  }
+
+  .camera-wrap {
+    margin-top: 8px;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--ui-border);
+    background: rgba(7, 16, 29, 0.98);
+    position: relative;
+    min-height: 140px;
+  }
+
+  .camera-video {
+    width: 100%;
+    max-height: 220px;
+    display: none;
+    object-fit: cover;
+    background: #000;
+  }
+
+  .camera-video.active {
+    display: block;
+  }
+
+  .camera-placeholder {
+    min-height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+    color: #8fa9ca;
+    padding: 10px;
+  }
+
+  .camera-actions {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .image-preview-wrap {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .image-preview-wrap .product-thumb {
+    width: 70px;
+    height: 70px;
+  }
+
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .header-left h1 { font-size: 24px; }
+    .report-grid { grid-template-columns: 1fr; }
+    .card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .report-row { grid-template-columns: 1.4fr 1fr 0.8fr 0.8fr; }
+    .sales-item { grid-template-columns: 1.2fr 0.6fr 0.8fr 1fr auto; }
+  }
+
+  @media (max-width: 760px) {
+    .app { margin: 10px; padding: 0.85rem; border-radius: 18px; }
+    .header { margin-bottom: 1rem; }
+    .header-left h1 { font-size: 20px; }
+    .header-left p { font-size: 12px; }
+    .btn { min-height: 40px; }
+    .section-header { align-items: stretch; }
+    .section-header h2 { width: 100%; }
+    .controls { width: 100%; }
+    .search-box, .controls select { width: 100%; }
+    .search-box input { width: 100%; }
+    .tab-bar { width: 100%; }
+    .tab { flex: 1; text-align: center; padding: 10px 12px; }
+    .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .form-grid { grid-template-columns: 1fr; gap: 0; }
+    .sales-form .inline-row { grid-template-columns: 1fr; }
+    .modal-overlay { padding: 0.4rem; }
+    .modal { width: calc(100vw - 0.8rem); max-width: none; max-height: calc(100vh - 0.8rem); overflow-y: auto; padding: 0.9rem; }
+    .modal-actions { position: sticky; bottom: -1rem; background: var(--ui-surface); padding-top: 10px; }
+
+    .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .report-row {
+      grid-template-columns: 1fr;
+    }
+    .sales-item { grid-template-columns: 1fr; }
+    .pagination-bar { justify-content: center; }
+  }
+
+  @media (max-width: 460px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .stat-value { font-size: 20px; }
+    .header-left h1 i { width: 34px; height: 34px; }
+    .manage-details { grid-template-columns: 1fr; }
+    .manage-actions { justify-content: stretch; }
+    .manage-actions .btn { flex: 1; justify-content: center; }
+    .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  }
+</style>
+<div class="app">
+  <div class="header">
+    <div class="header-left">
+      <h1><i class="ti ti-building-store" aria-hidden="true"></i> My Store</h1>
+      <p>Manage your products, prices, and inventory</p>
+    </div>
+    <div class="controls">
+      <button class="btn sm" type="button" onclick="installApp()"><i class="ti ti-device-mobile" aria-hidden="true"></i> Install</button>
+      <button class="btn sm" type="button" onclick="downloadStoreBackup()"><i class="ti ti-download" aria-hidden="true"></i> Export</button>
+      <button class="btn sm" type="button" onclick="document.getElementById('import-file-input').click()"><i class="ti ti-upload" aria-hidden="true"></i> Import</button>
+      <button class="btn primary" type="button" onclick="openAddModal()"><i class="ti ti-plus" aria-hidden="true"></i> Add product</button>
+      <input id="import-file-input" type="file" accept="application/json,.json" style="display:none" onchange="importStoreBackup(event)">
+    </div>
+  </div>
+
+  <div class="stats-grid" id="stats-grid"></div>
+
+  <div class="tab-bar">
+    <div class="tab active" onclick="showView('products', this)">Products</div>
+    <div class="tab" onclick="showView('reports', this)">Reports</div>
+    <div class="tab" onclick="showView('sales', this)">Sales</div>
+    <div class="tab" onclick="showView('wallet', this)">E-wallet</div>
+    <div class="tab" onclick="showView('manage', this)">Manage</div>
+  </div>
+
+  <div id="view-products">
+    <div class="section-header">
+      <div>
+        <h2 id="product-count">All products</h2>
+        <div class="page-meta" id="product-page-meta"></div>
+      </div>
+      <div class="controls">
+        <div class="search-box"><i class="ti ti-search" aria-hidden="true"></i><input type="text" id="search-input" placeholder="Hanapin: bigas, itlog, sardinas..." oninput="resetProductPage(); renderTable()"></div>
+        <select id="cat-filter" onchange="resetProductPage(); renderTable()"><option value="">Lahat ng kategorya</option></select>
+        <select id="stock-filter" onchange="resetProductPage(); renderTable()">
+          <option value="">Lahat ng stock</option>
+          <option value="in">May stock</option>
+          <option value="low">Kaunti na</option>
+          <option value="out">Ubos na</option>
+        </select>
+      </div>
+    </div>
+    <div class="pos-panel">
+      <div class="pos-toolbar">
+        <div>
+          <h3>Quick POS</h3>
+          <div class="page-meta">Tap a product photo to add 1 item to the cart.</div>
+        </div>
+        <div class="controls">
+          <button class="btn sm" type="button" onclick="clearPosCart()"><i class="ti ti-x" aria-hidden="true"></i>Clear</button>
+        </div>
+      </div>
+      <div class="pos-form-grid">
+        <div class="form-row">
+          <label>Checkout note</label>
+          <input type="text" id="pos-note" placeholder="hal. walk-in customer, tingi order">
+        </div>
+        <div class="form-row">
+          <label>Date/time</label>
+          <input type="datetime-local" id="pos-datetime">
+        </div>
+      </div>
+      <div id="pos-cart" class="pos-cart"></div>
+      <div class="pos-summary">
+        <div>
+          <div class="stat-label">Cart total</div>
+          <div class="stat-value" id="pos-total">₱0.00</div>
+        </div>
+        <div>
+          <div class="stat-label">Items</div>
+          <div class="stat-value" id="pos-items">0</div>
+        </div>
+        <button class="btn primary" type="button" onclick="checkoutPosCart()"><i class="ti ti-receipt" aria-hidden="true"></i>Checkout</button>
+      </div>
+    </div>
+    <div class="container">
+      <div id="product-grid" class="card-grid"></div>
+      <div class="pagination-bar">
+        <div class="page-meta" id="product-pagination-meta"></div>
+        <div class="pagination-controls" id="product-pagination"></div>
+      </div>
+      <div id="modal-container"></div>
+    </div>
+  </div>
+
+  <div id="view-reports">
+    <div class="report-grid" id="report-grid"></div>
+    <div class="manage-head">
+      <div>
+        <h2 style="font-size:16px;font-weight:700;color:#312b22;">Profit list</h2>
+        <div class="page-meta" id="report-page-meta"></div>
+      </div>
+    </div>
+    <div id="report-list" class="report-list"></div>
+    <div class="pagination-bar">
+      <div class="page-meta" id="report-pagination-meta"></div>
+      <div class="pagination-controls" id="report-pagination"></div>
+    </div>
+  </div>
+
+  <div id="view-sales">
+    <div class="section-header">
+      <div>
+        <h2>Sales log</h2>
+        <div class="page-meta" id="sales-page-meta"></div>
+      </div>
+      <div class="controls">
+        <button class="btn sm" type="button" onclick="toggleSalesForm(true)"><i class="ti ti-plus" aria-hidden="true"></i>Add sale</button>
+      </div>
+    </div>
+
+    <div class="sales-panel">
+      <div class="sales-form-shell hidden" id="sales-form-shell">
+        <div class="sales-toolbar" style="margin-bottom:10px;">
+          <div class="page-meta">Enter the sale that happened while you were away</div>
+          <button class="btn sm" type="button" onclick="toggleSalesForm(false)"><i class="ti ti-x" aria-hidden="true"></i>Close</button>
+        </div>
+        <div class="sales-form">
+        <div class="inline-row">
+          <div class="form-row">
+            <label>Product</label>
+            <select id="sale-product"></select>
+          </div>
+          <div class="form-row">
+            <label>Qty sold</label>
+            <input type="number" id="sale-qty" min="1" step="1" placeholder="1">
+          </div>
+          <div class="form-row">
+            <label>Date/time</label>
+            <input type="datetime-local" id="sale-datetime">
+          </div>
+        </div>
+        <div class="form-row">
+          <label>Note (optional)</label>
+          <input type="text" id="sale-note" placeholder="hal. hapon na sale, tingi order, late entry">
+        </div>
+        <div class="modal-actions" style="position:static;padding-top:0;margin-top:10px;justify-content:flex-start;">
+          <button class="btn primary" type="button" onclick="recordSale()"><i class="ti ti-check" aria-hidden="true"></i>Save sale</button>
+        </div>
+      </div>
+      </div>
+      <div class="page-meta" id="sales-summary"></div>
+    </div>
+
+    <div class="sales-list" id="sales-list"></div>
+    <div class="pagination-bar">
+      <div class="page-meta" id="sales-pagination-meta"></div>
+      <div class="pagination-controls" id="sales-pagination"></div>
+    </div>
+  </div>
+
+  <div id="view-wallet" style="display:none; animation: reveal .35s ease;">
+    <div class="section-header">
+      <div>
+        <h2>E-wallet</h2>
+        <div class="page-meta" id="wallet-page-meta"></div>
+      </div>
+      <div class="controls">
+        <button class="btn sm" type="button" onclick="openWalletPanel('in')"><i class="ti ti-arrow-down-left" aria-hidden="true"></i>Cash in</button>
+        <button class="btn sm danger" type="button" onclick="openWalletPanel('out')"><i class="ti ti-arrow-up-right" aria-hidden="true"></i>Cash out</button>
+      </div>
+    </div>
+
+    <div class="stats-grid" style="margin-bottom:12px;">
+      <div class="stat-card"><div class="stat-label">Wallet balance</div><div class="stat-value green" id="wallet-balance">₱0.00</div></div>
+      <div class="stat-card"><div class="stat-label">Cash in</div><div class="stat-value" style="color:#9fd0ff" id="wallet-total-in">₱0.00</div></div>
+      <div class="stat-card"><div class="stat-label">Cash out</div><div class="stat-value" style="color:#ffd0d4" id="wallet-total-out">₱0.00</div></div>
+    </div>
+
+    <div class="sales-form-shell hidden" id="wallet-form-shell">
+      <div class="sales-form">
+        <div class="sales-toolbar" style="margin-bottom:10px;">
+          <div class="page-meta" id="wallet-form-title">Record E-wallet transaction</div>
+          <button class="btn sm" type="button" onclick="toggleWalletPanel(false)"><i class="ti ti-x" aria-hidden="true"></i>Close</button>
+        </div>
+        <div class="inline-row">
+          <div class="form-row">
+            <label>Type</label>
+            <select id="wallet-type">
+              <option value="in">Cash in</option>
+              <option value="out">Cash out</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>Amount</label>
+            <input type="number" id="wallet-amount" min="1" step="0.01" placeholder="100.00">
+          </div>
+          <div class="form-row">
+            <label>Date/time</label>
+            <input type="datetime-local" id="wallet-datetime">
+          </div>
+        </div>
+        <div class="form-row">
+          <label>Note (optional)</label>
+          <input type="text" id="wallet-note" placeholder="hal. load top-up, cash pickup, bayad sa supplier">
+        </div>
+        <div class="modal-actions" style="position:static;padding-top:0;margin-top:10px;justify-content:flex-start;">
+          <button class="btn primary" type="button" onclick="saveWalletTransaction()"><i class="ti ti-check" aria-hidden="true"></i>Save transaction</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="wallet-list" id="wallet-list"></div>
+    <div class="pagination-bar">
+      <div class="page-meta" id="wallet-pagination-meta"></div>
+      <div class="pagination-controls" id="wallet-pagination"></div>
+    </div>
+  </div>
+
+  <div id="view-manage">
+    <div class="section-header">
+      <div>
+        <h2>Manage products</h2>
+        <div class="page-meta" id="manage-page-meta"></div>
+      </div>
+      <div class="controls">
+        <div class="search-box"><i class="ti ti-search" aria-hidden="true"></i><input type="text" id="manage-search-input" placeholder="Hanapin para i-edit o burahin: suka, toyo, asukal..." oninput="resetManagePage(); renderManageList()"></div>
+      </div>
+    </div>
+    <div id="manage-list" class="manage-wrap"></div>
+    <div class="pagination-bar">
+      <div class="page-meta" id="manage-pagination-meta"></div>
+      <div class="pagination-controls" id="manage-pagination"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function esc(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function normalizeProduct(p) {
+  return {
+    id: Number(p?.id) || 0,
+    name: String(p?.name ?? '').trim(),
+    category: String(p?.category ?? '').trim(),
+    price: Number(p?.price) || 0,
+    cost: Number(p?.cost) || 0,
+    stock: Math.max(0, parseInt(p?.stock, 10) || 0),
+    sku: String(p?.sku ?? '').trim(),
+    description: String(p?.description ?? '').trim(),
+    imageData: String(p?.imageData ?? '').trim(),
+  };
+}
+
+function cleanCategory(value) {
+  return String(value ?? '').trim().replace(/\s+/g, ' ');
+}
+
+function categoryKey(value) {
+  return cleanCategory(value).toLowerCase();
+}
+
+function getCategoryList() {
+  const seen = new Map();
+  products.forEach(product => {
+    const category = cleanCategory(product.category);
+    if (!category) return;
+    const key = categoryKey(category);
+    if (!seen.has(key)) seen.set(key, category);
+  });
+  return [...seen.values()].sort((a, b) => a.localeCompare(b));
+}
+
+function levenshtein(a, b) {
+  const left = categoryKey(a);
+  const right = categoryKey(b);
+  if (!left) return right.length;
+  if (!right) return left.length;
+  const rows = Array.from({ length: left.length + 1 }, (_, index) => [index]);
+  for (let column = 1; column <= right.length; column++) rows[0][column] = column;
+  for (let row = 1; row <= left.length; row++) {
+    rows[row] = [row];
+    for (let column = 1; column <= right.length; column++) {
+      const cost = left[row - 1] === right[column - 1] ? 0 : 1;
+      rows[row][column] = Math.min(
+        rows[row - 1][column] + 1,
+        rows[row][column - 1] + 1,
+        rows[row - 1][column - 1] + cost,
+      );
+    }
+  }
+  return rows[left.length][right.length];
+}
+
+function suggestCategory(value, categories = getCategoryList()) {
+  const input = cleanCategory(value);
+  if (!input || !categories.length) return '';
+  const exact = categories.find(category => categoryKey(category) === categoryKey(input));
+  if (exact) return exact;
+  const lowered = categoryKey(input);
+  const substring = categories.find(category => categoryKey(category).includes(lowered) || lowered.includes(categoryKey(category)));
+  if (substring) return substring;
+  let best = '';
+  let bestScore = Infinity;
+  categories.forEach(category => {
+    const score = levenshtein(input, category);
+    if (score < bestScore) {
+      bestScore = score;
+      best = category;
+    }
+  });
+  return bestScore <= Math.max(2, Math.ceil(input.length * 0.35)) ? best : '';
+}
+
+function resolveCategoryInput(value) {
+  const cleaned = cleanCategory(value);
+  return suggestCategory(cleaned) || cleaned;
+}
+
+function safeImageSrc(value) {
+  const src = String(value || '').trim();
+  return src.startsWith('data:image/') ? src : '';
+}
+
+function optimizeCanvasImage(source, sourceWidth, sourceHeight) {
+  const maxSide = 640;
+  const longest = Math.max(sourceWidth, sourceHeight) || 1;
+  const scale = Math.min(1, maxSide / longest);
+  const width = Math.max(1, Math.round(sourceWidth * scale));
+  const height = Math.max(1, Math.round(sourceHeight * scale));
+  const outputCanvas = document.createElement('canvas');
+  outputCanvas.width = width;
+  outputCanvas.height = height;
+  const context = outputCanvas.getContext('2d', { alpha: false });
+  context.drawImage(source, 0, 0, width, height);
+  return outputCanvas.toDataURL('image/jpeg', 0.74);
+}
+
+function loadProducts() {
+  try {
+    const raw = localStorage.getItem('store_products');
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map(normalizeProduct).filter(p => p.id && p.name);
+  } catch (error) {
+    return [];
+  }
+}
+
+let products = loadProducts();
+let nextId = Math.max(...products.map(p => p.id), 0) + 1;
+let editingId = null;
+let pendingImageData = '';
+let currentCameraStream = null;
+const PAGE_SIZES = { products: 25, reports: 10, manage: 12 };
+const SALES_PAGE_SIZE = 10;
+let productPage = 1;
+let reportPage = 1;
+let managePage = 1;
+let salesPage = 1;
+
+function normalizeSale(s) {
+  return {
+    id: Number(s?.id) || 0,
+    productId: Number(s?.productId) || 0,
+    productName: String(s?.productName ?? '').trim(),
+    quantity: Math.max(1, parseInt(s?.quantity, 10) || 1),
+    dateTime: String(s?.dateTime ?? '').trim(),
+    note: String(s?.note ?? '').trim(),
+  };
+}
+
+function loadSales() {
+  try {
+    const raw = localStorage.getItem('store_sales');
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map(normalizeSale).filter(s => s.id && s.productName);
+  } catch (error) {
+    return [];
+  }
+}
+
+let sales = loadSales();
+let nextSaleId = Math.max(...sales.map(s => s.id), 0) + 1;
+let salesFormOpen = false;
+let posCart = [];
+
+function normalizeWalletTransaction(t) {
+  return {
+    id: Number(t?.id) || 0,
+    type: String(t?.type ?? 'in').trim() === 'out' ? 'out' : 'in',
+    amount: Math.max(0, Number(t?.amount) || 0),
+    dateTime: String(t?.dateTime ?? '').trim(),
+    note: String(t?.note ?? '').trim(),
+  };
+}
+
+function loadWalletTransactions() {
+  try {
+    const raw = localStorage.getItem('store_wallet_transactions');
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map(normalizeWalletTransaction).filter(t => t.id && t.amount >= 0);
+  } catch (error) {
+    return [];
+  }
+}
+
+let walletTransactions = loadWalletTransactions();
+let nextWalletId = Math.max(...walletTransactions.map(t => t.id), 0) + 1;
+let walletPage = 1;
+let walletFormOpen = false;
+const WALLET_PAGE_SIZE = 10;
+
+function stopCameraStream() {
+  if (currentCameraStream) {
+    currentCameraStream.getTracks().forEach(track => track.stop());
+    currentCameraStream = null;
+  }
+  const video = document.getElementById('camera-video');
+  if (video) {
+    video.srcObject = null;
+    video.classList.remove('active');
+  }
+  const placeholder = document.getElementById('camera-placeholder');
+  if (placeholder) placeholder.style.display = 'flex';
+  const captureBtn = document.getElementById('capture-camera-btn');
+  if (captureBtn) captureBtn.disabled = true;
+}
+
+function save() {
+  try {
+    localStorage.setItem('store_products', JSON.stringify(products));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function saveSales() {
+  try {
+    localStorage.setItem('store_sales', JSON.stringify(sales));
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+function saveWalletTransactions() {
+  try {
+    localStorage.setItem('store_wallet_transactions', JSON.stringify(walletTransactions));
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+function rebuildNextIds() {
+  nextId = Math.max(...products.map(p => p.id), 0) + 1;
+  nextSaleId = Math.max(...sales.map(s => s.id), 0) + 1;
+  nextWalletId = Math.max(...walletTransactions.map(t => t.id), 0) + 1;
+}
+
+function buildStoreBackup() {
+  return {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    products,
+    sales,
+    walletTransactions,
+  };
+}
+
+function downloadStoreBackup() {
+  const payload = JSON.stringify(buildStoreBackup(), null, 2);
+  const blob = new Blob([payload], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `store-backup-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function normalizeImportedStore(data) {
+  const importedProducts = Array.isArray(data?.products) ? data.products.map(normalizeProduct).filter(p => p.id && p.name) : [];
+  const importedSales = Array.isArray(data?.sales) ? data.sales.map(normalizeSale).filter(s => s.id && s.productName) : [];
+  const importedWalletTransactions = Array.isArray(data?.walletTransactions) ? data.walletTransactions.map(normalizeWalletTransaction).filter(t => t.id) : [];
+  return {
+    products: importedProducts,
+    sales: importedSales,
+    walletTransactions: importedWalletTransactions,
+  };
+}
+
+function applyImportedStore(data) {
+  const normalized = normalizeImportedStore(data);
+  products = normalized.products;
+  sales = normalized.sales;
+  walletTransactions = normalized.walletTransactions;
+  rebuildNextIds();
+  productPage = 1;
+  reportPage = 1;
+  managePage = 1;
+  salesPage = 1;
+  walletPage = 1;
+  pendingImageData = '';
+  editingId = null;
+  updateStats();
+  updateCatFilter();
+  renderTable();
+  renderReports();
+  renderSales();
+  renderWallet();
+  renderManageList();
+  save();
+  saveSales();
+  saveWalletTransactions();
+}
+
+async function importStoreBackup(event) {
+  const file = event?.target?.files?.[0];
+  event.target.value = '';
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const parsed = JSON.parse(text);
+    const source = Array.isArray(parsed)
+      ? { products: parsed, sales: [], walletTransactions: [] }
+      : parsed?.data && typeof parsed.data === 'object'
+        ? parsed.data
+        : parsed;
+    if (!source || typeof source !== 'object') {
+      alert('Invalid backup file.');
+      return;
+    }
+    if (!confirm('Importing will replace the current products, sales, and wallet data. Continue?')) return;
+    applyImportedStore(source);
+    alert('Backup imported successfully.');
+  } catch (error) {
+    alert('Could not import that file. Please select a valid JSON backup.');
+  }
+}
+
+function walletTotals() {
+  const totalIn = walletTransactions.filter(t => t.type === 'in').reduce((sum, t) => sum + t.amount, 0);
+  const totalOut = walletTransactions.filter(t => t.type === 'out').reduce((sum, t) => sum + t.amount, 0);
+  return { totalIn, totalOut, balance: totalIn - totalOut };
+}
+
+function stockStatus(s) {
+  if (s === 0) return { label: 'Out of stock', cls: 'out' };
+  if (s <= 5) return { label: 'Low stock', cls: 'low' };
+  return { label: 'In stock', cls: 'in-stock' };
+}
+
+function marginPercent(p) {
+  if (!p.price) return 0;
+  return ((p.price - p.cost) / p.price) * 100;
+}
+
+function paginate(items, page, pageSize) {
+  const total = items.length;
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const safePage = Math.min(Math.max(page, 1), totalPages);
+  const start = (safePage - 1) * pageSize;
+  return {
+    items: items.slice(start, start + pageSize),
+    total,
+    totalPages,
+    page: safePage,
+    start: total ? start + 1 : 0,
+    end: Math.min(start + pageSize, total),
+  };
+}
+
+function renderPagination(containerId, currentPage, totalPages, onPageChange) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  if (totalPages <= 1) {
+    container.innerHTML = '';
+    return;
+  }
+  const buttons = [];
+  buttons.push(`<button class="btn sm pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="${onPageChange}(${currentPage - 1})">Prev</button>`);
+  for (let i = 1; i <= totalPages; i++) {
+    buttons.push(`<button class="btn sm pagination-btn ${i === currentPage ? 'active' : ''}" onclick="${onPageChange}(${i})">${i}</button>`);
+  }
+  buttons.push(`<button class="btn sm pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="${onPageChange}(${currentPage + 1})">Next</button>`);
+  container.innerHTML = buttons.join('');
+}
+
+function resetProductPage() { productPage = 1; }
+function resetManagePage() { managePage = 1; }
+function resetReportPage() { reportPage = 1; }
+
+function setProductPage(page) { productPage = page; renderTable(); }
+function setManagePage(page) { managePage = page; renderManageList(); }
+function setReportPage(page) { reportPage = page; renderReports(); }
+function setSalesPage(page) { salesPage = page; renderSales(); }
+function setWalletPage(page) { walletPage = page; renderWallet(); }
+
+function fmt(n) { return '₱' + Number(n).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+function updateStats() {
+  const totalProducts = products.length;
+  const totalValue = products.reduce((a, p) => a + p.price * p.stock, 0);
+  const lowStock = products.filter(p => p.stock > 0 && p.stock <= 5).length;
+  const outStock = products.filter(p => p.stock === 0).length;
+  const avgMargin = products.length ? products.reduce((a, p) => a + marginPercent(p), 0) / products.length : 0;
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Products</div><div class="stat-value">${totalProducts}</div></div>
+    <div class="stat-card"><div class="stat-label">Inventory value</div><div class="stat-value green">${fmt(totalValue)}</div></div>
+    <div class="stat-card"><div class="stat-label">Low stock</div><div class="stat-value amber">${lowStock}</div></div>
+    <div class="stat-card"><div class="stat-label">Out of stock</div><div class="stat-value" style="color:#A32D2D">${outStock}</div></div>
+    <div class="stat-card"><div class="stat-label">Avg. margin</div><div class="stat-value">${avgMargin.toFixed(1)}%</div></div>
+  `;
+}
+
+function updateCatFilter() {
+  const cats = getCategoryList();
+  const sel = document.getElementById('cat-filter');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Lahat ng kategorya</option>' + cats.map(c => `<option value="${esc(c)}" ${categoryKey(c) === categoryKey(cur) ? 'selected' : ''}>${esc(c)}</option>`).join('');
+}
+
+function getFiltered() {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  const cat = document.getElementById('cat-filter').value;
+  const stk = document.getElementById('stock-filter').value;
+  return products.filter(p => {
+    const name = (p.name || '').toLowerCase();
+    const sku = (p.sku || '').toLowerCase();
+    const category = (p.category || '').toLowerCase();
+    if (q && !name.includes(q) && !sku.includes(q) && !category.includes(q)) return false;
+    if (cat && categoryKey(p.category) !== categoryKey(cat)) return false;
+    if (stk === 'in' && (p.stock === 0 || p.stock <= 5)) return false;
+    if (stk === 'low' && !(p.stock > 0 && p.stock <= 5)) return false;
+    if (stk === 'out' && p.stock !== 0) return false;
+    return true;
+  });
+}
+
+function renderTable() {
+  const list = getFiltered();
+  const grid = document.getElementById('product-grid');
+  const paged = paginate(list, productPage, PAGE_SIZES.products);
+  productPage = paged.page;
+  document.getElementById('product-count').textContent = list.length === products.length ? `All products (${products.length})` : `${list.length} of ${products.length} products`;
+  const productPageMeta = document.getElementById('product-page-meta');
+  const productPaginationMeta = document.getElementById('product-pagination-meta');
+  if (productPageMeta) productPageMeta.textContent = list.length ? `Visual grid with ${PAGE_SIZES.products} items per page` : 'No items to show';
+  if (productPaginationMeta) productPaginationMeta.textContent = list.length ? `Showing ${paged.start}-${paged.end} of ${paged.total}` : '';
+  if (!list.length) {
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><i class="ti ti-inbox" aria-hidden="true"></i>Walang paninda na nahanap</div>`;
+    renderPagination('product-pagination', 1, 1, 'setProductPage');
+    renderPosCart();
+    return;
+  }
+  grid.innerHTML = paged.items.map(p => {
+    const st = stockStatus(p.stock);
+    const safeName = esc(p.name);
+    const safeDesc = esc(p.description);
+    const imageSrc = safeImageSrc(p.imageData);
+    const clickableImage = imageSrc
+      ? `<img class="product-thumb" src="${imageSrc}" alt="${safeName}" onclick="addToPosCart(${p.id})" title="Tap to add to cart">`
+      : `<div class="product-thumb placeholder" onclick="addToPosCart(${p.id})" title="Tap to add to cart"><i class="ti ti-photo" aria-hidden="true"></i></div>`;
+    return `<article class="product-card">
+      ${clickableImage}
+      <div class="product-name">${safeName}</div>
+      <div class="product-meta">${safeDesc || 'Sari-sari store item'}</div>
+      <div class="tap-hint">Tap photo to add</div>
+      <span class="badge ${st.cls}">${st.label}</span>
+    </article>`;
+  }).join('');
+  renderPagination('product-pagination', paged.page, paged.totalPages, 'setProductPage');
+  renderPosCart();
+}
+
+function renderManageList() {
+  const container = document.getElementById('manage-list');
+  const q = (document.getElementById('manage-search-input')?.value || '').toLowerCase().trim();
+  const list = products.filter(p => {
+    if (!q) return true;
+    const name = (p.name || '').toLowerCase();
+    const sku = (p.sku || '').toLowerCase();
+    const category = (p.category || '').toLowerCase();
+    return name.includes(q) || sku.includes(q) || category.includes(q);
+  });
+  const paged = paginate(list, managePage, PAGE_SIZES.manage);
+  managePage = paged.page;
+  const manageMeta = document.getElementById('manage-page-meta');
+  const managePaginationMeta = document.getElementById('manage-pagination-meta');
+  if (manageMeta) manageMeta.textContent = list.length ? `Showing ${paged.start}-${paged.end} of ${paged.total}` : 'No items to manage';
+  if (managePaginationMeta) managePaginationMeta.textContent = list.length ? `Page ${paged.page} of ${paged.totalPages}` : '';
+
+  if (!list.length) {
+    container.innerHTML = `<div class="empty" style="grid-column:1/-1"><i class="ti ti-inbox" aria-hidden="true"></i>${products.length ? 'Walang tugmang paninda.' : 'Wala pang paninda. Magdagdag ng unang produkto ng sari-sari store.'}</div>`;
+    renderPagination('manage-pagination', 1, 1, 'setManagePage');
+    return;
+  }
+
+  container.innerHTML = paged.items.map(p => {
+    const st = stockStatus(p.stock);
+    const safeName = esc(p.name);
+    const safeCategory = esc(p.category);
+    const safeSku = esc(p.sku);
+    const imageSrc = safeImageSrc(p.imageData);
+    return `
+      <article class="manage-card">
+        <div class="manage-media">${imageSrc ? `<img class="product-thumb" src="${imageSrc}" alt="${safeName}">` : '<div class="product-thumb placeholder"><i class="ti ti-photo" aria-hidden="true"></i></div>'}<div><div class="manage-title">${safeName}</div><div class="manage-meta">${safeCategory || 'Walang kategorya'}${safeSku ? ' · ' + safeSku : ''}</div></div></div>
+        <div class="manage-details">
+          <div><strong>Price:</strong> ${fmt(p.price)}</div>
+          <div><strong>Cost:</strong> ${fmt(p.cost)}</div>
+          <div><strong>Stock:</strong> ${p.stock}</div>
+          <div><strong>Status:</strong> <span class="badge ${st.cls}">${st.label}</span></div>
+        </div>
+        <div class="manage-actions">
+          <button class="btn sm" onclick="openEditModal(${p.id})" aria-label="Edit ${safeName}"><i class="ti ti-edit" aria-hidden="true"></i>Edit</button>
+          <button class="btn sm danger" onclick="deleteProduct(${p.id})" aria-label="Delete ${safeName}"><i class="ti ti-trash" aria-hidden="true"></i>Delete</button>
+        </div>
+      </article>
+    `;
+  }).join('');
+  renderPagination('manage-pagination', paged.page, paged.totalPages, 'setManagePage');
+}
+
+function renderReports() {
+  const totalRevPot = products.reduce((a, p) => a + p.price * p.stock, 0);
+  const totalCostPot = products.reduce((a, p) => a + p.cost * p.stock, 0);
+  const avgMargin = products.length ? products.reduce((a, p) => a + marginPercent(p), 0) / products.length : 0;
+  const cats = {};
+  products.forEach(p => {
+    const key = cleanCategory(p.category) || 'Uncategorized';
+    cats[key] = (cats[key] || 0) + 1;
+  });
+  const catList = Object.entries(cats).sort((a, b) => b[1] - a[1]);
+
+  document.getElementById('report-grid').innerHTML = `
+    <div class="report-card"><h3>By category</h3>${catList.length ? catList.map(([c, n]) => `<div class="report-item"><span>${c}</span><span style="font-weight:500">${n} product${n > 1 ? 's' : ''}</span></div>`).join('') : '<div class="report-item"><span>No categories yet</span><span>0</span></div>'}</div>
+    <div class="report-card"><h3>Stock health</h3>
+      <div class="report-item"><span>In stock</span><span class="badge in-stock">${products.filter(p => p.stock > 5).length}</span></div>
+      <div class="report-item"><span>Low stock (≤5)</span><span class="badge low">${products.filter(p => p.stock > 0 && p.stock <= 5).length}</span></div>
+      <div class="report-item"><span>Out of stock</span><span class="badge out">${products.filter(p => p.stock === 0).length}</span></div>
+      <div class="report-item"><span>Revenue potential</span><span style="font-weight:500;color:#1D9E75">${fmt(totalRevPot)}</span></div>
+      <div class="report-item"><span>Cost of inventory</span><span style="font-weight:500;color:var(--color-text-secondary)">${fmt(totalCostPot)}</span></div>
+      <div class="report-item"><span>Gross profit potential</span><span style="font-weight:500">${fmt(totalRevPot - totalCostPot)}</span></div>
+    </div>`;
+
+  const sorted = [...products].sort((a, b) => (b.price - b.cost) / b.price - (a.price - a.cost) / a.price);
+  const paged = paginate(sorted, reportPage, PAGE_SIZES.reports);
+  reportPage = paged.page;
+  const reportMeta = document.getElementById('report-page-meta');
+  const reportPaginationMeta = document.getElementById('report-pagination-meta');
+  if (reportMeta) reportMeta.textContent = sorted.length ? `Showing ${paged.start}-${paged.end} of ${paged.total}` : 'No report rows';
+  if (reportPaginationMeta) reportPaginationMeta.textContent = sorted.length ? `Page ${paged.page} of ${paged.totalPages}` : '';
+  const list = document.getElementById('report-list');
+  list.innerHTML = paged.items.map(p => {
+    const margin = p.price > 0 ? p.price - p.cost : 0;
+    const marginPct = marginPercent(p).toFixed(1);
+    const safeName = esc(p.name);
+    const safeCategory = esc(p.category);
+    return `<div class="report-row">
+      <div><strong>${safeName}</strong><small>${safeCategory}</small></div>
+      <div><strong>${fmt(p.price * p.stock)}</strong><small>Revenue potential</small></div>
+      <div><strong>${fmt(margin)}</strong><small>Margin</small></div>
+      <div><strong style="color:${Number(marginPct) > 40 ? '#1D9E75' : Number(marginPct) > 20 ? '#BA7517' : '#A32D2D'}">${marginPct}%</strong><small>Margin %</small></div>
+    </div>`;
+  }).join('');
+  renderPagination('report-pagination', paged.page, paged.totalPages, 'setReportPage');
+}
+
+function renderSaleProductOptions() {
+  const select = document.getElementById('sale-product');
+  if (!select) return;
+  const options = products
+    .filter(p => p.id && p.name)
+    .map(p => `<option value="${p.id}">${esc(p.name)}${p.stock ? ` (stock: ${p.stock})` : ' (out of stock)'}</option>`)
+    .join('');
+  select.innerHTML = options || '<option value="">No products yet</option>';
+}
+
+function resetSalesForm() {
+  const dateInput = document.getElementById('sale-datetime');
+  const noteInput = document.getElementById('sale-note');
+  const qtyInput = document.getElementById('sale-qty');
+  if (qtyInput) qtyInput.value = '1';
+  if (noteInput) noteInput.value = '';
+  if (dateInput) dateInput.value = new Date().toISOString().slice(0, 16);
+  renderSaleProductOptions();
+}
+
+function toggleSalesForm(open) {
+  salesFormOpen = typeof open === 'boolean' ? open : !salesFormOpen;
+  const shell = document.getElementById('sales-form-shell');
+  if (shell) shell.classList.toggle('hidden', !salesFormOpen);
+  if (salesFormOpen) resetSalesForm();
+}
+
+function renderSales() {
+  const list = [...sales].sort((a, b) => String(b.dateTime).localeCompare(String(a.dateTime)));
+  const paged = paginate(list, salesPage, SALES_PAGE_SIZE);
+  salesPage = paged.page;
+  const pageMeta = document.getElementById('sales-page-meta');
+  const paginationMeta = document.getElementById('sales-pagination-meta');
+  const summary = document.getElementById('sales-summary');
+  if (pageMeta) pageMeta.textContent = list.length ? `Recorded sales: ${list.length}` : 'No sales entered yet';
+  if (paginationMeta) paginationMeta.textContent = list.length ? `Showing ${paged.start}-${paged.end} of ${paged.total}` : '';
+  if (summary) {
+    const soldTotal = sales.reduce((sum, item) => sum + item.quantity, 0);
+    summary.textContent = `Total sold entries: ${sales.length} | Total units sold: ${soldTotal}`;
+  }
+
+  const container = document.getElementById('sales-list');
+  if (!list.length) {
+    container.innerHTML = `<div class="empty" style="grid-column:1/-1"><i class="ti ti-inbox" aria-hidden="true"></i>No sales recorded yet.</div>`;
+    renderPagination('sales-pagination', 1, 1, 'setSalesPage');
+    renderSaleProductOptions();
+    return;
+  }
+
+  container.innerHTML = paged.items.map(sale => {
+    const product = products.find(p => p.id === sale.productId);
+    const safeProduct = esc(sale.productName);
+    const safeNote = esc(sale.note);
+    const when = sale.dateTime ? new Date(sale.dateTime).toLocaleString() : 'No date';
+    return `
+      <div class="sales-item">
+        <div><strong>${safeProduct}</strong><small>${product ? `Current stock: ${product.stock}` : 'Product removed'}</small></div>
+        <div><strong>${sale.quantity}</strong><small>Qty sold</small></div>
+        <div><strong>${when}</strong><small>Date/time</small></div>
+        <div><strong>${safeNote || '—'}</strong><small>Note</small></div>
+        <div><button class="btn sm danger" onclick="deleteSale(${sale.id})">Delete</button></div>
+      </div>
+    `;
+  }).join('');
+
+  renderPagination('sales-pagination', paged.page, paged.totalPages, 'setSalesPage');
+  renderSaleProductOptions();
+}
+
+function resetPosForm() {
+  const noteInput = document.getElementById('pos-note');
+  const dateInput = document.getElementById('pos-datetime');
+  if (noteInput && !noteInput.value) noteInput.value = '';
+  if (dateInput && !dateInput.value) dateInput.value = new Date().toISOString().slice(0, 16);
+}
+
+function posCartTotals() {
+  const itemCount = posCart.reduce((sum, item) => sum + item.quantity, 0);
+  const total = posCart.reduce((sum, item) => {
+    const product = products.find(entry => entry.id === item.productId);
+    return sum + (product ? product.price * item.quantity : 0);
+  }, 0);
+  return { itemCount, total };
+}
+
+function renderPosCart() {
+  const container = document.getElementById('pos-cart');
+  if (!container) return;
+
+  resetPosForm();
+  const { itemCount, total } = posCartTotals();
+  const totalEl = document.getElementById('pos-total');
+  const itemsEl = document.getElementById('pos-items');
+  if (totalEl) totalEl.textContent = fmt(total);
+  if (itemsEl) itemsEl.textContent = String(itemCount);
+
+  if (!posCart.length) {
+    container.innerHTML = `<div class="empty" style="padding:1rem 0"><i class="ti ti-shopping-cart" aria-hidden="true"></i>Cart is empty. Tap a product photo to start a sale.</div>`;
+    return;
+  }
+
+  container.innerHTML = posCart.map(item => {
+    const product = products.find(entry => entry.id === item.productId);
+    if (!product) return '';
+    const safeName = esc(product.name);
+    return `<div class="pos-item">
+      <div><strong>${safeName}</strong><small>${fmt(product.price)} each · ${product.stock} available</small></div>
+      <div class="pos-stepper">
+        <button class="btn sm" type="button" onclick="changePosQuantity(${product.id}, -1)">-</button>
+        <div class="qty">${item.quantity}</div>
+        <button class="btn sm" type="button" onclick="changePosQuantity(${product.id}, 1)">+</button>
+      </div>
+      <button class="btn sm danger" type="button" onclick="removePosItem(${product.id})">Remove</button>
+    </div>`;
+  }).join('');
+}
+
+function addToPosCart(productId) {
+  const product = products.find(entry => entry.id === productId);
+  if (!product) return;
+  if (product.stock <= 0) {
+    alert(`${product.name} is out of stock.`);
+    return;
+  }
+  const current = posCart.find(item => item.productId === productId);
+  if (current) {
+    if (current.quantity >= product.stock) {
+      alert(`Only ${product.stock} left for ${product.name}.`);
+      return;
+    }
+    current.quantity += 1;
+  } else {
+    posCart.push({ productId, quantity: 1 });
+  }
+  renderPosCart();
+}
+
+function changePosQuantity(productId, delta) {
+  const product = products.find(entry => entry.id === productId);
+  const current = posCart.find(item => item.productId === productId);
+  if (!product || !current) return;
+  const nextQuantity = current.quantity + delta;
+  if (nextQuantity <= 0) {
+    removePosItem(productId);
+    return;
+  }
+  if (nextQuantity > product.stock) {
+    alert(`Only ${product.stock} left for ${product.name}.`);
+    return;
+  }
+  current.quantity = nextQuantity;
+  renderPosCart();
+}
+
+function removePosItem(productId) {
+  posCart = posCart.filter(item => item.productId !== productId);
+  renderPosCart();
+}
+
+function clearPosCart() {
+  posCart = [];
+  renderPosCart();
+}
+
+function checkoutPosCart() {
+  if (!posCart.length) {
+    alert('Add at least one item to the cart first.');
+    return;
+  }
+  const dateTime = document.getElementById('pos-datetime').value || new Date().toISOString().slice(0, 16);
+  const note = document.getElementById('pos-note').value.trim();
+  const productsSnapshot = products.map(item => ({ ...item }));
+  const salesSnapshot = sales.map(item => ({ ...item }));
+
+  for (const item of posCart) {
+    const product = products.find(entry => entry.id === item.productId);
+    if (!product || product.stock < item.quantity) {
+      products = productsSnapshot;
+      sales = salesSnapshot;
+      alert(`Not enough stock for ${product ? product.name : 'one of the items'}.`);
+      renderPosCart();
+      return;
+    }
+  }
+
+  const purchaseNote = note || 'POS checkout';
+  posCart.forEach(item => {
+    const product = products.find(entry => entry.id === item.productId);
+    product.stock -= item.quantity;
+    sales.push(normalizeSale({
+      id: nextSaleId++,
+      productId: product.id,
+      productName: product.name,
+      quantity: item.quantity,
+      dateTime,
+      note: purchaseNote,
+    }));
+  });
+
+  if (!save() || !saveSales()) {
+    products = productsSnapshot;
+    sales = salesSnapshot;
+    nextSaleId = Math.max(...sales.map(s => s.id), 0) + 1;
+    alert('Could not save the checkout. Storage may be full.');
+    renderPosCart();
+    return;
+  }
+
+  posCart = [];
+  productPage = 1;
+  salesPage = 1;
+  updateStats();
+  renderTable();
+  renderReports();
+  renderManageList();
+  renderSales();
+  renderPosCart();
+}
+
+function resetWalletForm() {
+  const amountInput = document.getElementById('wallet-amount');
+  const noteInput = document.getElementById('wallet-note');
+  const dateInput = document.getElementById('wallet-datetime');
+  if (amountInput) amountInput.value = '';
+  if (noteInput) noteInput.value = '';
+  if (dateInput) dateInput.value = new Date().toISOString().slice(0, 16);
+}
+
+function toggleWalletPanel(open) {
+  walletFormOpen = typeof open === 'boolean' ? open : !walletFormOpen;
+  const shell = document.getElementById('wallet-form-shell');
+  if (shell) shell.classList.toggle('hidden', !walletFormOpen);
+  if (walletFormOpen) resetWalletForm();
+}
+
+function openWalletPanel(type) {
+  toggleWalletPanel(true);
+  const typeSelect = document.getElementById('wallet-type');
+  if (typeSelect && type) typeSelect.value = type;
+}
+
+function renderWallet() {
+  const totals = walletTotals();
+  const list = [...walletTransactions].sort((a, b) => String(b.dateTime).localeCompare(String(a.dateTime)));
+  const paged = paginate(list, walletPage, WALLET_PAGE_SIZE);
+  walletPage = paged.page;
+
+  const pageMeta = document.getElementById('wallet-page-meta');
+  const paginationMeta = document.getElementById('wallet-pagination-meta');
+  const balanceEl = document.getElementById('wallet-balance');
+  const totalInEl = document.getElementById('wallet-total-in');
+  const totalOutEl = document.getElementById('wallet-total-out');
+  if (pageMeta) pageMeta.textContent = 'Local E-wallet log';
+  if (paginationMeta) paginationMeta.textContent = list.length ? `Showing ${paged.start}-${paged.end} of ${paged.total}` : '';
+  if (balanceEl) balanceEl.textContent = fmt(totals.balance);
+  if (totalInEl) totalInEl.textContent = fmt(totals.totalIn);
+  if (totalOutEl) totalOutEl.textContent = fmt(totals.totalOut);
+
+  const container = document.getElementById('wallet-list');
+  if (!list.length) {
+    container.innerHTML = `<div class="empty"><i class="ti ti-wallet" aria-hidden="true"></i>No wallet transactions yet.</div>`;
+    renderPagination('wallet-pagination', 1, 1, 'setWalletPage');
+    return;
+  }
+
+  container.innerHTML = paged.items.map(tx => {
+    const color = tx.type === 'in' ? '#9fd0ff' : '#ffd0d4';
+    const pill = tx.type === 'in' ? 'wallet-pill in' : 'wallet-pill out';
+    return `<div class="wallet-item">
+      <div><strong>${tx.type === 'in' ? 'Cash in' : 'Cash out'}</strong><small>${esc(tx.note || 'No note')}</small></div>
+      <div><span class="${pill}">${tx.type}</span></div>
+      <div><strong style="color:${color}">${fmt(tx.amount)}</strong><small>${tx.dateTime ? new Date(tx.dateTime).toLocaleString() : 'No date'}</small></div>
+      <div><strong>${tx.type === 'in' ? '+' : '-'}</strong><small>Direction</small></div>
+      <div><button class="btn sm danger" type="button" onclick="deleteWalletTransaction(${tx.id})">Delete</button></div>
+    </div>`;
+  }).join('');
+
+  renderPagination('wallet-pagination', paged.page, paged.totalPages, 'setWalletPage');
+}
+
+function saveWalletTransaction() {
+  const type = document.getElementById('wallet-type').value === 'out' ? 'out' : 'in';
+  const amount = Number(document.getElementById('wallet-amount').value);
+  const dateTime = document.getElementById('wallet-datetime').value || new Date().toISOString().slice(0, 16);
+  const note = document.getElementById('wallet-note').value.trim();
+  if (!amount || amount <= 0) {
+    alert('Please enter a valid amount.');
+    return;
+  }
+  const snapshot = walletTransactions.map(item => ({ ...item }));
+  walletTransactions.push(normalizeWalletTransaction({ id: nextWalletId++, type, amount, dateTime, note }));
+  if (!saveWalletTransactions()) {
+    walletTransactions = snapshot;
+    nextWalletId = Math.max(...walletTransactions.map(t => t.id), 0) + 1;
+    alert('Could not save wallet transaction. Storage may be full.');
+    return;
+  }
+  walletPage = 1;
+  renderWallet();
+  toggleWalletPanel(false);
+}
+
+function deleteWalletTransaction(id) {
+  const tx = walletTransactions.find(item => item.id === id);
+  if (!tx) return;
+  if (!confirm(`Delete ${tx.type === 'in' ? 'cash in' : 'cash out'} transaction?`)) return;
+  const snapshot = walletTransactions.map(item => ({ ...item }));
+  walletTransactions = walletTransactions.filter(item => item.id !== id);
+  if (!saveWalletTransactions()) {
+    walletTransactions = snapshot;
+    alert('Could not delete wallet transaction.');
+    return;
+  }
+  renderWallet();
+}
+
+function resetWalletForm() {
+  const amountInput = document.getElementById('wallet-amount');
+  const noteInput = document.getElementById('wallet-note');
+  const dateInput = document.getElementById('wallet-datetime');
+  if (amountInput) amountInput.value = '';
+  if (noteInput) noteInput.value = '';
+  if (dateInput) dateInput.value = new Date().toISOString().slice(0, 16);
+}
+
+function toggleWalletPanel(open) {
+  walletFormOpen = typeof open === 'boolean' ? open : !walletFormOpen;
+  const shell = document.getElementById('wallet-form-shell');
+  if (shell) shell.classList.toggle('hidden', !walletFormOpen);
+  if (walletFormOpen) resetWalletForm();
+}
+
+function openWalletPanel(type) {
+  toggleWalletPanel(true);
+  const typeSelect = document.getElementById('wallet-type');
+  if (typeSelect && type) typeSelect.value = type;
+}
+
+function renderWallet() {
+  const totals = walletTotals();
+  const list = [...walletTransactions].sort((a, b) => String(b.dateTime).localeCompare(String(a.dateTime)));
+  const paged = paginate(list, walletPage, WALLET_PAGE_SIZE);
+  walletPage = paged.page;
+
+  const pageMeta = document.getElementById('wallet-page-meta');
+  const paginationMeta = document.getElementById('wallet-pagination-meta');
+  const balanceEl = document.getElementById('wallet-balance');
+  const totalInEl = document.getElementById('wallet-total-in');
+  const totalOutEl = document.getElementById('wallet-total-out');
+  if (pageMeta) pageMeta.textContent = 'Local E-wallet log';
+  if (paginationMeta) paginationMeta.textContent = list.length ? `Showing ${paged.start}-${paged.end} of ${paged.total}` : '';
+  if (balanceEl) balanceEl.textContent = fmt(totals.balance);
+  if (totalInEl) totalInEl.textContent = fmt(totals.totalIn);
+  if (totalOutEl) totalOutEl.textContent = fmt(totals.totalOut);
+
+  const container = document.getElementById('wallet-list');
+  if (!list.length) {
+    container.innerHTML = `<div class="empty"><i class="ti ti-wallet" aria-hidden="true"></i>No wallet transactions yet.</div>`;
+    renderPagination('wallet-pagination', 1, 1, 'setWalletPage');
+    return;
+  }
+
+  container.innerHTML = paged.items.map(tx => {
+    const color = tx.type === 'in' ? '#9fd0ff' : '#ffd0d4';
+    const pill = tx.type === 'in' ? 'wallet-pill in' : 'wallet-pill out';
+    return `<div class="wallet-item">
+      <div><strong>${tx.type === 'in' ? 'Cash in' : 'Cash out'}</strong><small>${esc(tx.note || 'No note')}</small></div>
+      <div><span class="${pill}">${tx.type}</span></div>
+      <div><strong style="color:${color}">${fmt(tx.amount)}</strong><small>${tx.dateTime ? new Date(tx.dateTime).toLocaleString() : 'No date'}</small></div>
+      <div><strong>${tx.type === 'in' ? '+' : '-'}</strong><small>Direction</small></div>
+    </div>`;
+  }).join('');
+
+  renderPagination('wallet-pagination', paged.page, paged.totalPages, 'setWalletPage');
+}
+
+function saveWalletTransaction() {
+  const type = document.getElementById('wallet-type').value === 'out' ? 'out' : 'in';
+  const amount = Number(document.getElementById('wallet-amount').value);
+  const dateTime = document.getElementById('wallet-datetime').value || new Date().toISOString().slice(0, 16);
+  const note = document.getElementById('wallet-note').value.trim();
+  if (!amount || amount <= 0) {
+    alert('Please enter a valid amount.');
+    return;
+  }
+  const snapshot = walletTransactions.map(item => ({ ...item }));
+  walletTransactions.push(normalizeWalletTransaction({ id: nextWalletId++, type, amount, dateTime, note }));
+  if (!saveWalletTransactions()) {
+    walletTransactions = snapshot;
+    nextWalletId = Math.max(...walletTransactions.map(t => t.id), 0) + 1;
+    alert('Could not save wallet transaction. Storage may be full.');
+    return;
+  }
+  walletPage = 1;
+  renderWallet();
+  toggleWalletPanel(false);
+}
+
+function deleteWalletTransaction(id) {
+  const tx = walletTransactions.find(item => item.id === id);
+  if (!tx) return;
+  if (!confirm(`Delete ${tx.type === 'in' ? 'cash in' : 'cash out'} transaction?`)) return;
+  const snapshot = walletTransactions.map(item => ({ ...item }));
+  walletTransactions = walletTransactions.filter(item => item.id !== id);
+  if (!saveWalletTransactions()) {
+    walletTransactions = snapshot;
+    alert('Could not delete wallet transaction.');
+    return;
+  }
+  renderWallet();
+}
+
+function recordSale() {
+  const productId = Number(document.getElementById('sale-product').value);
+  const quantity = Math.max(1, parseInt(document.getElementById('sale-qty').value, 10) || 1);
+  const dateTime = document.getElementById('sale-datetime').value || new Date().toISOString().slice(0, 16);
+  const note = document.getElementById('sale-note').value.trim();
+  const product = products.find(p => p.id === productId);
+  if (!product) {
+    alert('Please select a product.');
+    return;
+  }
+  if (product.stock < quantity) {
+    alert(`Not enough stock for ${product.name}. Available: ${product.stock}`);
+    return;
+  }
+
+  const salesSnapshot = sales.map(item => ({ ...item }));
+  const productsSnapshot = products.map(item => ({ ...item }));
+  product.stock -= quantity;
+  sales.push(normalizeSale({
+    id: nextSaleId++,
+    productId: product.id,
+    productName: product.name,
+    quantity,
+    dateTime,
+    note,
+  }));
+
+  if (!save() || !saveSales()) {
+    products = productsSnapshot;
+    sales = salesSnapshot;
+    nextSaleId = Math.max(...sales.map(s => s.id), 0) + 1;
+    alert('Could not save the sale. Storage may be full.');
+    return;
+  }
+
+  salesPage = 1;
+  renderTable();
+  renderReports();
+  renderManageList();
+  renderSales();
+  resetSalesForm();
+}
+
+function deleteSale(id) {
+  const sale = sales.find(s => s.id === id);
+  if (!sale) return;
+  if (!confirm(`Remove sale record for ${sale.productName}?`)) return;
+  const product = products.find(p => p.id === sale.productId);
+  const productsSnapshot = products.map(item => ({ ...item }));
+  const salesSnapshot = sales.map(item => ({ ...item }));
+  sales = sales.filter(s => s.id !== id);
+  if (product) product.stock += sale.quantity;
+  if (!save() || !saveSales()) {
+    products = productsSnapshot;
+    sales = salesSnapshot;
+    alert('Could not delete sale record.');
+    return;
+  }
+  renderTable();
+  renderReports();
+  renderManageList();
+  renderSales();
+}
+
+function openAddModal() {
+  editingId = null;
+  showModal({ id: null, name: '', category: '', price: '', cost: '', stock: '', sku: '', description: '', imageData: '' });
+}
+
+function openEditModal(id) {
+  editingId = id;
+  const p = products.find(x => x.id === id);
+  if (p) showModal({ ...p });
+}
+
+function showModal(p) {
+  const cats = getCategoryList();
+  const isNew = !p.id;
+  const safeName = esc(p.name);
+  const safeCategory = esc(p.category);
+  const safeSku = esc(p.sku);
+  const safeDesc = esc(p.description || '');
+  pendingImageData = safeImageSrc(p.imageData);
+  document.getElementById('modal-container').innerHTML = `
+    <div class="modal-overlay" onclick="closeModal(event, this)">
+      <div class="modal" onclick="event.stopPropagation()">
+        <h3>${isNew ? 'Add new product' : 'Edit product'}</h3>
+        <div class="form-row"><label>Product name</label><input type="text" id="f-name" value="${safeName}" placeholder="hal. Bigas Dinorado 1kg"></div>
+        <div class="form-row"><label>Product photo (camera)</label><div class="camera-wrap"><video id="camera-video" class="camera-video" playsinline muted></video><div id="camera-placeholder" class="camera-placeholder">I-tap ang Open camera para kumuha ng larawan.</div></div><div class="camera-actions"><button class="btn sm" type="button" id="start-camera-btn"><i class="ti ti-camera" aria-hidden="true"></i>Open camera</button><button class="btn sm" type="button" id="capture-camera-btn" disabled><i class="ti ti-device-floppy" aria-hidden="true"></i>Capture</button><button class="btn sm danger" type="button" id="clear-photo-btn"><i class="ti ti-trash" aria-hidden="true"></i>Clear photo</button></div><small class="image-help">Camera capture lang para mas tipid sa phone storage. Ise-save ito sa browser mo lang.</small><div id="image-preview" class="image-preview-wrap"></div></div>
+        <div class="form-grid">
+          <div class="form-row"><label>Category</label><input type="text" id="f-cat" list="cat-list" value="${safeCategory}" placeholder="hal. Bigas, Delata, Inumin"><datalist id="cat-list">${cats.map(c => `<option value="${esc(c)}">`).join('')}</datalist><small class="image-help" id="category-suggest"></small></div>
+          <div class="form-row"><label>SKU</label><input type="text" id="f-sku" value="${safeSku}" placeholder="hal. SS-BGS-001"></div>
+        </div>
+        <div class="form-grid">
+          <div class="form-row"><label>Selling price (₱)</label><input type="number" id="f-price" value="${p.price}" min="0" step="0.01" placeholder="hal. 58.00"></div>
+          <div class="form-row"><label>Cost price (₱)</label><input type="number" id="f-cost" value="${p.cost}" min="0" step="0.01" placeholder="hal. 45.00"></div>
+        </div>
+        <div class="form-row"><label>Stock quantity</label><input type="number" id="f-stock" value="${p.stock}" min="0" step="1" placeholder="hal. 24"></div>
+        <div class="form-row"><label>Description (optional)</label><input type="text" id="f-desc" value="${safeDesc}" placeholder="hal. tingi, per kilo, o may expiry"></div>
+        <div id="margin-preview" style="font-size:13px;color:var(--ui-muted);margin-bottom:12px"></div>
+        <div class="modal-actions">
+          <button class="btn" onclick="closeModal()">Cancel</button>
+          <button class="btn primary" onclick="saveProduct()">${isNew ? 'Add product' : 'Save changes'}</button>
+        </div>
+      </div>
+    </div>`;
+  const priceI = document.getElementById('f-price');
+  const costI = document.getElementById('f-cost');
+  const catInput = document.getElementById('f-cat');
+  const categorySuggest = document.getElementById('category-suggest');
+  const cameraVideo = document.getElementById('camera-video');
+  const cameraPlaceholder = document.getElementById('camera-placeholder');
+  const startCameraBtn = document.getElementById('start-camera-btn');
+  const captureCameraBtn = document.getElementById('capture-camera-btn');
+  const clearPhotoBtn = document.getElementById('clear-photo-btn');
+
+  function renderImagePreview() {
+    const target = document.getElementById('image-preview');
+    if (!target) return;
+    const name = esc(document.getElementById('f-name')?.value || 'Product');
+    if (!pendingImageData) {
+      target.innerHTML = '<div class="product-thumb placeholder"><i class="ti ti-photo" aria-hidden="true"></i></div><span class="image-help">Walang larawan pa.</span>';
+      return;
+    }
+    target.innerHTML = `<img class="product-thumb" src="${pendingImageData}" alt="${name}"><span class="image-help">Larawan handa na ma-save.</span>`;
+  }
+
+  async function startCamera() {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      alert('Hindi supported ang camera sa browser na ito.');
+      return;
+    }
+    try {
+      stopCameraStream();
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { ideal: 'environment' },
+          width: { ideal: 960 },
+          height: { ideal: 720 }
+        },
+        audio: false
+      });
+      currentCameraStream = stream;
+      cameraVideo.srcObject = stream;
+      await cameraVideo.play().catch(() => {});
+      cameraVideo.classList.add('active');
+      cameraPlaceholder.style.display = 'none';
+      captureCameraBtn.disabled = false;
+    } catch (error) {
+      stopCameraStream();
+      alert('Hindi ma-open ang camera. Pakicheck ang camera permission.');
+    }
+  }
+
+  function captureFromCamera() {
+    if (!cameraVideo.videoWidth || !cameraVideo.videoHeight) {
+      alert('Buksan muna ang camera bago mag-capture.');
+      return;
+    }
+    try {
+      pendingImageData = optimizeCanvasImage(cameraVideo, cameraVideo.videoWidth, cameraVideo.videoHeight);
+      renderImagePreview();
+      stopCameraStream();
+    } catch (error) {
+      alert('Hindi ma-capture ang larawan. Subukan ulit.');
+    }
+  }
+
+  startCameraBtn.addEventListener('click', startCamera);
+  captureCameraBtn.addEventListener('click', captureFromCamera);
+  clearPhotoBtn.addEventListener('click', () => {
+    pendingImageData = '';
+    renderImagePreview();
+  });
+
+  document.getElementById('f-name').addEventListener('input', renderImagePreview);
+
+  function updateMarginPreview() {
+    const pr = parseFloat(priceI.value) || 0;
+    const co = parseFloat(costI.value) || 0;
+    const mp = document.getElementById('margin-preview');
+    if (pr > 0 && co >= 0) {
+      const m = pr - co;
+      const pct = (m / pr * 100).toFixed(1);
+      mp.textContent = `Margin: ₱${m.toFixed(2)} (${pct}%)`;
+      mp.style.color = m < 0 ? '#A32D2D' : '#1D9E75';
+    } else { mp.textContent = ''; }
+  }
+
+  function updateCategorySuggest() {
+    if (!categorySuggest || !catInput) return;
+    const input = catInput.value.trim();
+    const suggestion = suggestCategory(input, cats);
+    if (!input) {
+      categorySuggest.textContent = cats.length ? `Suggested categories: ${cats.slice(0, 4).join(', ')}` : 'No categories yet.';
+      return;
+    }
+    if (suggestion && categoryKey(suggestion) !== categoryKey(input)) {
+      categorySuggest.textContent = `Closest category: ${suggestion}`;
+    } else {
+      categorySuggest.textContent = cats.length ? `Known categories: ${cats.slice(0, 4).join(', ')}` : 'No categories yet.';
+    }
+  }
+
+  catInput?.addEventListener('input', updateCategorySuggest);
+  catInput?.addEventListener('blur', () => {
+    if (!catInput.value.trim()) return;
+    const resolved = resolveCategoryInput(catInput.value);
+    if (resolved) catInput.value = resolved;
+    updateCategorySuggest();
+  });
+  priceI.addEventListener('input', updateMarginPreview);
+  costI.addEventListener('input', updateMarginPreview);
+  renderImagePreview();
+  updateMarginPreview();
+  updateCategorySuggest();
+  document.getElementById('f-name').focus();
+}
+
+function closeModal(event, overlay) {
+  if (event && overlay && event.target !== overlay) return;
+  stopCameraStream();
+  pendingImageData = '';
+  document.getElementById('modal-container').innerHTML = '';
+}
+
+function saveProduct() {
+  const name = document.getElementById('f-name').value.trim();
+  const category = resolveCategoryInput(document.getElementById('f-cat').value);
+  const price = parseFloat(document.getElementById('f-price').value) || 0;
+  const cost = parseFloat(document.getElementById('f-cost').value) || 0;
+  const stock = parseInt(document.getElementById('f-stock').value) || 0;
+  const sku = document.getElementById('f-sku').value.trim();
+  const description = document.getElementById('f-desc').value.trim();
+  const imageData = safeImageSrc(pendingImageData);
+  const snapshot = products.map(p => ({ ...p }));
+  const snapshotNextId = nextId;
+  if (!name) { alert('Please enter a product name.'); return; }
+  if (editingId) {
+    const idx = products.findIndex(p => p.id === editingId);
+    if (idx !== -1) products[idx] = normalizeProduct({ ...products[idx], name, category, price, cost, stock, sku, description, imageData });
+  } else {
+    products.push(normalizeProduct({ id: nextId++, name, category, price, cost, stock, sku, description, imageData }));
+  }
+  if (!save()) {
+    products = snapshot;
+    nextId = snapshotNextId;
+    alert('Hindi na-save. Posibleng puno na ang browser storage dahil sa dami/laki ng larawan.');
+    return;
+  }
+  closeModal();
+  productPage = 1;
+  reportPage = 1;
+  managePage = 1;
+  updateStats();
+  updateCatFilter();
+  renderTable();
+  renderReports();
+  renderManageList();
+}
+
+function deleteProduct(id) {
+  const p = products.find(x => x.id === id);
+  if (p && confirm(`Delete "${p.name}"?`)) {
+    const snapshot = products.map(item => ({ ...item }));
+    products = products.filter(x => x.id !== id);
+    if (!save()) {
+      products = snapshot;
+      alert('Hindi ma-update ang local storage.');
+      return;
+    }
+    productPage = 1;
+    reportPage = 1;
+    managePage = 1;
+    updateStats();
+    updateCatFilter();
+    renderTable();
+    renderReports();
+    renderManageList();
+  }
+}
+
+function showView(view, tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  document.getElementById('view-products').style.display = view === 'products' ? 'block' : 'none';
+  document.getElementById('view-reports').style.display = view === 'reports' ? 'block' : 'none';
+  document.getElementById('view-sales').style.display = view === 'sales' ? 'block' : 'none';
+  document.getElementById('view-wallet').style.display = view === 'wallet' ? 'block' : 'none';
+  document.getElementById('view-manage').style.display = view === 'manage' ? 'block' : 'none';
+  if (view === 'reports') renderReports();
+  if (view === 'sales') {
+    renderSales();
+    toggleSalesForm(false);
+  }
+  if (view === 'wallet') {
+    renderWallet();
+    toggleWalletPanel(false);
+  }
+  if (view === 'products') renderPosCart();
+  if (view === 'manage') renderManageList();
+}
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closeModal();
+});
+
+let deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+});
+
+async function installApp() {
+  if (!deferredInstallPrompt) {
+    alert('Install prompt is not available in this browser yet.');
+    return;
+  }
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice.catch(() => {});
+  deferredInstallPrompt = null;
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js').catch(() => {});
+  });
+}
+
+updateStats();
+updateCatFilter();
+renderTable();
+renderReports();
+renderSales();
+renderWallet();
+renderManageList();
+renderPosCart();
+toggleSalesForm(false);
+toggleWalletPanel(false);
+</script>
