@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  :root {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-charcoal-950 text-slate-200 font-sans antialiased;
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: 'Sora', 'Space Grotesk', system-ui, sans-serif;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply rounded-2xl border border-white/10 bg-white/5 shadow-card backdrop-blur-xl;
+  }
+
+  .glow-ring {
+    box-shadow: 0 0 0 1px rgba(79, 210, 170, 0.25), 0 0 30px rgba(79, 210, 170, 0.35);
+  }
+}
