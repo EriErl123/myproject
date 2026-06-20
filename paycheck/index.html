@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>PayCheck — Premium DTR & Pay Tracker</title>
+
+    <meta name="theme-color" content="#020617">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="apple-touch-icon" href="assets/icon-192.png">
+</head>
+<body>
+
+    <!-- App Container -->
+    <div id="app">
+
+        <!-- HEADER -->
+        <header class="topbar">
+            <div class="user-greeting">
+                <span class="greeting-text" id="greetingText">Good Day 👋</span>
+                <span class="sub-greeting">Manage your DTR & Pay</span>
+            </div>
+            <div class="header-actions">
+                <button id="headerAnalyticsBtn" class="icon-btn" title="View Analytics">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- ALERTS -->
+        <div id="payAlert" class="alert hidden">
+            <div class="alert-content">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="alert-icon"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                <div class="alert-text-wrapper">
+                    <span class="alert-title">Payday Alert</span>
+                    <span class="alert-desc" id="alertDescription">Missing Payday Detected</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGES -->
+
+        <!-- 1. HOME SCREEN (DASHBOARD) -->
+        <section id="home" class="page active">
+            
+            <!-- Hero Earnings Card -->
+            <div class="hero-card card">
+                <div class="hero-bg-gradient"></div>
+                <div class="hero-header">
+                    <span class="hero-label">THIS MONTH</span>
+                    <span class="trend-badge positive" id="trendBadge">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                        <span id="trendAmount">+₱0</span>
+                    </span>
+                </div>
+                <div class="hero-amount-wrapper">
+                    <span class="hero-currency">₱</span>
+                    <span class="hero-amount" id="dashboardEarnings">0</span>
+                </div>
+                <div class="hero-footer-row">
+                    <div class="hero-footer-item">
+                        <span class="hero-footer-label">Next Payday</span>
+                        <span class="hero-footer-val" id="dashboardNextPayday">-- Days</span>
+                    </div>
+                    <div class="hero-footer-divider"></div>
+                    <div class="hero-footer-item">
+                        <span class="hero-footer-label">Days Worked</span>
+                        <span class="hero-footer-val" id="dashboardDaysWorked">0 Days</span>
+                    </div>
+                </div>
+                <!-- Progress Bar to Next Payday -->
+                <div class="payday-progress-container">
+                    <div class="payday-progress-bar" id="paydayProgressBar" style="width: 0%"></div>
+                </div>
+                <div class="payday-progress-labels">
+                    <span id="progressBarStart">Last Payday</span>
+                    <span id="progressBarRemaining">-- days left</span>
+                </div>
+            </div>
+
+            <!-- Live Work Timer Card -->
+            <div class="timer-card card" id="timerCard">
+                <div class="timer-status-row">
+                    <div class="status-indicator">
+                        <span class="status-dot offline" id="timerStatusDot"></span>
+                        <span class="status-label" id="timerStatusText">Not Working</span>
+                    </div>
+                    <span class="time-in-badge hidden" id="timerInBadge">In: --:--</span>
+                </div>
+                <div class="timer-display" id="timerDisplay">00:00:00</div>
+                <div class="timer-actions">
+                    <button id="dashboardTimeInBtn" class="timer-btn time-in-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        Time In
+                    </button>
+                    <button id="dashboardTimeOutBtn" class="timer-btn time-out-btn disabled" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><circle cx="12" cy="12" r="10"></circle><line x1="10" y1="15" x2="10" y2="9"></line><line x1="14" y1="15" x2="14" y2="9"></line></svg>
+                        Time Out
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Stats Summary Grid -->
+            <div class="stats-summary-grid">
+                <div class="stat-summary-card card">
+                    <span class="stat-summary-label">Accrued (Est.)</span>
+                    <span class="stat-summary-val" id="dashboardAccrued">₱0</span>
+                </div>
+                <div class="stat-summary-card card">
+                    <span class="stat-summary-label">Hourly Rate</span>
+                    <span class="stat-summary-val" id="dashboardHourlyRate">₱0/h</span>
+                </div>
+            </div>
+
+            <!-- Recent Activity Title -->
+            <div class="section-header-row">
+                <h3 class="section-title">Timeline Activity</h3>
+                <button class="text-link-btn" id="viewAllTimelineBtn">View Calendar</button>
+            </div>
+
+            <!-- Recent Activity Timeline Preview -->
+            <div class="recent-timeline-card card">
+                <div class="timeline-container" id="recentTimelineList">
+                    <!-- Dynamic timeline items loaded here -->
+                    <div class="timeline-empty-state">
+                        <div class="empty-icon">📅</div>
+                        <span class="empty-text">No activity logged yet.</span>
+                        <span class="empty-subtext">Clock in to begin tracking your hours.</span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 2. CALENDAR & DTR SCREEN -->
+        <section id="calendar" class="page">
+            
+            <div class="calendar-card card">
+                <div class="calendar-header">
+                    <button id="prevMonthBtn" class="icon-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </button>
+                    <h2 class="calendar-month-title" id="calendarMonthTitle">June 2026</h2>
+                    <button id="nextMonthBtn" class="icon-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                </div>
+
+                <div class="calendar-weekdays">
+                    <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+                </div>
+
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Calendar days injected here -->
+                </div>
+
+                <div class="calendar-legend">
+                    <div class="legend-item"><span class="legend-dot green"></span> Complete</div>
+                    <div class="legend-item"><span class="legend-dot yellow"></span> In Only</div>
+                    <div class="legend-item"><span class="legend-dot red"></span> Missed Out</div>
+                    <div class="legend-item"><span class="legend-dot blue"></span> Payday</div>
+                </div>
+            </div>
+
+            <!-- Full DTR Timeline list below Calendar -->
+            <div class="section-header-row">
+                <h3 class="section-title">All Records</h3>
+                <button class="text-link-btn" id="manualLogBtn">Add Manual Log</button>
+            </div>
+
+            <div class="records-timeline-card card">
+                <div class="timeline-container" id="fullTimelineList">
+                    <!-- Full list timeline items -->
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 3. PAYDAYS SCREEN -->
+        <section id="paydays" class="page">
+            
+            <!-- Pay History Summary -->
+            <div class="pay-hero-card card">
+                <span class="pay-hero-label">TOTAL EARNED YTD</span>
+                <span class="pay-hero-val" id="payHistoryTotal">₱0</span>
+                <span class="pay-hero-sub" id="payHistoryCount">0 paydays recorded</span>
+            </div>
+
+            <div class="section-header-row">
+                <h3 class="section-title">Pay History</h3>
+                <button id="triggerAddPaydayBtn" class="btn primary-accent btn-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Add Record
+                </button>
+            </div>
+
+            <!-- History List -->
+            <div id="payHistoryContainer" class="pay-history-list">
+                <!-- Dynamically loaded payday cards -->
+                <div class="timeline-empty-state">
+                    <div class="empty-icon">💰</div>
+                    <span class="empty-text">No pay records yet.</span>
+                    <span class="empty-subtext">Record paydays to analyze your earnings over time.</span>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 4. ANALYTICS SCREEN -->
+        <section id="analytics" class="page">
+            
+            <!-- Key Performance Cards -->
+            <div class="analytics-overview-grid">
+                <div class="analytics-stat-card card">
+                    <span class="analytics-stat-title">Average Payday</span>
+                    <span class="analytics-stat-val" id="analyticsAvgPay">₱0</span>
+                </div>
+                <div class="analytics-stat-card card">
+                    <span class="analytics-stat-title">Total Work Days</span>
+                    <span class="analytics-stat-val" id="analyticsTotalDays">0 Days</span>
+                </div>
+            </div>
+
+            <!-- Monthly Chart Card -->
+            <div class="chart-card card">
+                <h3 class="chart-title">Monthly Earnings</h3>
+                <div class="chart-wrapper">
+                    <canvas id="analyticsBarChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Trend Line Chart Card -->
+            <div class="chart-card card">
+                <h3 class="chart-title">Earnings Trend</h3>
+                <div class="chart-wrapper">
+                    <canvas id="analyticsLineChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Heatmap Calendar Grid Card -->
+            <div class="heatmap-card card">
+                <h3 class="chart-title">Attendance Heatmap</h3>
+                <span class="heatmap-subtitle">Visual grid of work days</span>
+                <div class="heatmap-container" id="attendanceHeatmap">
+                    <!-- Generated Grid Heatmap of last 12 weeks -->
+                </div>
+                <div class="heatmap-legend">
+                    <span>Less</span>
+                    <div class="heatmap-legend-cells">
+                        <span class="h-cell lvl-0"></span>
+                        <span class="h-cell lvl-1"></span>
+                        <span class="h-cell lvl-2"></span>
+                        <span class="h-cell lvl-3"></span>
+                    </div>
+                    <span>More</span>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 5. SETTINGS SCREEN -->
+        <section id="settings" class="page">
+            
+            <!-- Setup Rules & Configuration -->
+            <div class="settings-group card">
+                <h3>Earnings Settings</h3>
+                
+                <div class="setting-row">
+                    <div class="setting-col">
+                        <label for="settingsDailyRate">Daily Rate (₱)</label>
+                        <input type="number" id="settingsDailyRate" placeholder="1800" min="0">
+                    </div>
+                    <div class="setting-col">
+                        <label for="settingsHourlyRate">Hourly Rate (₱)</label>
+                        <input type="number" id="settingsHourlyRate" placeholder="225" min="0">
+                    </div>
+                </div>
+
+                <div class="setting-row">
+                    <div class="setting-col">
+                        <label for="settingsExpectedPayday">Expected Payday</label>
+                        <select id="settingsExpectedPayday">
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday" selected>Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="saveSettingsBtn" class="btn primary-accent full-width">
+                    Save Changes
+                </button>
+            </div>
+
+            <!-- Backup & Sync -->
+            <div class="settings-group card">
+                <h3>Data Backup</h3>
+                <p class="settings-hint">Export your attendance and payday history to a JSON file to transfer it to another device, or restore it from an existing backup.</p>
+                <div class="setting-row">
+                    <button id="exportDataBtn" class="btn primary-accent full-width">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        Export Backup
+                    </button>
+                </div>
+                <div class="setting-row" style="margin-bottom: 0;">
+                    <button id="triggerImportBtn" class="btn full-width" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary);">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Import Backup
+                    </button>
+                    <input type="file" id="importFileInput" accept=".json" style="display: none;">
+                </div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="settings-group card border-danger">
+                <h3 class="text-danger">Danger Zone</h3>
+                <p class="settings-hint">Clearing local data will permanently remove all time logs, settings, and payday records. This action cannot be undone.</p>
+                <button id="clearDataBtn" class="btn danger full-width">
+                    Clear Database
+                </button>
+            </div>
+
+            <div class="settings-version">
+                <span>PayCheck v1.0.0 (PWA)</span>
+                <span>Designed for Mobile-First Fintech Tracking</span>
+            </div>
+
+        </section>
+
+    <!-- BOTTOM NAVIGATION BAR -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" data-page="home" id="navBtnHome">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span>Home</span>
+        </button>
+
+        <button class="nav-btn" data-page="calendar" id="navBtnCalendar">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span>Calendar</span>
+        </button>
+
+        <!-- Centered Floating Trigger in Nav Grid -->
+        <div class="nav-fab-wrapper">
+            <button class="fab-btn" id="fabTrigger" aria-label="Quick Actions">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+        </div>
+
+        <button class="nav-btn" data-page="paydays" id="navBtnPay">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+            <span>Paydays</span>
+        </button>
+
+        <button class="nav-btn" data-page="settings" id="navBtnSettings">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <span>Settings</span>
+        </button>
+    </nav>
+
+
+    <!-- =========================================
+       MODALS & BOTTOM SHEETS
+    ========================================= -->
+
+    <div class="bottom-sheet-backdrop" id="sheetBackdrop"></div>
+
+    <!-- 1. QUICK ACTION SHEET -->
+    <div class="bottom-sheet" id="quickActionSheet">
+        <div class="sheet-handle"></div>
+        <h3 class="sheet-title">Quick Actions</h3>
+        <div class="quick-actions-grid">
+            <button class="quick-action-option" id="btnQuickTimeIn">
+                <div class="option-icon green">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </div>
+                <div class="option-text">
+                    <span class="option-title">Time In</span>
+                    <span class="option-desc">Start work hours logging</span>
+                </div>
+            </button>
+            
+            <button class="quick-action-option" id="btnQuickTimeOut">
+                <div class="option-icon red">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><circle cx="12" cy="12" r="10"></circle><line x1="10" y1="15" x2="10" y2="9"></line><line x1="14" y1="15" x2="14" y2="9"></line></svg>
+                </div>
+                <div class="option-text">
+                    <span class="option-title">Time Out</span>
+                    <span class="option-desc">End work hours logging</span>
+                </div>
+            </button>
+            
+            <button class="quick-action-option" id="btnQuickAddPayday">
+                <div class="option-icon blue">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                </div>
+                <div class="option-text">
+                    <span class="option-title">Add Payday</span>
+                    <span class="option-desc">Record income received</span>
+                </div>
+            </button>
+
+            <button class="quick-action-option" id="btnQuickManualLog">
+                <div class="option-icon yellow">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4z"></path></svg>
+                </div>
+                <div class="option-text">
+                    <span class="option-title">Manual DTR Log</span>
+                    <span class="option-desc">Manually enter a past record</span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. ADD PAYDAY FORM SHEET -->
+    <div class="bottom-sheet" id="addPaydaySheet">
+        <div class="sheet-handle"></div>
+        <h3 class="sheet-title">Record Payday</h3>
+        
+        <form id="paydaySheetForm" class="sheet-form">
+            <div class="input-group">
+                <label for="payAmount">Amount Received (₱)</label>
+                <div class="input-currency-wrapper">
+                    <span class="currency-indicator">₱</span>
+                    <input type="number" id="payAmount" placeholder="0" required min="0" step="any" />
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="payDate">Date of Payment</label>
+                <input type="date" id="payDate" required />
+            </div>
+
+            <div class="input-group-row">
+                <div class="input-group">
+                    <label for="payPeriodStart">Period Covered (Start)</label>
+                    <input type="date" id="payPeriodStart" required />
+                </div>
+                <div class="input-group">
+                    <label for="payPeriodEnd">Period Covered (End)</label>
+                    <input type="date" id="payPeriodEnd" required />
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="payNotes">Notes / Description</label>
+                <textarea id="payNotes" placeholder="Bonus, allowances, standard salary etc. (optional)"></textarea>
+            </div>
+
+            <button type="submit" class="btn primary-accent full-width">
+                Confirm & Save Payday
+            </button>
+        </form>
+    </div>
+
+    <!-- 3. ADD MANUAL DTR SHEET -->
+    <div class="bottom-sheet" id="manualLogSheet">
+        <div class="sheet-handle"></div>
+        <h3 class="sheet-title" id="manualLogSheetTitle">Add Manual Record</h3>
+        
+        <form id="manualLogForm" class="sheet-form">
+            <input type="hidden" id="editRecordId" />
+
+            <div class="input-group">
+                <label for="logDate">Date</label>
+                <input type="date" id="logDate" required />
+            </div>
+
+            <div class="input-group-row">
+                <div class="input-group">
+                    <label for="logTimeIn">Time In</label>
+                    <input type="time" id="logTimeIn" required />
+                </div>
+                <div class="input-group">
+                    <label for="logTimeOut">Time Out</label>
+                    <input type="time" id="logTimeOut" />
+                    <span class="input-hint">Leave blank if only timed in</span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn primary-accent full-width" id="manualLogSubmitBtn">
+                Save Record
+            </button>
+        </form>
+    </div>
+
+    <!-- 4. DATE DETAILS SHEET -->
+    <div class="bottom-sheet" id="dateDetailsSheet">
+        <div class="sheet-handle"></div>
+        <div class="details-header">
+            <div class="details-date-title">
+                <h3 id="detailsDateStr">June 19, 2026</h3>
+                <span class="badge" id="detailsStatusBadge">Completed</span>
+            </div>
+            <div class="details-actions">
+                <button class="details-icon-btn edit-btn" id="detailsEditBtn" title="Edit Log">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4z"></path></svg>
+                </button>
+                <button class="details-icon-btn delete-btn" id="detailsDeleteBtn" title="Delete Log">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="details-body">
+            <div class="details-info-grid">
+                <div class="details-info-card">
+                    <span class="info-label">TIME IN</span>
+                    <span class="info-val" id="detailsTimeInVal">--:--</span>
+                </div>
+                <div class="details-info-card">
+                    <span class="info-label">TIME OUT</span>
+                    <span class="info-val" id="detailsTimeOutVal">--:--</span>
+                </div>
+                <div class="details-info-card">
+                    <span class="info-label">HOURS WORKED</span>
+                    <span class="info-val" id="detailsHoursVal">0h 0m</span>
+                </div>
+                <div class="details-info-card">
+                    <span class="info-label">EST. EARNINGS</span>
+                    <span class="info-val text-success" id="detailsEarningsVal">₱0</span>
+                </div>
+            </div>
+            
+            <div class="details-notes-box hidden" id="detailsNotesContainer">
+                <span class="notes-label">Payday Info for this Day:</span>
+                <p id="detailsNotesVal"></p>
+            </div>
+        </div>
+    </div>
+
+    </div> <!-- Close #app -->
+
+
+    <!-- SCRIPT INCLUSIONS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+
+</body>
+</html>
